@@ -31,4 +31,6 @@ Things you may want to cover:
 rails g scaffold kids name:string surname:string nick:string visual_description:string \
     is_male:boolean date_of_birth:date internal_info:text user_id:integer
 rails active_storage:install
+ rails g migration add_avatar_to_kid  avatar:attachment
+
 ```

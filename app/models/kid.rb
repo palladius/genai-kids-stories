@@ -1,6 +1,12 @@
 class Kid < ApplicationRecord
   # unique keys
   validates :nick, presence: true, uniqueness: { scope: :user_id }
+  #has_one_attached :avatar, service: :local
+
+  has_one_attached :avatar do |attachable|
+    attachable.variant :thumb, resize_to_limit: [200, 200]
+  end
+
   # must have attributes
   validates :name, presence: true
   validates :date_of_birth, presence: true
@@ -9,9 +15,10 @@ class Kid < ApplicationRecord
 
   validates_presence_of :is_male
 
-  # def initialize()
-  #   #@visual_description ||= "#{date}-year-old #{ is_male ? 'boy' : 'girl'}"
-  # end
+  def self.initialize # (attributes = {}, options = {})
+    #super
+    @visual_description ||= "#{@age}-year-old #{@is_male ? 'boy' : 'girl'}"
+  end
 
   def gender
     is_male ? 'male' : 'female'

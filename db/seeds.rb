@@ -13,9 +13,11 @@ aj = Kid.create(name: 'Alessandro', surname: 'Carlesso', nick: 'AJ',
   visual_description: '5-year-old brown-eyed boy with light brown hair',
   internal_info: 'My oldest son', user_id: 1
 )
-seby = Kid.create(name: 'Sebastian Leonardo', nick: 'Sebi',
+seby = Kid.create(name: 'Sebastian Leonardo', nick: 'Seby Leo',
   date_of_birth: '2020-05-18', is_male: true,
   #visual_description: '5-year-old brown-eyed boy with light brown hair',
   internal_info: 'My younger son', user_id: 1
 )
+seby.avatar.attach(io: File.open("#{Rails.root}/storage/seby.png"), filename: 'seby.png')
+seby.save
 puts aj

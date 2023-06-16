@@ -2,6 +2,15 @@
 
 <h1><%= @kids.count %> Kids</h1>
 
+<table border='1' >
+  <%= render_kid(nil) %>
+<% @kids.each do |kid| %>
+    <tr>
+    <%= render_kid(kid) %>
+    </tr>
+    </p>
+<% end %></table>
+
 <div id="kids">
   <% @kids.each do |kid| %>
     <%= render kid %>

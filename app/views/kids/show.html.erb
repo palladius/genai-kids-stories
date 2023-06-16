@@ -1,5 +1,13 @@
 <p style="color: green"><%= notice %></p>
 
+<h1>👶 <%= @kid.nick %></h1>
+
+<% if @kid.avatar %>
+  <%#= image_tag(@kid.avatar.variant(:thumb)) rescue :thumb_err %>
+  <%= image_tag(@kid.avatar, height: 200, style: 'height:200;width:auto;') rescue :avatar_err %>
+  <%= @kid.avatar %>
+<% end %>
+
 <%= render @kid %>
 
 <div>
