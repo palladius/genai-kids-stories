@@ -7,6 +7,9 @@ ruby "3.2.0"
 ############
 # Riccardo
 gem 'lolcat' # just for fun.
+gem "image_processing", ">= 1.2" # for ActiveStorage https://guides.rubyonrails.org/active_storage_overview.html
+#gem 'google-cloud-storage' # for images stored on GCS :)
+gem "google-cloud-storage", "~> 1.11", require: false
 # /Riccardo
 ############
 
