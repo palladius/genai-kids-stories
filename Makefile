@@ -1,4 +1,7 @@
 
+APP_NAME = genai-kids-stories
+#APP_VERSION = $(shell cat VERSION)
+
 
 
 cloud-build-local:
@@ -7,3 +10,6 @@ cloud-build-local:
 
 test:
 	rake test
+
+docker-build:
+	docker build -t "$(APP_NAME):v`bin/version.sh`" .
