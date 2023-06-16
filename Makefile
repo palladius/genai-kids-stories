@@ -8,6 +8,7 @@ cloud-build-local:
 	bin/cloud-build-local.sh
 
 
+.PHONY: test
 test:
 	rake test
 
