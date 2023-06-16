@@ -13,6 +13,10 @@ test:
 
 docker-build:
 	docker build -t "$(APP_NAME):v`bin/version.sh`" .
+docker-build2:
+	docker build -f Dockerfile.fly-io  -t "$(APP_NAME):v`bin/version.sh`" .
+
+
 
 docker-run-nobuild:
 	docker run -it -p 3000:3000 "$(APP_NAME):v`bin/version.sh`"
