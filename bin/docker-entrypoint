@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Ricc: copied from https://fly.io/ruby-dispatch/rails-on-docker/
+# Also has a nice Dockerfile - worth copying
+
+# If running the rails server then create or migrate existing database
+if [ "${*}" == "./bin/rails server" ]; then
+  ./bin/rails db:prepare
+fi
+
+exec "${@}"

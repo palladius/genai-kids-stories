@@ -1,0 +1,38 @@
+###########################################
+# Ciao, sono                      ROOT/rails/cloudbuild-trigger.yaml
+# Ciao, sono  invocato da un trigger manuale che sta qui:
+# https://console.cloud.google.com/cloud-build/triggers/edit/3ea0601e-3544-4385-ab5a-f4c7f7aceb4c?hl=IT&project=ror-goldie
+###########################################
+timeout: 1200s
+options:
+  machineType: 'N1_HIGHCPU_8'
+images:
+  - 'gcr.io/$PROJECT_ID/genai-kids-stories'
+steps:
+ - name: 'bash'
+   id: 1 Prova a vedere se bash aiuta con ENV
+   args: ['echo', 'Scopiazzato da sinatroccolo poi Goldie.. voglio togliere il bifido pero']
+
+ - name: 'ruby:3.2.0'
+   id: 2 Ruby rake test
+   args: ['bundle', 'exec', 'rake', 'test']
+
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: ['build', '-t', "gcr.io/$PROJECT_ID/genai-kids-stories", '.']
+#    dir: .
+
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    entrypoint: 'bash'
+#    args:
+#    - '-eEuo'
+#    - 'pipefail'
+#    - '-c'
+#    - 'bin/cloud-build-simple.sh'
+#    dir: . # rails/ror7-scubatracker/
+
+#  - name: 'bash'
+#    id: 3 Prova Bash del menga da togliere per vedere Articoli in DEV
+#    args: ['echo', 'Article.all.count', '|', 'rails', 'c']
+#    dir: .
+
+tags: ['rails', 'genai', 'gh' , 'devrel' ]
