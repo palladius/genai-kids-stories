@@ -14,7 +14,7 @@ module KidsHelper
       arr = [
         'opts',
         'DOB',
-        'MJ description',
+        'visual_description',
         'avatar'
       ]
       ret = arr.map{|el| "<th>#{el}</th>" }.join("\n")
