@@ -15,7 +15,7 @@ aj = Kid.create_kid_on_steorids(name: 'Alessandro', surname: 'Carlesso', nick: '
   user_id: 1,
   fixture_avatar: 'aj.png', # fixture :)
 )
-seby = Kid.create_kid_on_steorids(name: 'Sebastian Leonardo', nick: 'Seby Leo2',
+seby = Kid.create_kid_on_steorids(name: 'Sebastian Leonardo', nick: 'Seby',
   date_of_birth: '2020-05-18', is_male: true,
   #visual_description: '5-year-old brown-eyed boy with light brown hair',
   internal_info: 'My younger son', user_id: 1,
@@ -45,3 +45,34 @@ puf = Kid.create_kid_on_steorids(
   user_id: 1,
   fixture_avatar: 'puffin-cappello-giallo.png',
 )
+
+#######################
+# Stories
+seby_story1_body = "Sebastian was a fearless firefighter. He loved his job and he was always ready to help people in need. One day, Sebastian was called to a fire at a busy train station in Zurich. When he arrived, he saw that the fire was spreading quickly and there were people trapped inside. Sebastian knew he had to act fast. He ran into the burning building and started to help people to safety.
+
+Sebastian was working hard to save people, but the fire was getting worse. The smoke was thick and the heat was intense. Sebastian could feel his lungs burning and his skin starting to blister. But he kept going. He knew he had to save everyone.
+
+Suddenly, Sebastian heard a cry for help. He turned around and saw a little girl trapped in a room on the second floor. The flames were all around her and she was starting to panic. Sebastian knew he had to get to her, but the fire was too intense. He looked around for something to use to create a path to the girl.
+
+Sebastian saw a long ladder leaning against the side of the building. He ran over to the ladder and started to climb up. The ladder was shaking and the flames were licking at his heels, but Sebastian kept going. He knew he had to save the little girl.
+
+Sebastian finally reached the second floor and he ran to the room where the little girl was trapped. He kicked down the door and pulled her out of the room. The little girl was crying and her clothes were singed, but she was alive. Sebastian carried her to safety and then he went back into the burning building to find more people.
+
+Sebastian searched the burning building for hours, but he couldn't find anyone else. He was about to give up when he heard a noise coming from the back of the building. He ran to the back of the building and saw a giraffe trapped in a cage. The giraffe was scared and it was trying to break free, but it couldn't. Sebastian knew he had to save the giraffe.
+
+Sebastian ran to the cage and started to work on the lock. The lock was old and rusty and it was hard to open, but Sebastian finally managed to get it open. The giraffe ran out of the cage and into Sebastian's arms. Sebastian was so happy that he had saved the giraffe.
+
+Sebastian and the giraffe were both safe. The fire was out and the people who had been trapped inside were all safe. Sebastian was a hero. He had saved the little girl and the giraffe and he had put his own life in danger to do it. Sebastian was proud of what he had done and he knew that he would never forget it.
+"
+
+seby_story1 = Story.create(
+  title: 'Seby firefighter saves a gyraffe',
+  #genai_input: 'TODO from Guillaume',
+  genai_output: seby_story1_body,
+   # genai_summary:text \
+  internal_notes: 'To be improved.. v0.1',
+  user_id: 1,
+  kid_id: Kid.find_by_nick( 'Seby'),
+  #cover_image: # attachment --force
+)
+puts seby_story1

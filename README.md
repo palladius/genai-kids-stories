@@ -33,4 +33,11 @@ rails g scaffold kids name:string surname:string nick:string visual_description:
 rails active_storage:install
  rails g migration add_avatar_to_kid  avatar:attachment
 
+# note the integer vs reference is neaerly the same behaviour: https://stackoverflow.com/questions/7861971/generate-model-in-rails-using-user-idinteger-vs-userreferences
+rails g scaffold Story title:string \
+    genai_input:text genai_output:text genai_summary:text \
+    internal_notes:text \
+    user_id:integer kid:references \
+    cover_image:attachment --force
+
 ```

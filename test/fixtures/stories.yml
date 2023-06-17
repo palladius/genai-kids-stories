@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  genai_input: MyText
+  genai_output: MyText
+  genai_summary: MyText
+  internal_notes: MyText
+  user_id: 1
+  kid: one
+
+two:
+  title: MyString
+  genai_input: MyText
+  genai_output: MyText
+  genai_summary: MyText
+  internal_notes: MyText
+  user_id: 1
+  kid: two

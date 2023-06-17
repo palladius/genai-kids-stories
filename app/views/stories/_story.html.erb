@@ -1,0 +1,42 @@
+<div id="<%= dom_id story %>">
+  <p>
+    <strong>Title:</strong>
+    <%= story.title %>
+  </p>
+
+  <p>
+    <strong>Genai input:</strong>
+    <%= story.genai_input %>
+  </p>
+
+  <p>
+    <strong>Genai output:</strong>
+    <%= story.genai_output %>
+  </p>
+
+  <p>
+    <strong>Genai summary:</strong>
+    <%= story.genai_summary %>
+  </p>
+
+  <p>
+    <strong>Internal notes:</strong>
+    <%= story.internal_notes %>
+  </p>
+
+  <p>
+    <strong>User:</strong>
+    <%= story.user_id %>
+  </p>
+
+  <p>
+    <strong>Kid:</strong>
+    <%= story.kid_id %>
+  </p>
+
+  <p>
+    <strong>Cover image:</strong>
+    <%= link_to story.cover_image.filename, story.cover_image if story.cover_image.attached? %>
+  </p>
+
+</div>

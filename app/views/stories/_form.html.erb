@@ -1,0 +1,57 @@
+<%= form_with(model: story) do |form| %>
+  <% if story.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(story.errors.count, "error") %> prohibited this story from being saved:</h2>
+
+      <ul>
+        <% story.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, style: "display: block" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :genai_input, style: "display: block" %>
+    <%= form.text_area :genai_input %>
+  </div>
+
+  <div>
+    <%= form.label :genai_output, style: "display: block" %>
+    <%= form.text_area :genai_output %>
+  </div>
+
+  <div>
+    <%= form.label :genai_summary, style: "display: block" %>
+    <%= form.text_area :genai_summary %>
+  </div>
+
+  <div>
+    <%= form.label :internal_notes, style: "display: block" %>
+    <%= form.text_area :internal_notes %>
+  </div>
+
+  <div>
+    <%= form.label :user_id, style: "display: block" %>
+    <%= form.number_field :user_id %>
+  </div>
+
+  <div>
+    <%= form.label :kid_id, style: "display: block" %>
+    <%= form.text_field :kid_id %>
+  </div>
+
+  <div>
+    <%= form.label :cover_image, style: "display: block" %>
+    <%= form.file_field :cover_image %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

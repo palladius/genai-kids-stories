@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_16_194355) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_17_145550) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -42,6 +42,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_16_194355) do
 # Could not dump table "kids" because of following StandardError
 #   Unknown type 'attachment' for column 'avatar'
 
+  create_table "stories", force: :cascade do |t|
+    t.string "title"
+    t.text "genai_input"
+    t.text "genai_output"
+    t.text "genai_summary"
+    t.text "internal_notes"
+    t.integer "user_id"
+    t.integer "kid_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["kid_id"], name: "index_stories_on_kid_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "stories", "kids"
 end
