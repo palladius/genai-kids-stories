@@ -15,7 +15,9 @@ aj = Kid.create_kid_on_steorids(name: 'Alessandro', surname: 'Carlesso', nick: '
   user_id: 1,
   fixture_avatar: 'aj.png', # fixture :)
 )
-seby = Kid.create_kid_on_steorids(name: 'Sebastian Leonardo', nick: 'Seby',
+seby = Kid.create_kid_on_steorids(
+  name: 'Sebastian Leonardo',
+  nick: 'Seby',
   date_of_birth: '2020-05-18', is_male: true,
   #visual_description: '5-year-old brown-eyed boy with light brown hair',
   internal_info: 'My younger son', user_id: 1,
@@ -48,6 +50,9 @@ puf = Kid.create_kid_on_steorids(
 
 #######################
 # Stories
+#######################
+#STORIES_FIXTURE_IMAGES_DIR = "#{Rails.root}/db/fixtures/stories/"
+
 seby_story1_body = "Sebastian was a fearless firefighter. He loved his job and he was always ready to help people in need. One day, Sebastian was called to a fire at a busy train station in Zurich. When he arrived, he saw that the fire was spreading quickly and there were people trapped inside. Sebastian knew he had to act fast. He ran into the burning building and started to help people to safety.
 
 Sebastian was working hard to save people, but the fire was getting worse. The smoke was thick and the heat was intense. Sebastian could feel his lungs burning and his skin starting to blister. But he kept going. He knew he had to save everyone.
@@ -65,14 +70,20 @@ Sebastian ran to the cage and started to work on the lock. The lock was old and 
 Sebastian and the giraffe were both safe. The fire was out and the people who had been trapped inside were all safe. Sebastian was a hero. He had saved the little girl and the giraffe and he had put his own life in danger to do it. Sebastian was proud of what he had done and he knew that he would never forget it.
 "
 
+seby = Kid.find_by_nick('Seby')
+
+
 seby_story1 = Story.create(
   title: 'Seby firefighter saves a gyraffe',
-  #genai_input: 'TODO from Guillaume',
+  genai_input: 'TODO(ricc) from Guillaume',
   genai_output: seby_story1_body,
-   # genai_summary:text \
-  internal_notes: 'To be improved.. v0.1',
+   # genai_summary:text TODO
+  internal_notes: '2. To be improved.. v0.1',
   user_id: 1,
-  kid_id: Kid.find_by_nick( 'Seby'),
-  #cover_image: # attachment --force
+  kid: Kid.find_by_nick('Seby'),
 )
-puts seby_story1
+seby_story1.attach_cover('seby-firefighter.png')
+
+#puts seby_story1.errors
+puts "📚 Story just created: #{seby_story1}. Errors: #{seby_story1.errors.full_messages}" # if opts_debug
+

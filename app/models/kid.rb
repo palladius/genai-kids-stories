@@ -37,31 +37,31 @@ class Kid < ApplicationRecord
 
 
 
-
-
-
+  def self.emoji
+    '👶'
+  end
 
   # Class stuff
   def self.create_kid_on_steorids(attributes)
-    opts_debug = attributes.fetch :opts_debug, true
+    opts_debug = attributes.fetch :opts_debug, false
 
-    puts "Kid.create_kid_on_steorids(): Provided attributes: #{attributes}"
+    puts "Kid.create_kid_on_steorids(): Provided attributes: #{attributes}" if opts_debug
     #puts "FA: #{yellow attributes[:fixture_avatar] }"
     fixture_avatar_pic = attributes.fetch(:fixture_avatar, 'anonymous.png')
 
     cleaned_up_attributes = attributes.delete_if { |key, value| key.to_s.match(/fixture_avatar/) }
     #puts "cleaned_up_attributes: #{cleaned_up_attributes}"
     #puts Kid.column_names.join(', ')
-    puts cleaned_up_attributes
+    #puts cleaned_up_attributes if opts_debug
 
-    puts "DEB fixture_avatar_pic=#{yellow fixture_avatar_pic}"
+    #puts "DEB fixture_avatar_pic=#{yellow fixture_avatar_pic}" if opts_debug
     #cleaned_up_attributes['visual_description'] ||= ''
     #cleaned_up_attributes['visual_description'] += "DEBUG -- fixture_avatar_pic=#{fixture_avatar_pic}"
 
     ################################################
     # Creation of object...
     kid = Kid.create(cleaned_up_attributes )
-    puts "👶 Kid just created: #{kid}. Errors: #{kid.errors.full_messages}" if opts_debug
+    puts "👶 Kid just created: #{kid}. Errors: #{kid.errors.full_messages}" # if opts_debug
     # ... now it exists and I can methods like age() and so on.
     ################################################
 
@@ -73,8 +73,9 @@ class Kid < ApplicationRecord
 
     # Saving for second time with additional stuff..
     ret = kid.save
-    puts "ret=#{ret}"
-    puts "DEB kid: #{kid}"
-    puts ''
+    #puts "ret=#{ret}"
+    #puts "DEB kid: #{kid}"
+    #puts ''
+    kid
   end
 end
