@@ -1,6 +1,21 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Stories</h1>
+<h1><%= Story.emoji %> Stories </h1>
+
+<table border='1' class='stories' >
+  <%= render_story(nil) %>
+<% @stories.each do |x| %>
+    <tr>
+    <%= render_story(x) %>
+    </tr>
+    </p>
+<% end %></table>
+
+</table>
+
+<%= link_to "New story", new_story_path %>
+
+<h1>Stories original</h1>
 
 <div id="stories">
   <% @stories.each do |story| %>
@@ -11,4 +26,3 @@
   <% end %>
 </div>
 
-<%= link_to "New story", new_story_path %>

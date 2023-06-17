@@ -8,7 +8,7 @@
 
 puts 'Creating a couple of test kids, completely randomic...'
 
-aj = Kid.create_kid_on_steorids(name: 'Alessandro', surname: 'Carlesso', nick: 'AJ2',
+aj = Kid.create_kid_on_steorids(name: 'Alessandro', surname: 'Carlesso', nick: 'AJ',
   date_of_birth: '2018-01-30', is_male: true,
   visual_description: '5-year-old brown-eyed boy with light brown hair',
   internal_info: 'My oldest son',
@@ -70,11 +70,30 @@ Sebastian ran to the cage and started to work on the lock. The lock was old and 
 Sebastian and the giraffe were both safe. The fire was out and the people who had been trapped inside were all safe. Sebastian was a hero. He had saved the little girl and the giraffe and he had put his own life in danger to do it. Sebastian was proud of what he had done and he knew that he would never forget it.
 "
 
+aj_story2_body = "C'era una volta un giovane coraggioso cavaliere di 5 anni con un'armatura d'argento lucente di nome Alessandro. Ha vissuto nella città di Zurigo con i suoi genitori. Alessandro amava andare all'avventura ed esplorare posti nuovi. Un giorno, ha sentito parlare di una casa infestata in città. Decise di andare a indagare.
+
+Quando Alessandro arrivò alla casa infestata, vide che era un grande edificio antico. Era buio e cupo e le finestre erano sprangate. Alessandro era spaventato, ma ha deciso di entrare.
+
+Mentre attraversava la casa, Alessandro sentì strani rumori. Vide ombre che si muovevano nell'oscurità. Stava cominciando ad avere davvero paura. Voleva scappare, ma sapeva che doveva scoprire cosa infestava la casa.
+
+Alessandro si addentrava sempre più in casa. Arrivò in una stanza piena di ragnatele. Vide una vecchia cassapanca nell'angolo della stanza. Si avvicinò al baule e lo aprì. All'interno del forziere trovò una maschera d'oro.
+
+
+Alessandro si mise la maschera. Improvvisamente, sentì uno strano potere salire nel suo corpo. Sapeva che la maschera era la fonte dell'ossessione. Doveva trovare un modo per liberarsene.
+
+Alessandro corse fuori di casa e in strada. Vide un gruppo di persone raccolte attorno a un fuoco. Andò da loro e raccontò loro della casa infestata. Le persone hanno ascoltato il racconto di Alessandro e poi lo hanno aiutato a liberarsi della mascherina.
+
+
+La gente ha portato la maschera in cima a una collina e l'ha bruciata. Mentre la maschera bruciava, lo spirito di Tutankhamon veniva liberato. Lo spirito era finalmente in pace.
+
+Alessandro era un eroe. Aveva salvato la città dalla casa stregata. Gli zurighesi gli erano grati. Hanno organizzato una festa in suo onore. Alessandro era felice di aver aiutato gli zurighesi. Sapeva che non avrebbe mai dimenticato la sua avventura nella casa stregata.
+"
+
 seby = Kid.find_by_nick('Seby')
 
 
 seby_story1 = Story.create(
-  title: 'Seby firefighter saves a gyraffe',
+  title: 'Seby firefighter saves a giraffe',
   genai_input: 'TODO(ricc) from Guillaume',
   genai_output: seby_story1_body,
    # genai_summary:text TODO
@@ -84,6 +103,18 @@ seby_story1 = Story.create(
 )
 seby_story1.attach_cover('seby-firefighter.png')
 
+aj_story1 = Story.create(
+  title: 'Il cavaliere Alessandro e lo spirito di Tutankhamen  ',
+  genai_input: 'TODO(ricc) from Guillaume',
+  genai_output: aj_story2_body,
+   # genai_summary:text TODO
+  internal_notes: '2. To be improved.. v0.1',
+  user_id: 1,
+  kid: Kid.find_by_nick('AJ'),
+)
+aj_story1.attach_cover('aj-knight.png')
+
 #puts seby_story1.errors
 puts "📚 Story just created: #{seby_story1}. Errors: #{seby_story1.errors.full_messages}" # if opts_debug
+puts "📚 Story just created: #{aj_story1}. Errors: #{aj_story1.errors.full_messages}" # if opts_debug
 

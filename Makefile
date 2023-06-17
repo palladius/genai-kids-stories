@@ -24,3 +24,7 @@ docker-run-nobuild:
 
 docker-run: docker-build docker-run-nobuild
 
+#PHONY: test
+tests:
+#	rails db:migrate RAILS_ENV=test
+	rake test
