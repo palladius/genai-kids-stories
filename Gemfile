@@ -10,6 +10,7 @@ gem 'lolcat' # just for fun.
 gem "image_processing", ">= 1.2" # for ActiveStorage https://guides.rubyonrails.org/active_storage_overview.html
 #gem 'google-cloud-storage' # for images stored on GCS :)
 gem "google-cloud-storage", "~> 1.11", require: false
+gem 'delayed_job_active_record' # from https://github.com/collectiveidea/delayed_job/
 # /Riccardo
 ############
 
