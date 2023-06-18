@@ -4,7 +4,7 @@ module StoriesHelper
     if story.is_a?( Story)
       arr = [
         link_to( "##{story.id}", story),
-        story.title,
+        link_to(story.title, story),
         link_to(story.kid,story.kid),
         #story.avatar.to_s.gsub('<', '&lt;').gsub('>', '&gt;'), # image_tag(story.avatar.variant(:thumb)),
         (image_tag(story.cover_image, height: 100) rescue $! ),

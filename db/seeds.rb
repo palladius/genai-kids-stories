@@ -97,7 +97,7 @@ seby_story1 = Story.create(
   genai_input: 'TODO(ricc) from Guillaume',
   genai_output: seby_story1_body,
    # genai_summary:text TODO
-  internal_notes: '2. To be improved.. v0.1',
+  internal_notes: '(story is in Engish)',
   user_id: 1,
   kid: Kid.find_by_nick('Seby'),
 )
@@ -108,7 +108,7 @@ aj_story1 = Story.create(
   genai_input: 'TODO(ricc) from Guillaume',
   genai_output: aj_story2_body,
    # genai_summary:text TODO
-  internal_notes: '2. To be improved.. v0.1',
+  internal_notes: '(story is in Italian)',
   user_id: 1,
   kid: Kid.find_by_nick('AJ'),
 )
