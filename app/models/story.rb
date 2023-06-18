@@ -13,7 +13,8 @@ class Story < ApplicationRecord
 
   #https://stackoverflow.com/questions/33890458/difference-between-after-create-after-save-and-after-commit-in-rails-callbacks
   #after_create :delayed_job_genai_magic
-  after_save :delayed_job_genai_magic
+  after_save :delayed_job_genai_magic # The right way
+  after_save :genai_magic # DEBUG
 
 
   def self.emoji
@@ -46,7 +47,7 @@ class Story < ApplicationRecord
     self.genai_output.size > 10 and    self.genai_summary.size < 10
   end
   def should_autogenerate_genai_input?
-    genai_input.size < 11
+    self.genai_input.size < 11
   end
   # to be DELAYed
   # https://github.com/collectiveidea/delayed_job/tree/v4.1.11
@@ -55,7 +56,9 @@ class Story < ApplicationRecord
     # This function has the arrogance of doing EVERYTHING which needs to be done. It will defer to sub-parts and
     # might take time, hence done with 'delayed_job'
     if should_autogenerate_genai_input? # total autopilot :)
+      puts 'I have no input -> computing the Guillaume story template (implemented)'
       self.genai_autogenerate_input!()
+      sleep(1)
     end
     if should_compute_genai_output?
       puts 'I have input but no output -> computing it with Generate API (implemented)'
@@ -69,9 +72,6 @@ class Story < ApplicationRecord
 
   def genai_compute_output!()
     extend Genai::AiplatformTextCurl
-#ai_curl_by_content('blah blah blah poo')
-   # puts :TODO3
-#    extend RiccGenaiGcpTextCurl
     ret,msg = ai_curl_by_content(self.genai_input)
     # TODO verify that [0] is 200 ok :) #<Net::HTTPOK 200 OK readbody=true>
     self.genai_output = msg
@@ -92,7 +92,8 @@ class Story < ApplicationRecord
   def genai_autogenerate_input!()
     extend Genai::AiplatformTextCurl
 #    kid_description = self.kid.visual_description # TODO get also personality and hobbies.
-    genai_input = guillaume_kids_story_in_five_acts()
+    self.genai_input = guillaume_kids_story_in_five_acts()
+    self.save!
   end
 
 end

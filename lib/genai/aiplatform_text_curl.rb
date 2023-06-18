@@ -68,8 +68,9 @@ module Genai
   ]
 
   def pickARandomElementOf(arr)
-    puts "TODO fix with random"
-    arr[0]
+    # https://stackoverflow.com/questions/3482149/how-do-i-pick-randomly-from-an-array
+    # Random sample
+    arr.sample
   end
   # def guillaume_kids_story_in_five_acts()
   #   guillaume_kids_story_in_five_acts(nil, nil, nil, nil)
