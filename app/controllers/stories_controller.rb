@@ -1,5 +1,5 @@
 class StoriesController < ApplicationController
-  before_action :set_story, only: %i[ show edit update destroy ]
+  before_action :set_story, only: %i[ show edit update destroy genai_magic ]
 
   # GET /stories or /stories.json
   def index
@@ -13,6 +13,13 @@ class StoriesController < ApplicationController
   # GET /stories/new
   def new
     @story = Story.new
+  end
+
+
+
+  def genai_magic
+    # set_story :)
+    puts 'Doing some magic here :)'
   end
 
   # GET /stories/1/edit

@@ -22,6 +22,8 @@ module GenaiKidsStories
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
 
+    # fixes Zeitwerk issue: https://stackoverflow.com/questions/57277351/rails-6-zeitwerknameerror-doesnt-load-class-from-module
+    config.autoloader = :classic
 
 
   end

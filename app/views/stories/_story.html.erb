@@ -1,42 +1,30 @@
 <div id="<%= dom_id story %>">
+  <h2>
+      <%= link_to "📝", edit_story_path(story) %>
+    <strong><%= link_to story.title, story %></strong>
+  </h2>
+
+      <%#= image_tag(story.cover_image.variant(:thumb)) if story.cover_image.attached? %>
+      <%= image_tag(story.cover_image,  style: "float:right;height:200px;") if story.cover_image.attached? %>
+
+      <%#= link_to story.cover_image.filename, story.cover_image if story.cover_image.attached? %>
+
+    <i><%= story.genai_summary %></i>
+
+    <% story.paragraphs.each do |p|  %>
   <p>
-    <strong>Title:</strong>
-    <%= story.title %>
+    🔸 <%= p %>
   </p>
+    <% end  %>
+
 
   <p>
-    <strong>Genai input:</strong>
-    <%= story.genai_input %>
+    <%= image_tag(story.kid.avatar, style: "float:left;height:100px;") if story.kid.avatar.attached? %>
+
+    <strong>
+     <%= link_to story.kid,story.kid %>
+    </strong>
   </p>
 
-  <p>
-    <strong>Genai output:</strong>
-    <%= story.genai_output %>
-  </p>
-
-  <p>
-    <strong>Genai summary:</strong>
-    <%= story.genai_summary %>
-  </p>
-
-  <p>
-    <strong>Internal notes:</strong>
-    <%= story.internal_notes %>
-  </p>
-
-  <p>
-    <strong>User:</strong>
-    <%= story.user_id %>
-  </p>
-
-  <p>
-    <strong>Kid:</strong>
-    <%= story.kid_id %>
-  </p>
-
-  <p>
-    <strong>Cover image:</strong>
-    <%= link_to story.cover_image.filename, story.cover_image if story.cover_image.attached? %>
-  </p>
 
 </div>

@@ -31,7 +31,8 @@ class Kid < ApplicationRecord
   end
 
   def to_s
-    "Kiddo.#{id}: #{nick}, #{age}y: '#{visual_description}'"
+#    "Kiddo.#{id}: #{nick}, #{age}y: '#{visual_description}'"
+    "#{Kid.emoji} #{nick}, #{age}y"
   end
 
 
