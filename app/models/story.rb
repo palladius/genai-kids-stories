@@ -45,12 +45,18 @@ class Story < ApplicationRecord
   def should_compute_genai_summary?
     self.genai_output.size > 10 and    self.genai_summary.size < 10
   end
+  def should_autogenerate_genai_input?
+    genai_input.size < 11
+  end
   # to be DELAYed
   # https://github.com/collectiveidea/delayed_job/tree/v4.1.11
   # @story.delay.genai_compute!(@device)
   def genai_magic()
     # This function has the arrogance of doing EVERYTHING which needs to be done. It will defer to sub-parts and
     # might take time, hence done with 'delayed_job'
+    if should_autogenerate_genai_input? # total autopilot :)
+      self.genai_autogenerate_input!()
+    end
     if should_compute_genai_output?
       puts 'I have input but no output -> computing it with Generate API (implemented)'
       self.genai_compute_output!()
@@ -81,6 +87,12 @@ class Story < ApplicationRecord
     self.internal_notes = "genai_compute_summary() Invoked on #{Time.now}"
     self.title = genai_summary if title.size < 5
     self.save!
+  end
+
+  def genai_autogenerate_input!()
+    extend Genai::AiplatformTextCurl
+#    kid_description = self.kid.visual_description # TODO get also personality and hobbies.
+    genai_input = guillaume_kids_story_in_five_acts()
   end
 
 end

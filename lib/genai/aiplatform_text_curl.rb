@@ -41,27 +41,61 @@ module Genai
     "a spy who solves mysteries and saves the day",
     "a superhero who fights crime and protects the innocent",
   ]
+  SETTINGS = [
+    "in a big gray castle, centuries ago",
+    "on a space station orbiting a distant planet, in year 2135",
+    "in a big bustling city",
+    "in an enchanted forest",
+    "in a jungle full of dangerous wild animals",
+    "in a small village on a quiet island",
+    "in a busy train station of a futuristic city full of high skyscrapers",
+    "in a deserted beach, on a far away island in the middle of the ocean",
+    "in a mysterious cave at the bottom of a mountain",
+  ]
+  PLOTS = [
+    "her little sister was kidnapped by a nasty old witch",
+    "the sun is erupting dangerously",
+    "a shower of comets is setting the town on fire at every corner",
+    "an evil dog with long ears is barking at all cute animals",
+    "the baboon king is threatening all animals and stealing their food",
+    "dangerous asteroids hosting mysterious lifeforms",
+    "discovery of a secret portal enabling travel to worlds of danger and excitement",
+    "discovery of a flying superpower",
+    "a mission to investigate a mysterious object that has appeared in orbit around the Earth",
+    "rescue of a cat from a burning building",
+    "a mission to break the spell that has been cast on her kingdom",
+    "solving the mystery of a haunted house",
+  ]
 
-  def pickARandomElementOf
+  def pickARandomElementOf(arr)
+    puts "TODO fix with random"
+    arr[0]
+  end
+  # def guillaume_kids_story_in_five_acts()
+  #   guillaume_kids_story_in_five_acts(nil, nil, nil, nil)
+  # end
 
-  def guillaume_kids_story_in_five_acts(character=nil, setting=nil, plot=nil)
+  def guillaume_kids_story_in_five_acts(kid_description=nil, character=nil, setting=nil, plot=nil)
+    kid_description = 'A blue-eyed afroamerican 6-year-old girl called Imani'
     character = pickARandomElementOf(CHARACTERS)   if character.nil?
-    """
-        You are a creative and passionate story teller for kids.
+    setting = pickARandomElementOf(SETTINGS)   if setting.nil?
+    plot = pickARandomElementOf(PLOTS)   if plot.nil?
+    return "You are a creative and passionate story teller for young kids.
         Kids love hearing about the stories you invent.
 
-        Your stories are split into 5 acts:
+        Your stories are split into five acts as it follows (please stick to this plan!):
         - Act 1 : Sets up the story providing any contextual background the reader needs, but most importantly it contains the inciting moment. This incident sets the story in motion. An incident forces the protagonist to react. It requires resolution, producing narrative tension.
         - Act 2 : On a simplistic level this is the obstacles that are placed in the way of the protagonists as they attempt to resolve the inciting incident.
         - Act 3 : This is the turning point of the story. It is the point of the highest tension. In many modern narratives, this is the big battle or showdown.
         - Act 4 : The falling action is that part of the story in which the main part (the climax) has finished and you're heading to the conclusion. This is the calm after the tension of the climax.
         - Act 5 : This is the resolution of the story where conflicts are resolved and loose ends tied up. This is the moment of emotional release for the reader.
 
-        Generate a kid story in 5 acts, where:
-        - The protagonist is: #{character}
-        - The action takes place in: #{setting}
+        Generate a kid story in five acts, where:
+        - The protagonist is: #{character}.
+        - The action takes place in: #{setting}.
         - Plot is: #{plot}.
-      """
+        - My kid is #{kid_description}.
+    "
   end
 
   def generate_story(input_blurb)
