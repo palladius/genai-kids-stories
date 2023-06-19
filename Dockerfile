@@ -24,6 +24,14 @@ RUN bundle install
 
 COPY . .
 
+# Install `gcloud`
+RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-435.0.1-linux-x86_64.tar.gz
+RUN ls -al *gz
+RUN tar -xf google-cloud-cli-435.0.1-linux-x86_64.tar.gz
+RUN ./google-cloud-sdk/install.sh --quiet
+#root@16c3e0d96ff7:/usr/src/app#
+ENV PATH=$PATH:$WORKDIR/google-cloud-sdk/bin/
+#RUN export PATH=$PATH:./google-cloud-sdk/bin/
 #CMD ["./your-daemon-or-script.rb"]
 
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+ENTRYPOINT ["bin/docker-entrypoint"]
