@@ -4,6 +4,11 @@ APP_NAME = genai-kids-stories
 
 
 
+# Runs local server by forcing a delayed job too :)
+run-local:
+	bin/delayed_job  start &
+	bundle exec rails s
+
 cloud-build-local:
 	bin/cloud-build-local.sh
 
