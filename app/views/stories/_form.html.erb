@@ -44,8 +44,7 @@
   <div>
     <%= form.label :kid_id, style: "display: block" %>
     <%#= form.text_field :kid_id %>
-    <%= form.select :kid_id, options_for_select(Kid.all.map{|s|[s.nick, s.id]}) %>
-
+    <%= form.select :kid_id, options_for_select(Kid.all.map{|s|[s.nick, s.id]}, :selected => @story.kid_id ) %>
   </div>
 
   <div>
@@ -57,3 +56,4 @@
     <%= form.submit %>
   </div>
 <% end %>
+<%= params %>
