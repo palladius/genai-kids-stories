@@ -1,6 +1,10 @@
 class StoriesController < ApplicationController
   before_action :set_story, only: %i[ show edit update destroy genai_magic ]
 
+  # Google proxy gives me an error =>
+  # https://stackoverflow.com/questions/65688157/why-is-my-http-origin-header-not-matching-request-base-url-and-how-to-fix
+  skip_before_action :verify_authenticity_token
+
   # GET /stories or /stories.json
   def index
     @stories = Story.all

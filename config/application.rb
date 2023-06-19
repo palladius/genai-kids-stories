@@ -25,6 +25,11 @@ module GenaiKidsStories
     # fixes Zeitwerk issue: https://stackoverflow.com/questions/57277351/rails-6-zeitwerknameerror-doesnt-load-class-from-module
     config.autoloader = :classic
 
+    # Google internal procy
+    config.hosts << /.*\.proxy\.googleprod\.com/
+    #config.hosts << "a644fdd140bb8000000000000000001.proxy.googleprod.com"
+
+
 
   end
 end

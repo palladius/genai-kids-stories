@@ -6,8 +6,15 @@ APP_NAME = genai-kids-stories
 
 # Runs local server by forcing a delayed job too :)
 run-local:
-	bin/delayed_job  start &
-	bundle exec rails s
+	make delayed-jobs-daemon &
+	bundle exec rails s -b 0.0.0.0
+
+delayed-jobs-daemon-start:
+	bin/delayed_job start -l --logfilename log/riccardo-delayed-jobs.log
+delayed-jobs-daemon-stop:
+	bin/delayed_job stop
+	sleep 1
+	ps aux | grep delayed_job
 
 cloud-build-local:
 	bin/cloud-build-local.sh

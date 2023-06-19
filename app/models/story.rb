@@ -14,7 +14,7 @@ class Story < ApplicationRecord
   #https://stackoverflow.com/questions/33890458/difference-between-after-create-after-save-and-after-commit-in-rails-callbacks
   #after_create :delayed_job_genai_magic
   after_save :delayed_job_genai_magic # The right way
-  after_save :genai_magic # DEBUG
+  #after_save :genai_magic # DEBUG
 
 
   def self.emoji

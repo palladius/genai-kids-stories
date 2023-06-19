@@ -77,7 +77,7 @@ module Genai
   # end
 
   def guillaume_kids_story_in_five_acts(kid_description=nil, character=nil, setting=nil, plot=nil)
-    kid_description = 'A blue-eyed afroamerican 6-year-old girl called Imani'
+    kid_description = 'A blue-eyed afroamerican 6-year-old red-haired girl called Foobar'
     character = pickARandomElementOf(CHARACTERS)   if character.nil?
     setting = pickARandomElementOf(SETTINGS)   if setting.nil?
     plot = pickARandomElementOf(PLOTS)   if plot.nil?
