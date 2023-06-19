@@ -35,6 +35,10 @@ class Kid < ApplicationRecord
     "#{Kid.emoji} #{nick}, #{age}y"
   end
 
+  # Alessandro is a 5-year old kid, ...
+  def about
+    "#{name} is a #{age}-year-old #{visual_description}"
+  end
 
 
 

@@ -104,8 +104,8 @@ class Story < ApplicationRecord
 
   def genai_autogenerate_input!()
     extend Genai::AiplatformTextCurl
-#    kid_description = self.kid.visual_description # TODO get also personality and hobbies.
-    self.genai_input = guillaume_kids_story_in_five_acts()
+    puts("genai_autogenerate_input!(): #{self.kid.about}")
+    self.genai_input = guillaume_kids_story_in_five_acts(:kid_description => self.kid.about)
     self.save!
   end
 
