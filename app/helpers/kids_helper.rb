@@ -2,12 +2,13 @@ module KidsHelper
 
   def render_kid(kid)
     if kid.is_a?( Kid)
+      avatar = kid.avatar.attached? ? image_tag(kid.avatar, height: 70) : '-'
       arr = [
         link_to( "##{kid.id} #{kid.nick}", kid),
         kid.date_of_birth,
         kid.visual_description,
-        kid.avatar.to_s.gsub('<', '&lt;').gsub('>', '&gt;'), # image_tag(kid.avatar.variant(:thumb)),
-        (image_tag(kid.avatar, height: 50) rescue '' ),
+        #kid.avatar.to_s.gsub('<', '&lt;').gsub('>', '&gt;'), # image_tag(kid.avatar.variant(:thumb)),
+        avatar,
       ]
       ret = arr.map{|el| "<td>#{el}</td>" }.join("\n")
     else

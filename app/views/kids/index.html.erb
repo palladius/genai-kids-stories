@@ -11,6 +11,7 @@
     </p>
 <% end %></table>
 
+<!--
 <div id="kids">
   <% @kids.each do |kid| %>
     <%= render kid %>
@@ -19,5 +20,5 @@
     </p>
   <% end %>
 </div>
-
-<%= link_to "New kid", new_kid_path %>
+-->
+<%= link_to "#{Kid.emoji} New kid", new_kid_path %>
