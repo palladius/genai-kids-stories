@@ -1,4 +1,4 @@
-STORIES_FIXTURE_IMAGES_DIR = "#{Rails.root}/db/fixtures/stories/"
+
 
 
 class Story < ApplicationRecord
@@ -13,8 +13,13 @@ class Story < ApplicationRecord
 
   #https://stackoverflow.com/questions/33890458/difference-between-after-create-after-save-and-after-commit-in-rails-callbacks
   #after_create :delayed_job_genai_magic
-  after_save :delayed_job_genai_magic # The right way
-  #after_save :genai_magic # DEBUG
+  # doesnt work since its unauthorized maybe different process  -> different ENVs?
+  # #<Net::HTTPUnauthorized 401 Unauthorized readbody=true>
+  #after_save :delayed_job_genai_magic # The right way
+
+
+  # This works
+  after_save :genai_magic # DEBUG
 
 
   def self.emoji
@@ -38,6 +43,7 @@ class Story < ApplicationRecord
   #### MAGIC AI
 
   def delayed_job_genai_magic
+    Rails.logger.info("delayed_job_genai_magic(): 1. Enqueuing GenAI Magic for Story.#{self.id}")
     self.delay.genai_magic
   end
   def should_compute_genai_output?
@@ -55,6 +61,8 @@ class Story < ApplicationRecord
   def genai_magic()
     # This function has the arrogance of doing EVERYTHING which needs to be done. It will defer to sub-parts and
     # might take time, hence done with 'delayed_job'
+    Rails.logger.info("genai_magic(): 2. actually executing GenAI Magic for Story.#{self.id}")
+
     if should_autogenerate_genai_input? # total autopilot :)
       puts 'I have no input -> computing the Guillaume story template (implemented)'
       self.genai_autogenerate_input!()
@@ -72,7 +80,12 @@ class Story < ApplicationRecord
 
   def genai_compute_output!()
     extend Genai::AiplatformTextCurl
-    ret,msg = ai_curl_by_content(self.genai_input)
+    x = ai_curl_by_content(self.genai_input)
+    if x.nil?
+      logger.error('Sorry I couldnt generate anything.')
+      return nil
+    end
+    ret,msg = x
     # TODO verify that [0] is 200 ok :) #<Net::HTTPOK 200 OK readbody=true>
     self.genai_output = msg
     self.internal_notes = "genai_compute_output() Invoked on #{Time.now}"

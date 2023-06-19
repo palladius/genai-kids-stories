@@ -3,18 +3,34 @@ APP_NAME = genai-kids-stories
 #APP_VERSION = $(shell cat VERSION)
 PROJECT_ID = ricc-genai
 
+# .PHONY: help
+# help: ## Shows all targets and help from the Makefile (this message).
+#         @echo "🤖 This Makefile was also created via GenAI. Just kidding."
+#         @echo ""
+#         @grep --no-filename -E '^([/a-z.A-Z0-9_%-]+:.*?|)##' $(MAKEFILE_LIST) | \
+#                 awk 'BEGIN {FS = "(:.*?|)## ?"}; { \
+#                         if (length($$1) > 0) { \
+#                                 printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2; \
+#                         } else { \
+#                                 if (length($$2) > 0) { \
+#                                         printf "%s\n", $$2; \
+#                                 } \
+#                         } \
+#                 }'
+
 
 # Runs local server by forcing a delayed job too :)
-run-local:
+run-local: # runs locally after starting a daemon for delayed jobs..
 	make delayed-jobs-daemon &
 	bundle exec rails s -b 0.0.0.0
 
-delayed-jobs-daemon-start:
-	bin/delayed_job start -l --logfilename log/riccardo-delayed-jobs.log
+delayed-jobs-start-daemon:
+	RAILS_ENV=development bin/delayed_job start -l --logfilename log/riccardo-delayed-jobs.log
+delayed-jobs-start-foreground:
+	RAILS_ENV=development bin/delayed_job run -l --logfilename log/riccardo-delayed-jobs.log
 delayed-jobs-daemon-stop:
-	bin/delayed_job stop
-	sleep 1
-	ps aux | grep delayed_job
+	RAILS_ENV=development bin/delayed_job stop
+	RAILS_ENV=development bin/delayed_job status
 
 cloud-build-local:
 	bin/cloud-build-local.sh

@@ -20,9 +20,11 @@ module Genai
   require 'json'
   require 'yaml'
 
-  PROJECT_ID = ENV.fetch('PROJECT_ID', '_PROJECT_NON_DATUR_')
+  #PROJECT_ID ||= ENV.fetch('PROJECT_ID') # from intiializers
+  #GCLOUD_ACCESS_TOKEN ||= `gcloud --project '#{PROJECT_ID}' auth print-access-token`.strip
+
   MODEL_ID = 'text-bison@001'
-  TOKEN = `gcloud --project #{PROJECT_ID} auth print-access-token`.strip
+
 
   # taken by my buddy Guillaume: https://github.com/glaforge/bedtimestories/blob/main/src/main/resources/public/index.html
   CHARACTERS =    [
@@ -116,7 +118,7 @@ module Genai
       uri = URI(ai_url)
 
       puts("uri:    #{uri}") if opts_debug
-      puts "TOKEN: '''#{TOKEN}'''" if opts_debug
+      #puts "TOKEN: '''#{GCLOUD_ACCESS_TOKEN}'''" if opts_debug
 
       body = {
           "instances": [
@@ -134,15 +136,16 @@ module Genai
       puts "BODY: '''#{body}'''" if opts_debug
       headers = {
           'Content-Type': 'application/json',
-          'Authorization': "Bearer #{TOKEN}"
+          'Authorization': "Bearer #{GCLOUD_ACCESS_TOKEN}"
       }
       response = Net::HTTP.post(uri, body.to_json, headers)
 
-      puts response.inspect
+      puts('ai_curl_by_content(): response.inspect = ', response.inspect)
 
       json_body = JSON.parse(response.read_body)
-      predicted_content = json_body['predictions'][0]['content']
-      #puts json_body['predictions'][0]['content']
+      #puts response
+      predicted_content = (json_body['predictions'][0]['content'] rescue nil)
+      return nil if predicted_content.nil?
       return response, predicted_content
   end
 
