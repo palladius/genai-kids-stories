@@ -43,7 +43,9 @@
 
   <div>
     <%= form.label :kid_id, style: "display: block" %>
-    <%= form.text_field :kid_id %>
+    <%#= form.text_field :kid_id %>
+    <%= form.select :kid_id, options_for_select(Kid.all.map{|s|[s.nick, s.id]}) %>
+
   </div>
 
   <div>
