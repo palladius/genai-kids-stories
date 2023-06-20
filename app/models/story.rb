@@ -35,7 +35,7 @@ class Story < ApplicationRecord
   end
 
   def paragraphs
-    genai_output.split("\n").reject{ |c| c.length < 4  } # empty?
+    genai_output.split("\n").reject{ |c| c.length < 4  } rescue [] # empty?
   end
 
 
@@ -44,13 +44,14 @@ class Story < ApplicationRecord
 
   def delayed_job_genai_magic
     Rails.logger.info("delayed_job_genai_magic(): 1. Enqueuing GenAI Magic for Story.#{self.id}")
+    sleep(1) if Rails.env == 'development'
     self.delay.genai_magic
   end
   def should_compute_genai_output?
     genai_input.size > 10 and genai_output.size < 10
   end
   def should_compute_genai_summary?
-    self.genai_output.size > 10 and    self.genai_summary.size < 10
+    self.genai_output.size > 10 and self.genai_summary.size < 10
   end
   def should_autogenerate_genai_input?
     self.genai_input.size < 11
@@ -63,24 +64,29 @@ class Story < ApplicationRecord
     # might take time, hence done with 'delayed_job'
     Rails.logger.info("genai_magic(): 2. actually executing GenAI Magic for Story.#{self.id}")
 
+    gcp_opts = {
+      :project_id => PROJECT_ID,
+      :gcloud_access_token => GCLOUD_ACCESS_TOKEN,
+    }
+
     if should_autogenerate_genai_input? # total autopilot :)
       puts 'I have no input -> computing the Guillaume story template (implemented)'
-      self.genai_autogenerate_input!()
+      self.genai_autogenerate_input!() # doesnt require GCP :)
       sleep(1)
     end
     if should_compute_genai_output?
       puts 'I have input but no output -> computing it with Generate API (implemented)'
-      self.genai_compute_output!()
+      self.genai_compute_output!(gcp_opts)
     end
     if  should_compute_genai_summary?
       puts 'I have output but no summary -> computing it with Summary API (TODO)'
-      self.genai_compute_summary!()
+      self.genai_compute_summary!(gcp_opts)
     end
   end
 
-  def genai_compute_output!()
+  def genai_compute_output!(gcp_opts={})
     extend Genai::AiplatformTextCurl
-    x = ai_curl_by_content(self.genai_input)
+    x = ai_curl_by_content(self.genai_input, gcp_opts)
     if x.nil?
       logger.error('Sorry I couldnt generate anything.')
       return nil
@@ -92,9 +98,9 @@ class Story < ApplicationRecord
     self.save!
   end
 
-  def genai_compute_summary!()
+  def genai_compute_summary!(gcp_opts{})
     extend Genai::AiplatformTextCurl
-    ret,msg = ai_curl_by_content("Please write a short summary of maximum 10 words of the following text: #{self.genai_output}")
+    ret,msg = ai_curl_by_content("Please write a short summary of maximum 10 words of the following text: #{self.genai_output}", gcp_opts)
     # TODO verify that [0] is 200 ok :) #<Net::HTTPOK 200 OK readbody=true>
     self.genai_summary = msg
     self.internal_notes = "genai_compute_summary() Invoked on #{Time.now}"

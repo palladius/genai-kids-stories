@@ -1,13 +1,17 @@
 module StoriesHelper
 
+  def render_story_title(story)
+    (story.title.size rescue 0) > 3 ? story.title : '🚧 Not available yet2 🚧'
+  end
+
   def render_story(story)
     if story.is_a?( Story)
-      input_size =story.genai_input.size
-      output_size =story.genai_output.size
+      input_size =story.genai_input.size rescue 0
+      output_size =story.genai_output.size rescue 0
       three_buttons = ''
         three_buttons << link_to( "✅#{story.id}", story)
         three_buttons << link_to( "📝", edit_story_path(story))
-      title = story.title.size > 3 ? story.title : '🚧 Not available yet 🚧'
+      title = render_story_title(story)
       arr = [
         three_buttons.html_safe,
         link_to(story.kid.nick,story.kid),

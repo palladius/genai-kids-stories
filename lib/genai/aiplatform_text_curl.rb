@@ -88,7 +88,7 @@ module Genai
       return "You are a creative and passionate story teller for young kids.
           Kids love hearing about the stories you invent.
 
-          Your stories are split into five acts as it follows (please stick to this plan):
+          Your stories are split into five acts as it follows (please stick to this plan and enumerate those explicitly):
           - Act 1 : Sets up the story providing any contextual background the reader needs, but most importantly it contains the inciting moment. This incident sets the story in motion. An incident forces the protagonist to react. It requires resolution, producing narrative tension.
           - Act 2 : On a simplistic level this is the obstacles that are placed in the way of the protagonists as they attempt to resolve the inciting incident.
           - Act 3 : This is the turning point of the story. It is the point of the highest tension. In many modern narratives, this is the big battle or showdown.
@@ -110,17 +110,20 @@ module Genai
     def ai_curl_by_content(content, region='us-central1', opts={})
         # options
         opts_debug = opts.fetch 'DEBUG', false
+
         # filling empty values
-        project_id = PROJECT_ID
+        project_id = opts.fetch :project_id , PROJECT_ID
+        gcloud_access_token = opts.fetch :gcloud_access_token , GCLOUD_ACCESS_TOKEN
+        model_id = opts.fetch :model_id , MODEL_ID
 
         #ai_url = "https://us-central1-aiplatform.googleapis.com/v1/projects/#{project_id}/locations/us-central1/publishers/google/models/text-bison:predict"
-        ai_url = "https://us-central1-aiplatform.googleapis.com/v1/projects/#{project_id}/locations/us-central1/publishers/google/models/#{MODEL_ID}:predict"
+        ai_url = "https://us-central1-aiplatform.googleapis.com/v1/projects/#{project_id}/locations/us-central1/publishers/google/models/#{model_id}:predict"
 
         puts("ai_url: #{ai_url}") if opts_debug
         uri = URI(ai_url)
 
         puts("uri:    #{uri}") if opts_debug
-        #puts "TOKEN: '''#{GCLOUD_ACCESS_TOKEN}'''" if opts_debug
+
 
         body = {
             "instances": [
@@ -138,7 +141,7 @@ module Genai
         puts "BODY: '''#{body}'''" if opts_debug
         headers = {
             'Content-Type': 'application/json',
-            'Authorization': "Bearer #{GCLOUD_ACCESS_TOKEN}"
+            'Authorization': "Bearer #{gcloud_access_token}"
         }
         response = Net::HTTP.post(uri, body.to_json, headers)
 

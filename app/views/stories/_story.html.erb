@@ -1,7 +1,7 @@
 <div id="<%= dom_id story %>">
   <h2>
       <%= link_to "📝", edit_story_path(story) %>
-    <strong><%= link_to story.title, story %></strong>
+    <strong><%= link_to render_story_title(story), story %></strong>
   </h2>
 
       <%#= image_tag(story.cover_image.variant(:thumb)) if story.cover_image.attached? %>
@@ -17,7 +17,13 @@
   </p>
     <% end  %>
 
+<h3>📈 Story Stats</h3>
 
+<% %w{genai_summary genai_input genai_output internal_notes}.each do |xxx| %>
+ -📈 Size:  :<b><%=story.send(xxx).size rescue '?' %></b>B <%= xxx %> <br/>
+<% end %>
+
+<h3>👶 About Kiddo</h3>
   <p>
     <%= image_tag(story.kid.avatar, style: "float:left;height:100px;") if story.kid.avatar.attached? %>
 
@@ -26,5 +32,5 @@
     </strong>
   </p>
 
-
+<hr/>
 </div>
