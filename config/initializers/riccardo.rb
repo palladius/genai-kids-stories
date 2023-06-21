@@ -7,3 +7,6 @@ PROJECT_ID ||= ENV.fetch('PROJECT_ID') # , '_PROJECT_NON_DATUR_')
 GCLOUD_ACCESS_TOKEN ||= `gcloud --project '#{PROJECT_ID}' auth print-access-token`.strip
 
 STORIES_FIXTURE_IMAGES_DIR ||= "#{Rails.root}/db/fixtures/stories/"
+
+APP_NAME = '🤖GenAI 👶🏾Kids 📔Stories'
+APP_VERSION = File.read(File.expand_path("#{Rails.root}/VERSION")).chomp
