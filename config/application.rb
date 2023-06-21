@@ -28,7 +28,8 @@ module GenaiKidsStories
     # Google internal procy
     config.hosts << /.*\.proxy\.googleprod\.com/
     #config.hosts << "a644fdd140bb8000000000000000001.proxy.googleprod.com"
-
+    config.hosts << "derek.zrh.corp.google.com"
+    config.hosts << "derek.zrh"
 
 
   end
