@@ -204,12 +204,13 @@ module Genai
       if response.class == Net::HTTPBadRequest
         puts("XXX HTTPBadRequest -> Showing the payload: size=#{json_body.size}")
         #puts("json_body: #{red json_body}")
-        File.write("story-#{self.id}}.HTTPBadRequest.json", json_body)
+        File.write(".story-#{self.id}.HTTPBadRequest.json", json_body)
         #File.open("#{filename}.b64enc", "w") {|f| f.write(bytesBase64Encoded)}
         ## {"error"=>{"code"=>400, "message"=>"Image generation failed with the following error: The response is blocked, as it may violate our policies. If you believe this is an error, please send feedback to your account team.", "status"=>"INVALID_ARGUMENT", "details"=>[{"@type"=>"type.googleapis.com/google.rpc.DebugInfo", "detail"=>"[ORIGINAL ERROR] generic::invalid_argument: Image generation failed with the following error: The response is blocked, as it may violate our policies. If you believe this is an error, please send feedback to your account team. [google.rpc.error_details_ext] { message: \"Image generation failed with the following error: The response is blocked, as it may violate our policies. If you believe this is an error, please send feedback to your account team.\" }"}]}}
         error_message = json_body['error']['message'] rescue nil
         unless error_message.nil?
-          $stderr.puts "Error found! #{red error_message}"
+          $stderr.puts "Error found! Error.status: #{red json_body['error']['status']}"
+          $stderr.puts "Error found! Error.Message: #{red error_message}"
           return error_message, nil
         end
         return response, nil
@@ -220,7 +221,7 @@ module Genai
         return response, nil
       end
 
-      puts('ai_curl_by_content(): response.inspect = ', response.inspect)
+      #puts('ai_curl_by_content(): response.inspect = ', response.inspect)
 
       # next unless 200 :)
       my_one_file = nil
@@ -242,7 +243,7 @@ module Genai
         #puts("MIME[#{ix}]: #{mimeType}")    # shjould be PNG
         next unless mimeType == 'image/png' # shjould be PNG
         bytesBase64Encoded = json_body['predictions'][ix]['bytesBase64Encoded']
-        puts("bytesBase64Encoded[#{ix}]: #{bytesBase64Encoded.size}B")
+        puts("🖼️ Image[#{ix}] encoded size: #{bytesBase64Encoded.size}B")
 
         File.open("#{filename}.b64enc", "w") {|f| f.write(bytesBase64Encoded)}
         File.open("#{filename}.b64dec", "w") {|f| f.write(Base64.decode64(bytesBase64Encoded)) rescue :fail}
@@ -258,7 +259,7 @@ module Genai
         #enc = Base64.encode64(bytesBase64Encoded.each_byte.to_a.join)
         #File.write("tmp123.png")
         #StringIO.new(Base64.decode64(params[:base_64_image].split(',')[1])),
-        puts("Written file: #{filename}")
+        #puts("Written file: #{filename}")
         file_mime_type = `file '#{filename}'`
         puts "file_mime_type: #{file_mime_type}"
         # story.id=74.ix=0.png.b64enc.shellato: PNG image data, 1024 x 1024, 8-bit/color RGB, non-interlaced

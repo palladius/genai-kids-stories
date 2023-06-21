@@ -55,7 +55,6 @@ class Story < ApplicationRecord
 
   def delayed_job_genai_magic
     Rails.logger.info("delayed_job_genai_magic(): 1. Enqueuing GenAI Magic for Story.#{self.id}")
-    #sleep(1) if Rails.env == 'development'
     self.delay.genai_magic(:delay => true )
   end
   def should_compute_genai_output?
@@ -88,7 +87,6 @@ class Story < ApplicationRecord
     if should_autogenerate_genai_input? # total autopilot :)
       puts '🤖10🤖 I have no input -> computing the Guillaume story template (implemented)'
       ret10 = self.genai_autogenerate_input!() # doesnt require GCP :)
-      #sleep(1)
     end
     if should_compute_genai_output?
       puts '🤖20🤖 I have input but no output -> computing it with Generate API (implemented)'
@@ -167,8 +165,8 @@ class Story < ApplicationRecord
     end
 
     response, tmp_image = ai_curl_images_by_content(description, gcp_opts)
-    puts "genai_compute_images.response: #{response}"
-    puts("genai_compute_images! returned a: #{tmp_image} (class=#{tmp_image.class})")
+    #puts "genai_compute_images.response: #{response}"
+    #puts("genai_compute_images! returned a: #{tmp_image} (class=#{tmp_image.class})")
     if not tmp_image.nil?
         if File.exist?(tmp_image)
           # from SO:

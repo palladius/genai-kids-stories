@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# ensure its not empty :)
+echo "PROJECT_ID: $PROJECT_ID"
+
+RUBYOPT='-W0' RAILS_ENV="development" nice bin/delayed_job run
