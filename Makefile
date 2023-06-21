@@ -77,3 +77,6 @@ genai-create-joke:
 	echo 'Story.new(:internal_notes => "fun joke #{Time.now} on #{`hostname`}", kid: Kid.first, genai_input: "Write a joke about a japanese Software Engineer from Google who walks into a library.\n Make it funny and with some unexpected final plot twist.").save' | rails c
 genai-create-joke2:
 	echo 'Story.new(:internal_notes => "fun joke 2 #{Time.now} on #{`hostname`}", kid: Kid.last, genai_input: "Write a joke about a swiss hiker going to the mountains.\n Make it funny and with some unexpected final plot twist.").save' | rails c
+
+run-from-docker:
+	APPLICATION_DEFAULT_CREDENTIALS=/sa.json RAILS_ENV=development rails s -b 0.0.0.0

@@ -36,3 +36,4 @@
 .envrc.*
 .git-privatize
 .echodo_history
+private/
