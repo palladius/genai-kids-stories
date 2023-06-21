@@ -71,3 +71,7 @@ genai-image-test:
 genai-create-empty-story:
 	echo This should trigger all the GenAI bonanza:
 	echo 'Story.new(:internal_notes => "cli #{Time.now} on #{`hostname`}", kid: Kid.find_sample).save' | rails c
+
+genai-create-joke:
+	@echo This should trigger a joke without kid...
+	echo 'Story.new(:internal_notes => "fun joke #{Time.now} on #{`hostname`}", kid: Kid.first, genai_input: "Write a joke about a japanese Software Engineer from Google who walks into a library. Make it funny and with some unexpected final plot twist.").save' | rails c

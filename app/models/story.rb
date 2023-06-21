@@ -15,11 +15,13 @@ class Story < ApplicationRecord
   #after_create :delayed_job_genai_magic
   # doesnt work since its unauthorized maybe different process  -> different ENVs?
   # #<Net::HTTPUnauthorized 401 Unauthorized readbody=true>
-  #after_save :delayed_job_genai_magic # The right way
+
+  #after_save  OK with delayed, but not with
+  after_save :delayed_job_genai_magic # The right way
 
   # This works
-  after_save :genai_magic # DEBUG
-
+  # # Note: after_save creates a loop!!!
+  after_create :genai_magic # DEBUG
 
   def self.emoji
     '📚'
@@ -40,6 +42,7 @@ class Story < ApplicationRecord
   def append_notes(str)
     self.internal_notes ||= '🌍'
     self.internal_notes += "::append:: #{Time.now} #{str}\n"
+    #self.update_column(:internal_notes => self.internal_notes) rescue nil
   end
 
 
@@ -52,8 +55,8 @@ class Story < ApplicationRecord
 
   def delayed_job_genai_magic
     Rails.logger.info("delayed_job_genai_magic(): 1. Enqueuing GenAI Magic for Story.#{self.id}")
-    sleep(1) if Rails.env == 'development'
-    self.delay.genai_magic
+    #sleep(1) if Rails.env == 'development'
+    self.delay.genai_magic(:delay => true )
   end
   def should_compute_genai_output?
     genai_input_size > 10 and  genai_output_size < 10
@@ -71,10 +74,11 @@ class Story < ApplicationRecord
   # to be DELAYed
   # https://github.com/collectiveidea/delayed_job/tree/v4.1.11
   # @story.delay.genai_compute!(@device)
-  def genai_magic()
+  def genai_magic(opts={})
+    delay = opts.fetch :delay, false
     # This function has the arrogance of doing EVERYTHING which needs to be done. It will defer to sub-parts and
     # might take time, hence done with 'delayed_job'
-    Rails.logger.info("genai_magic(): 2. actually executing GenAI Magic for Story.#{self.id}")
+    Rails.logger.info("genai_magic(delay=#{delay}): 2. actually executing GenAI Magic for Story.#{self.id}")
 
     gcp_opts = {
       :project_id => PROJECT_ID,
@@ -83,21 +87,23 @@ class Story < ApplicationRecord
 
     if should_autogenerate_genai_input? # total autopilot :)
       puts '🤖10🤖 I have no input -> computing the Guillaume story template (implemented)'
-      self.genai_autogenerate_input!() # doesnt require GCP :)
-      sleep(1)
+      ret10 = self.genai_autogenerate_input!() # doesnt require GCP :)
+      #sleep(1)
     end
     if should_compute_genai_output?
       puts '🤖20🤖 I have input but no output -> computing it with Generate API (implemented)'
-      self.genai_compute_output!(gcp_opts)
+      ret20 = self.genai_compute_output!(gcp_opts)
     end
     if  should_compute_genai_summary?
       puts '🤖30🤖 I have output but no summary -> computing it with Summary API (implemented)'
-      self.genai_compute_summary!(gcp_opts)
+      ret30 = self.genai_compute_summary!(gcp_opts)
     end
     if should_compute_genai_images?
       puts "🤖40🤖 WOWOWOW [#{Story.emoji}.#{self.id}] computing images with Palm API (implemented)"
-      self.genai_compute_images!(gcp_opts)
+      ret40 = self.genai_compute_images!(gcp_opts)
     end
+    self.append_notes("genai_magic(delay=#{delay}) END. Results: #{ret10}/#{ret20}/#{ret30}/#{ret40}/")
+    #self.save
   end
 
   def genai_compute_output!(gcp_opts={})
@@ -116,12 +122,16 @@ class Story < ApplicationRecord
 
   def genai_compute_summary!(gcp_opts={})
     extend Genai::AiplatformTextCurl
+
     ret,msg = ai_curl_by_content("Please write a short summary of maximum 10 words of the following text: #{self.genai_output}", gcp_opts)
+
+    #puts("ret ..", ret)
     # TODO verify that [0] is 200 ok :) #<Net::HTTPOK 200 OK readbody=true>
     self.genai_summary = msg
     self.append_notes "genai_compute_summary() Invoked"
     self.title = genai_summary if self.title_size < 5
     self.save!
+    ret
   end
 
   def genai_autogenerate_input!()
@@ -136,11 +146,25 @@ class Story < ApplicationRecord
   def genai_compute_images!(gcp_opts={})
     extend Genai::AiplatformTextCurl
 
-    puts("genai_compute_images!(opts=#{gcp_opts}): output-size=#{self.genai_output_size}")
-    self.append_notes "genai_compute_images called."
+    description = 'Change me'
+    # I get a lot of recursive on this - so better get out immediately
+    if self.cover_image.attached?
+      puts("genai_compute_images!(): pointless since I already have an attachment!")
+      return false
+    end
+
+    puts("genai_compute_images!(opts=#{gcp_opts.to_s.first(25)}..): output-size=#{self.genai_output_size}")
+    #self.append_notes "genai_compute_images called."
     #description = "Once upon a time, there was a young spy named Agent X. Agent X was the best spy in the world, and she was always on the lookout for new mysteries to solve. One day, Agent X was sent on a mission to investigate a mysterious cave at the bottom of a mountain."
     #tmp_imagez = ai_curl_images_by_content(self.kid.about)
-    description = "This is a story about #{self.kid.about}, in this context: #{title}".gsub("\n",' ')
+    #
+    if genai_input =~ /Kids love hearing about the stories you invent/
+      # Story for kids..
+      description = "This is a story about #{self.kid.about}, in this context: #{self.title}".gsub("\n",' ')
+    else
+      # TODO add a field like "story for kids", "joke, or whatever..."
+      description = "Imagine: #{self.title}.\nAdditional context: #{self.genai_output}" # .gsub("\n",' ')
+    end
 
     response, tmp_image = ai_curl_images_by_content(description, gcp_opts)
     puts "genai_compute_images.response: #{response}"
@@ -155,15 +179,20 @@ class Story < ApplicationRecord
           #}
           puts "WOWOWOW about to save this image: #{tmp_image}"
           puts `file "#{tmp_image}"`
+
+          #TODO self.update_columns(:cover_image => attach.?!? )
           self.cover_image.attach(
             io: File.open(tmp_image),
             filename: tmp_image
           )
           # TODO attach 4 images instead! Like the 4 MJ ones :)
+          #self.append_notes "Correctly attached image #{tmp_image} with this description: '#{description}'"
           self.save!
+          #self.update_column ...
+          return true
         end
     end
-    #self.save!
+    false
   end
 
 end

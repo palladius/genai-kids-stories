@@ -130,7 +130,7 @@ module Genai
         body = {
             "instances": [
                 {
-                "content": content, # "#{content.gsub('"','\"')}" #  remove double quotes..
+                "content": content,
                 }
             ],
             "parameters": {
@@ -173,7 +173,7 @@ module Genai
       uri = URI(ai_url)
       puts("uri:    #{uri}") if opts_debug
 
-      puts "Generating an image with this content: #{yellow content}"
+      puts "#{Story.emoji} Story.#{self.id}. Generating an image with this content: #{yellow content}"
       body = {
           "instances": [
               {
