@@ -80,6 +80,50 @@ module Genai
       arr.sample
     end
 
+    # I make it a static method which accepts a story..
+    def _convert_base64_image_to_file(story, json_body, ix)
+      raise "I need a Story!" unless story.is_a? Story
+      raise "I need an integer!" unless ix.is_a? Integer
+
+      # Self is probably the story.
+      filename = "tmp/story.id=#{self.id rescue 'dunno'}.ix=#{ix}.png"
+
+      mimeType = json_body['predictions'][ix]['mimeType']
+      #puts("MIME[#{ix}]: #{mimeType}")    # shjould be PNG
+      return nil unless mimeType == 'image/png' # shjould be PNG
+      bytesBase64Encoded = json_body['predictions'][ix]['bytesBase64Encoded']
+      puts("🖼️ Image[#{ix}] encoded size: #{bytesBase64Encoded.size}B")
+
+      File.open("#{filename}.b64enc", "w") {|f| f.write(bytesBase64Encoded)}
+      File.open("#{filename}.b64dec", "w") {|f| f.write(Base64.decode64(bytesBase64Encoded)) rescue :fail}
+      # https://stackoverflow.com/questions/16918602/how-to-base64-encode-image-in-linux-bash-shell
+      File.open("#{filename}.b64dec2", "w") {|f| f.write(Base64.decode64(bytesBase64Encoded.each_byte.to_a.join)) rescue nil }
+
+      #encode_file_on_linux = `base64 -d '#{filename}.b64enc' > '#{filename}'`
+      encode_file_on_mac = `base64 -i '#{filename}.b64enc' -d > '#{filename}'`
+#      encode_file_on_mac = `openssl base64 -d -in '#{filename}.b64enc' -out '#{filename}'`
+      puts "encode_file_on_mac: #{encode_file_on_mac}"
+
+
+      #cat "$IMAGE_OUTPUT_PATH" | jq -r .predictions[$IMAGE_IX].bytesBase64Encoded > t.base64
+      #IMAGE_IX
+      ## https://stackoverflow.com/questions/61157933/how-to-attach-base64-image-to-active-storage-object
+
+      #enc = Base64.encode64(bytesBase64Encoded.each_byte.to_a.join)
+      #File.write("tmp123.png")
+      #StringIO.new(Base64.decode64(params[:base_64_image].split(',')[1])),
+      #puts("Written file: #{filename}")
+      file_mime_type = `file '#{filename}'`
+      puts "file_mime_type: #{file_mime_type}"
+
+      # story.id=74.ix=0.png.b64enc.shellato: PNG image data, 1024 x 1024, 8-bit/color RGB, non-interlaced
+      my_one_file = filename if file_mime_type.match(/PNG image data/)
+
+
+    end
+
+
+
     # https://medium.datadriveninvestor.com/ruby-keyword-arguments-817ed243b4e2
     def guillaume_kids_story_in_five_acts(opts={})
       # kid_description:, character:, setting:, plot:)
@@ -105,10 +149,6 @@ module Genai
       "
     end
 
-    def generate_story(input_blurb)
-      "TODO(ricc): take tamplate from https://github.com/glaforge/bedtimestories/blob/main/src/main/groovy/com/google/cloud/devrel/bedtimestories/StoryMakerController.groovy "
-    end
-
     def ai_curl_by_content(content, region='us-central1', opts={})
         # options
         opts_debug = opts.fetch 'DEBUG', false
@@ -118,13 +158,11 @@ module Genai
         gcloud_access_token = opts.fetch :gcloud_access_token , GCLOUD_ACCESS_TOKEN
         model_id = opts.fetch :model_id , MODEL_ID
 
-        #ai_url = "https://us-central1-aiplatform.googleapis.com/v1/projects/#{project_id}/locations/us-central1/publishers/google/models/text-bison:predict"
         ai_url = "https://us-central1-aiplatform.googleapis.com/v1/projects/#{project_id}/locations/us-central1/publishers/google/models/#{model_id}:predict"
+        #puts("ai_url: #{ai_url}") if opts_debug
 
-        puts("ai_url: #{ai_url}") if opts_debug
         uri = URI(ai_url)
-
-        puts("uri:    #{uri}") if opts_debug
+        #puts("uri:    #{uri}") if opts_debug
 
 
         body = {
@@ -140,11 +178,12 @@ module Genai
                 "topK": 40
             }
         }
-        puts "BODY: '''#{body}'''" if opts_debug
         headers = {
-            'Content-Type': 'application/json',
-            'Authorization': "Bearer #{gcloud_access_token}"
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer #{gcloud_access_token}"
         }
+        puts "BODY: '''#{body}'''" if opts_debug
+
         response = Net::HTTP.post(uri, body.to_json, headers)
 
         puts("ai_curl_by_content(): response.inspect = '#{response.inspect}'")
@@ -203,9 +242,7 @@ module Genai
 
       if response.class == Net::HTTPBadRequest
         puts("XXX HTTPBadRequest -> Showing the payload: size=#{json_body.size}")
-        #puts("json_body: #{red json_body}")
         File.write(".story-#{self.id}.HTTPBadRequest.json", json_body)
-        #File.open("#{filename}.b64enc", "w") {|f| f.write(bytesBase64Encoded)}
         ## {"error"=>{"code"=>400, "message"=>"Image generation failed with the following error: The response is blocked, as it may violate our policies. If you believe this is an error, please send feedback to your account team.", "status"=>"INVALID_ARGUMENT", "details"=>[{"@type"=>"type.googleapis.com/google.rpc.DebugInfo", "detail"=>"[ORIGINAL ERROR] generic::invalid_argument: Image generation failed with the following error: The response is blocked, as it may violate our policies. If you believe this is an error, please send feedback to your account team. [google.rpc.error_details_ext] { message: \"Image generation failed with the following error: The response is blocked, as it may violate our policies. If you believe this is an error, please send feedback to your account team.\" }"}]}}
         error_message = json_body['error']['message'] rescue nil
         unless error_message.nil?
@@ -221,7 +258,7 @@ module Genai
         return response, nil
       end
 
-      #puts('ai_curl_by_content(): response.inspect = ', response.inspect)
+      puts("ai_curl_by_content(): response.class:#{response.class} response.inspect=#{response.inspect}")
 
       # next unless 200 :)
       my_one_file = nil
@@ -236,34 +273,13 @@ module Genai
       end
       #puts 'prediction_size_minus_one: ', prediction_size_minus_one
       (0..prediction_size_minus_one).each do |ix|
-        # Self is probably the story.
-        filename = "tmp/story.id=#{self.id rescue 'dunno'}.ix=#{ix}.png"
-
-        mimeType = json_body['predictions'][ix]['mimeType']
-        #puts("MIME[#{ix}]: #{mimeType}")    # shjould be PNG
-        next unless mimeType == 'image/png' # shjould be PNG
-        bytesBase64Encoded = json_body['predictions'][ix]['bytesBase64Encoded']
-        puts("🖼️ Image[#{ix}] encoded size: #{bytesBase64Encoded.size}B")
-
-        File.open("#{filename}.b64enc", "w") {|f| f.write(bytesBase64Encoded)}
-        File.open("#{filename}.b64dec", "w") {|f| f.write(Base64.decode64(bytesBase64Encoded)) rescue :fail}
-        # https://stackoverflow.com/questions/16918602/how-to-base64-encode-image-in-linux-bash-shell
-        File.open("#{filename}.b64dec2", "w") {|f| f.write(Base64.decode64(bytesBase64Encoded.each_byte.to_a.join)) rescue nil }
-
-        # base64 -d t.base64 > "output/image-output-$IMAGE_IX.JPG"
-        `base64 -d '#{filename}.b64enc' > '#{filename}'`
-        #cat "$IMAGE_OUTPUT_PATH" | jq -r .predictions[$IMAGE_IX].bytesBase64Encoded > t.base64
-        #IMAGE_IX
-        ## https://stackoverflow.com/questions/61157933/how-to-attach-base64-image-to-active-storage-object
-
-        #enc = Base64.encode64(bytesBase64Encoded.each_byte.to_a.join)
-        #File.write("tmp123.png")
-        #StringIO.new(Base64.decode64(params[:base_64_image].split(',')[1])),
-        #puts("Written file: #{filename}")
-        file_mime_type = `file '#{filename}'`
-        puts "file_mime_type: #{file_mime_type}"
-        # story.id=74.ix=0.png.b64enc.shellato: PNG image data, 1024 x 1024, 8-bit/color RGB, non-interlaced
-        my_one_file = filename if file_mime_type.match(/PNG image data/)
+        #puts "my_one_file[#{ix}] BEFORE: #{my_one_file}"
+        filename = _convert_base64_image_to_file(self, json_body, ix)
+        next if filename.nil?
+        if File.exist?(filename) and `file '#{filename}'`.match(/PNG image data/)
+          my_one_file = filename
+        end
+        puts "my_one_file[#{ix}] AFTER: #{my_one_file}"
       end
 
       return response, my_one_file # redicted_content
