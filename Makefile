@@ -67,3 +67,7 @@ tests:
 genai-image-test:
 # just a refrerence test to gen image from CLI :)
 	echo 'Story.find(74).genai_compute_images!'  | rails c
+
+genai-create-empty-story:
+	echo This should trigger all the GenAI bonanza:
+	echo 'Story.new(:internal_notes => "cli #{Time.now} on #{`hostname`}", kid: Kid.find_sample).save' | rails c

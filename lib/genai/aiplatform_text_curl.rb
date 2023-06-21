@@ -71,15 +71,14 @@ module Genai
     ]
 
     def yellow(s);  "\033[1;33m#{s}\033[0m" ; end
+    def red(s);  "\033[1;31m#{s}\033[0m" ; end
+    #def white(s);  "\033[1;33m#{s}\033[0m" ; end
 
     def pickARandomElementOf(arr)
       # https://stackoverflow.com/questions/3482149/how-do-i-pick-randomly-from-an-array
       # Random sample
       arr.sample
     end
-    # def guillaume_kids_story_in_five_acts()
-    #   guillaume_kids_story_in_five_acts(nil, nil, nil, nil)
-    # end
 
     # https://medium.datadriveninvestor.com/ruby-keyword-arguments-817ed243b4e2
     def guillaume_kids_story_in_five_acts(opts={})
@@ -148,10 +147,9 @@ module Genai
         }
         response = Net::HTTP.post(uri, body.to_json, headers)
 
-        puts('ai_curl_by_content(): response.inspect = ', response.inspect)
+        puts("ai_curl_by_content(): response.inspect = '#{response.inspect}'")
 
         json_body = JSON.parse(response.read_body)
-        #puts response
         predicted_content = (json_body['predictions'][0]['content'] rescue nil)
         return nil if predicted_content.nil?
         return response, predicted_content
@@ -202,8 +200,8 @@ module Genai
       #   puts 'Looks like I got a 401 or similar not auth -> failing nicely'
       #   return response, nil
       # end
-      unless response.class == Net::HTTPOK
-        puts "Looks like I got a non-200 of some sort (#{response.class})-> failing nicely"
+      if not response.class == Net::HTTPOK
+        $stderr.puts "#{Story.emoji}.#{self.id}: Looks like I got a non-200 of some sort (#{response.class})-> failing nicely"
         return response, nil
       end
 
@@ -216,10 +214,14 @@ module Genai
 
       #print("results: ", json_body['predictions'].size )
       prediction_size_minus_one = json_body['predictions'].size - 1 rescue 0
+      if prediction_size_minus_one == 0
+        puts "The system failed to generate this: #{red content}. Failing gracefully"
+        return response, nil
+      end
       #puts 'prediction_size_minus_one: ', prediction_size_minus_one
       (0..prediction_size_minus_one).each do |ix|
         # Self is probably the story.
-        filename = "story.id=#{self.id rescue 'dunno'}.ix=#{ix}.png"
+        filename = "tmp/story.id=#{self.id rescue 'dunno'}.ix=#{ix}.png"
 
         mimeType = json_body['predictions'][ix]['mimeType']
         #puts("MIME[#{ix}]: #{mimeType}")    # shjould be PNG
@@ -233,7 +235,7 @@ module Genai
         File.open("#{filename}.b64dec2", "w") {|f| f.write(Base64.decode64(bytesBase64Encoded.each_byte.to_a.join)) rescue nil }
 
         # base64 -d t.base64 > "output/image-output-$IMAGE_IX.JPG"
-        `base64 -d "#{filename}.b64enc" > "#{filename}"`
+        `base64 -d '#{filename}.b64enc' > '#{filename}'`
         #cat "$IMAGE_OUTPUT_PATH" | jq -r .predictions[$IMAGE_IX].bytesBase64Encoded > t.base64
         #IMAGE_IX
         ## https://stackoverflow.com/questions/61157933/how-to-attach-base64-image-to-active-storage-object
