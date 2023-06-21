@@ -11,7 +11,9 @@ puts 'Creating a couple of test kids, completely randomic...'
 create_kids = Kid.find_by_nick('AJ').nil?
 
 if create_kids
-  aj = Kid.create_kid_on_steorids(name: 'Alessandro', surname: 'Carlesso', nick: 'AJ',
+  aj = Kid.create_kid_on_steorids(
+    name: 'Alessandro',
+    surname: 'Carlesso', nick: 'AJ',
     date_of_birth: '2018-01-30', is_male: true,
     visual_description: '5-year-old brown-eyed boy with light brown hair',
     internal_info: 'My oldest son',
@@ -19,6 +21,7 @@ if create_kids
     fixture_avatar: 'aj.png', # fixture :)
   )
   seby = Kid.create_kid_on_steorids(
+    id: 2020,
     name: 'Sebastian Leonardo',
     nick: 'Seby',
     date_of_birth: '2020-05-18', is_male: true,
@@ -99,6 +102,7 @@ seby = Kid.find_by_nick('Seby')
 
 
 seby_story1 = Story.create(
+  id: 2020,
   title: 'Seby firefighter saves a giraffe',
   genai_input: 'TODO(ricc) from Guillaume',
   genai_output: seby_story1_body,
@@ -106,21 +110,37 @@ seby_story1 = Story.create(
   internal_notes: '(story is in Engish)',
   user_id: 1,
   kid: Kid.find_by_nick('Seby'),
-)
+) rescue Story.find(2020)
+
 seby_story1.attach_cover('seby-firefighter.png')
 
 aj_story1 = Story.create(
+  id: 2018,
   title: 'Il cavaliere Alessandro e lo spirito di Tutankhamen  ',
-  genai_input: 'TODO(ricc) from Guillaume',
+  genai_input: 'Useless since im seeding',
   genai_output: aj_story2_body,
    # genai_summary:text TODO
   internal_notes: '(story is in Italian)',
   user_id: 1,
   kid: Kid.find_by_nick('AJ'),
-)
+) rescue  Story.find(2018)
 aj_story1.attach_cover('aj-knight.png')
 
-#puts seby_story1.errors
-puts "📚 Story just created: #{seby_story1}. Errors: #{seby_story1.errors.full_messages}" # if opts_debug
-puts "📚 Story just created: #{aj_story1}. Errors: #{aj_story1.errors.full_messages}" # if opts_debug
+joke_story = Story.create(
+  id: 142,
+  #title: 'Il cavaliere Alessandro e lo spirito di Tutankhamen  ',
+  genai_input: 'Tell me a funny joke that would make a Google Engineer laugh. Make the story not too short.',
+  #genai_output: aj_story2_body,
+   # genai_summary:text TODO
+  internal_notes: '(joke from seeds)',
+  user_id: 1,
+  kid: Kid.last,
+) rescue Story.find(142)
 
+#puts seby_story1.errors
+#puts "📚 Story just created: #{seby_story1}. Errors: #{seby_story1.errors.full_messages}" # if opts_debug
+#puts "📚 Story just created: #{aj_story1}. Errors: #{aj_story1.errors.full_messages}" # if opts_debug
+[seby_story1, aj_story1, joke_story ].each do |seeded_story|
+  error_messages = seeded_story.errors.full_messages
+  puts "📚 Story just created: #{seeded_story}. Errors: #{error_messages == [] ? '✅ ' : error_messages.join(',') }" # if opts_debug
+end

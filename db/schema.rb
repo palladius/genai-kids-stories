@@ -11,6 +11,9 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2023_06_18_120305) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -54,8 +57,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_18_120305) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-# Could not dump table "kids" because of following StandardError
-#   Unknown type 'attachment' for column 'avatar'
+  create_table "kids", force: :cascade do |t|
+    t.string "name"
+    t.string "surname"
+    t.string "nick"
+    t.string "visual_description"
+    t.boolean "is_male"
+    t.date "date_of_birth"
+    t.text "internal_info"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "stories", force: :cascade do |t|
     t.string "title"
@@ -64,7 +77,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_18_120305) do
     t.text "genai_summary"
     t.text "internal_notes"
     t.integer "user_id"
-    t.integer "kid_id", null: false
+    t.bigint "kid_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["kid_id"], name: "index_stories_on_kid_id"

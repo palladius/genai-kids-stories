@@ -3,6 +3,10 @@ APP_NAME = genai-kids-stories
 #APP_VERSION = $(shell cat VERSION)
 PROJECT_ID = ricc-genai
 
+install:
+# not sure why,,,
+	bundle lock --add-platform aarch64-linux
+
 # .PHONY: help
 # help: ## Shows all targets and help from the Makefile (this message).
 #         @echo "🤖 This Makefile was also created via GenAI. Just kidding."

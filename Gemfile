@@ -13,7 +13,7 @@ gem "google-cloud-storage", "~> 1.11", require: false
 gem 'delayed_job_active_record' # from https://github.com/collectiveidea/delayed_job/
   gem "daemons" # depends on the above
   gem "delayed_job_web" # shows on web too: https://github.com/ejschmitt/delayed_job_web
-
+gem 'postgresql'
 # /Riccardo
 ############
 

@@ -168,6 +168,11 @@ class Story < ApplicationRecord
     #puts "genai_compute_images.response: #{response}"
     #puts("genai_compute_images! returned a: #{tmp_image} (class=#{tmp_image.class})")
     if not tmp_image.nil?
+        if tmp_image.is_a? Hash
+          puts "Super interesting plot twist, we have a hash here. I cant remember why I wanted to throw a hash maybe to implement a function to return a structured image without the filename? Lets print it first"
+          puts(tmp_image)
+          return false
+        end
         if File.exist?(tmp_image)
           # from SO:
           # image: {

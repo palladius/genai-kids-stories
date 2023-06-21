@@ -11,6 +11,7 @@ module StoriesHelper
       three_buttons = ''
         three_buttons << link_to( "✅#{story.id}", story)
         three_buttons << link_to( "📝", edit_story_path(story))
+        three_buttons << (button_to "💣", story, method: :delete )
       title = render_story_title(story)
       arr = [
         three_buttons.html_safe,
