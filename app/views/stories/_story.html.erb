@@ -19,9 +19,29 @@
 
 <h3>📈 Story Stats</h3>
 
-<% %w{genai_summary genai_input genai_output internal_notes}.each do |xxx| %>
+<% %w{genai_summary genai_input genai_output internal_notes }.each do |xxx| %>
  -📈 Size:  :<b><%=story.send(xxx).size rescue '?' %></b>B <%= xxx %> <br/>
 <% end %>
+-📈 ImageAttached:  :<b><%=story.cover_image.attached? %></b>
+<% if story.cover_image.attached? and story.cover_image.analyzed?
+    #story.cover_image.analyze
+%>
+<!-- (file: <%= story.cover_image %>) -->
+(metadata: <%= link_to 'todo', 'https://stackoverflow.com/questions/60130926/activestorage-get-image-dimensions-after-upload' %>
+)
+<% end %>
+
+<br/>
+
+<h3>Debug info</h3>
+  <h4>genai_input</h4>
+  <pre><%= story.genai_input %></pre>
+
+  <h4>internal_notes</h4>
+  <pre><%= story.internal_notes %></pre>
+
+
+<hr/>
 
 <h3>👶 About Kiddo</h3>
   <p>
@@ -32,13 +52,7 @@
     </strong>
   </p>
 
-<hr/>
-<h3>Debug info</h3>
-  <h4>genai_input</h4>
-  <pre><%= story.genai_input %></pre>
 
-  <h4>internal_notes</h4>
-  <pre><%= story.internal_notes %></pre>
 
 
 </div>
