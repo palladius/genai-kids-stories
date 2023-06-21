@@ -140,7 +140,7 @@ class Story < ApplicationRecord
     self.append_notes "genai_compute_images called."
     #description = "Once upon a time, there was a young spy named Agent X. Agent X was the best spy in the world, and she was always on the lookout for new mysteries to solve. One day, Agent X was sent on a mission to investigate a mysterious cave at the bottom of a mountain."
     #tmp_imagez = ai_curl_images_by_content(self.kid.about)
-    description = "This is a story about #{self.kid.about}, in this context: #{title}"
+    description = "This is a story about #{self.kid.about}, in this context: #{title}".gsub("\n",' ')
 
     response, tmp_image = ai_curl_images_by_content(description, gcp_opts)
     puts "genai_compute_images.response: #{response}"
