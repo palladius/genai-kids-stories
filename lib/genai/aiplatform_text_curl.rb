@@ -177,12 +177,11 @@ module Genai
       body = {
           "instances": [
               {
-                #"prompt": "Once upon a time, there was a young spy named Agent X. Agent X was the best spy in the world, and she was always on the lookout for new mysteries to solve. One day, Agent X was sent on a mission to investigate a mysterious cave at the bottom of a mountain."
                 "prompt": content,
               }
           ],
           "parameters": {
-              "sampleCount": 4,
+              "sampleCount": 8, # 8 is max :)
               #"aspectRatio": "9:16",
               "aspectRatio": "1:1",
               "negativePrompt": "blurry",
@@ -200,14 +199,28 @@ module Genai
       #   puts 'Looks like I got a 401 or similar not auth -> failing nicely'
       #   return response, nil
       # end
+      json_body = JSON.parse(response.read_body) # rescue nil
+
+      if response.class == Net::HTTPBadRequest
+        puts("XXX HTTPBadRequest -> Showing the payload: size=#{json_body.size}")
+        #puts("json_body: #{red json_body}")
+        File.write("story-#{self.id}}.HTTPBadRequest.json", json_body)
+        #File.open("#{filename}.b64enc", "w") {|f| f.write(bytesBase64Encoded)}
+        ## {"error"=>{"code"=>400, "message"=>"Image generation failed with the following error: The response is blocked, as it may violate our policies. If you believe this is an error, please send feedback to your account team.", "status"=>"INVALID_ARGUMENT", "details"=>[{"@type"=>"type.googleapis.com/google.rpc.DebugInfo", "detail"=>"[ORIGINAL ERROR] generic::invalid_argument: Image generation failed with the following error: The response is blocked, as it may violate our policies. If you believe this is an error, please send feedback to your account team. [google.rpc.error_details_ext] { message: \"Image generation failed with the following error: The response is blocked, as it may violate our policies. If you believe this is an error, please send feedback to your account team.\" }"}]}}
+        error_message = json_body['error']['message'] rescue nil
+        unless error_message.nil?
+          $stderr.puts "Error found! #{red error_message}"
+          return error_message, nil
+        end
+        return response, nil
+      end
+
       if not response.class == Net::HTTPOK
-        $stderr.puts "#{Story.emoji}.#{self.id}: Looks like I got a non-200 of some sort (#{response.class})-> failing nicely"
+        $stderr.puts "#{Story.emoji}.#{self.id}: Looks like I got a non-200 of some sort (#{red response.class}) -> failing nicely"
         return response, nil
       end
 
       puts('ai_curl_by_content(): response.inspect = ', response.inspect)
-
-      json_body = JSON.parse(response.read_body)
 
       # next unless 200 :)
       my_one_file = nil
@@ -215,8 +228,10 @@ module Genai
       #print("results: ", json_body['predictions'].size )
       prediction_size_minus_one = json_body['predictions'].size - 1 rescue 0
       if prediction_size_minus_one == 0
-        puts "The system failed to generate this: #{red content}. Failing gracefully"
-        return response, nil
+        puts "#{Story.emoji}.#{self.id} The system returned 200 but it failed to generate this: #{red content}. Failing gracefully. But let me show you the payload first"
+        puts "response: #{response}"
+        puts "json_body: #{red json_body}"
+        return response, json_body # nil
       end
       #puts 'prediction_size_minus_one: ', prediction_size_minus_one
       (0..prediction_size_minus_one).each do |ix|

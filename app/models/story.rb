@@ -160,7 +160,7 @@ class Story < ApplicationRecord
     #
     if genai_input =~ /Kids love hearing about the stories you invent/
       # Story for kids..
-      description = "This is a story about #{self.kid.about}, in this context: #{self.title}".gsub("\n",' ')
+      description = "Imagine #{self.kid.about}. In the background, #{self.title}".gsub("\n",' ')
     else
       # TODO add a field like "story for kids", "joke, or whatever..."
       description = "Imagine: #{self.title}.\nAdditional context: #{self.genai_output}" # .gsub("\n",' ')
@@ -170,7 +170,7 @@ class Story < ApplicationRecord
     puts "genai_compute_images.response: #{response}"
     puts("genai_compute_images! returned a: #{tmp_image} (class=#{tmp_image.class})")
     if not tmp_image.nil?
-        if File.exist?( tmp_image)
+        if File.exist?(tmp_image)
           # from SO:
           # image: {
           #  io: StringIO.new(Base64.decode64(params[:base_64_image].split(',')[1])),
@@ -187,7 +187,7 @@ class Story < ApplicationRecord
           )
           # TODO attach 4 images instead! Like the 4 MJ ones :)
           #self.append_notes "Correctly attached image #{tmp_image} with this description: '#{description}'"
-          self.save!
+          #self.save!
           #self.update_column ...
           return true
         end

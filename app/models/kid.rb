@@ -1,4 +1,4 @@
-FIXTURE_DIR = "#{Rails.root}/db/fixtures/images/"
+FIXTURE_DIR ||= "#{Rails.root}/db/fixtures/images/"
 
 class Kid < ApplicationRecord
   # unique keys
