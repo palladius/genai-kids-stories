@@ -2,7 +2,7 @@
 
 <h1><%= Story.emoji %> Stories </h1>
 
-<table border='1' class='stories' >
+<table border='0' class='stories' >
   <%= render_story(nil) %>
 <% @stories.each do |x| %>
     <tr>
@@ -15,6 +15,7 @@
 
 <%= link_to "New story", new_story_path %>
 
+<!--
 <h1><%= Story.emoji %>Stories original</h1>
 
 <div id="stories">
@@ -26,3 +27,4 @@
   <% end %>
 </div>
 
+-->

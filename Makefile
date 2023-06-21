@@ -61,3 +61,9 @@ docker-run-bash: docker-build docker-run-bash-nobuild
 tests:
 #	rails db:migrate RAILS_ENV=test
 	rake test
+
+
+
+genai-image-test:
+# just a refrerence test to gen image from CLI :)
+	echo 'Story.find(74).genai_compute_images!'  | rails c

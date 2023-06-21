@@ -13,12 +13,13 @@ module Genai
   module AiplatformTextCurl
 
 
-    VERSION = '0.2_18jun23'
+    VERSION = '0.3_21jun23'
 
     require 'net/http'
     require 'uri'
     require 'json'
     require 'yaml'
+    require 'base64'
 
     #PROJECT_ID ||= ENV.fetch('PROJECT_ID') # from intiializers
     #GCLOUD_ACCESS_TOKEN ||= `gcloud --project '#{PROJECT_ID}' auth print-access-token`.strip
@@ -68,6 +69,8 @@ module Genai
       "a mission to break the spell that has been cast on her kingdom",
       "solving the mystery of a haunted house",
     ]
+
+    def yellow(s);  "\033[1;33m#{s}\033[0m" ; end
 
     def pickARandomElementOf(arr)
       # https://stackoverflow.com/questions/3482149/how-do-i-pick-randomly-from-an-array
@@ -153,6 +156,101 @@ module Genai
         return nil if predicted_content.nil?
         return response, predicted_content
     end
+
+
+
+    def ai_curl_images_by_content(content,  opts={})
+      # options
+      opts_debug = opts.fetch 'DEBUG', false
+
+      # filling empty values
+      project_id = opts.fetch :project_id , PROJECT_ID
+      gcloud_access_token = opts.fetch :gcloud_access_token , GCLOUD_ACCESS_TOKEN
+      model_id = opts.fetch :model_id , MODEL_ID
+      region = opts.fetch :region , 'us-central1'
+
+      ai_url = "https://us-central1-aiplatform.googleapis.com/v1/projects/#{project_id}/locations/us-central1/publishers/google/models/imagegeneration:predict"
+      puts("ai_url: #{ai_url}") if opts_debug
+
+      uri = URI(ai_url)
+      puts("uri:    #{uri}") if opts_debug
+
+      puts "Generating an image with this content: #{yellow content}"
+      body = {
+          "instances": [
+              {
+                #"prompt": "Once upon a time, there was a young spy named Agent X. Agent X was the best spy in the world, and she was always on the lookout for new mysteries to solve. One day, Agent X was sent on a mission to investigate a mysterious cave at the bottom of a mountain."
+                "prompt": content,
+              }
+          ],
+          "parameters": {
+              "sampleCount": 4,
+              #"aspectRatio": "9:16",
+              "aspectRatio": "1:1",
+              "negativePrompt": "blurry",
+          }
+      }
+
+      puts "BODY: '''#{body}'''" if opts_debug
+      headers = {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer #{gcloud_access_token}"
+      }
+      response = Net::HTTP.post(uri, body.to_json, headers)
+      # puts "Net::HTTP.post Response class: #{response.class}"
+      # if response.class == Net::HTTPUnauthorized
+      #   puts 'Looks like I got a 401 or similar not auth -> failing nicely'
+      #   return response, nil
+      # end
+      unless response.class == Net::HTTPOK
+        puts "Looks like I got a non-200 of some sort (#{response.class})-> failing nicely"
+        return response, nil
+      end
+
+      puts('ai_curl_by_content(): response.inspect = ', response.inspect)
+
+      json_body = JSON.parse(response.read_body)
+
+      # next unless 200 :)
+      my_one_file = nil
+
+      #print("results: ", json_body['predictions'].size )
+      prediction_size_minus_one = json_body['predictions'].size - 1 rescue 0
+      #puts 'prediction_size_minus_one: ', prediction_size_minus_one
+      (0..prediction_size_minus_one).each do |ix|
+        # Self is probably the story.
+        filename = "story.id=#{self.id rescue 'dunno'}.ix=#{ix}.png"
+
+        mimeType = json_body['predictions'][ix]['mimeType']
+        #puts("MIME[#{ix}]: #{mimeType}")    # shjould be PNG
+        next unless mimeType == 'image/png' # shjould be PNG
+        bytesBase64Encoded = json_body['predictions'][ix]['bytesBase64Encoded']
+        puts("bytesBase64Encoded[#{ix}]: #{bytesBase64Encoded.size}B")
+
+        File.open("#{filename}.b64enc", "w") {|f| f.write(bytesBase64Encoded)}
+        File.open("#{filename}.b64dec", "w") {|f| f.write(Base64.decode64(bytesBase64Encoded)) rescue :fail}
+        # https://stackoverflow.com/questions/16918602/how-to-base64-encode-image-in-linux-bash-shell
+        File.open("#{filename}.b64dec2", "w") {|f| f.write(Base64.decode64(bytesBase64Encoded.each_byte.to_a.join)) rescue nil }
+
+        # base64 -d t.base64 > "output/image-output-$IMAGE_IX.JPG"
+        `base64 -d "#{filename}.b64enc" > "#{filename}"`
+        #cat "$IMAGE_OUTPUT_PATH" | jq -r .predictions[$IMAGE_IX].bytesBase64Encoded > t.base64
+        #IMAGE_IX
+        ## https://stackoverflow.com/questions/61157933/how-to-attach-base64-image-to-active-storage-object
+
+        #enc = Base64.encode64(bytesBase64Encoded.each_byte.to_a.join)
+        #File.write("tmp123.png")
+        #StringIO.new(Base64.decode64(params[:base_64_image].split(',')[1])),
+        puts("Written file: #{filename}")
+        file_mime_type = `file '#{filename}'`
+        puts "file_mime_type: #{file_mime_type}"
+        # story.id=74.ix=0.png.b64enc.shellato: PNG image data, 1024 x 1024, 8-bit/color RGB, non-interlaced
+        my_one_file = filename if file_mime_type.match(/PNG image data/)
+      end
+
+      return response, my_one_file # redicted_content
+  end
+
 
     def add_to_yaml_db(story_idea, content, yaml_filename="stories.yaml")
       # TODO(ricc): add a 'create if not exist' flag. These APIs are expensive you dont want to lose their output.
