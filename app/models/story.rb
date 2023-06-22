@@ -19,7 +19,7 @@ class Story < ApplicationRecord
   # #<Net::HTTPUnauthorized 401 Unauthorized readbody=true>
 
   #after_save  OK with delayed, but not with
-  after_save :delayed_job_genai_magic # The right way
+  #after_save :delayed_job_genai_magic # The right way
 
   # This works
   # # Note: after_save creates a loop!!!
@@ -200,7 +200,7 @@ class Story < ApplicationRecord
           )
           # TODO attach 4 images instead! Like the 4 MJ ones :)
           #self.append_notes "Correctly attached image #{tmp_image} with this description: '#{description}'"
-          #self.save!
+          self.save!
           #self.update_column ...
           return true
         end

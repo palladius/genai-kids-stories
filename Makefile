@@ -94,5 +94,7 @@ run-from-docker:
 
 # attach random Story with GCS image
 # s.additional_images.attach(io: File.open(Rails.root.join('app/assets/images/kids/doll.jpg')), filename: 'doll.jpg')
-genai-test-gcs:
+
+# requires private/sa.json
+genai-test-gcs: private/sa.json
 	echo 'Story.last.attach_test_image' | rails c
