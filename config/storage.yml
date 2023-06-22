@@ -18,11 +18,15 @@ local:
 google:
   service: GCS
   project: <%= ENV['PROJECT_ID'] %>
-  credentials: <%= Rails.root.join("private/gcs.json") %>
+  credentials: <%= Rails.root.join("private/sa.json") %>
   # TODO(ricc): set up thos for public access:
   # https://cloud.google.com/storage/docs/access-control/making-data-public?hl=it#buckets
-  bucket: genai-kids-stories-<%= Rails.env %>
-  #cache_control: "public, max-age=3600"
+  bucket: <%= ENV['GCS_BUCKET'] %>
+  #bucket: genai-kids-stories-<%= Rails.env %>
+  cache_control: "public, max-age=3600"
+  # doesnt work on G policies :/
+  #public: true
+
 
 # Use bin/rails credentials:edit to set the Azure Storage secret (as azure_storage:storage_access_key)
 # microsoft:
@@ -35,6 +39,12 @@ google:
 #   service: Mirror
 #   primary: local
 #   mirrors: [ amazon, google, microsoft ]
+development:
+  service: Mirror
+  primary: local
+  mirrors:
+    - google
+
 production:
   service: Mirror
   primary: local

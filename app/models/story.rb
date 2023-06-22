@@ -8,11 +8,13 @@ class Story < ApplicationRecord
   has_one_attached :cover_image do |attachable|
     attachable.variant :thumb, resize_to_limit: [200, 200]
   end
+  # GCS test :)
+  has_many_attached :additional_images, service: :google
 
   #validates :title, uniqueness: { scope: :user_id }
 
   #https://stackoverflow.com/questions/33890458/difference-between-after-create-after-save-and-after-commit-in-rails-callbacks
-  #after_create :delayed_job_genai_magic
+  #after_create :delayed_job_genai_mag
   # doesnt work since its unauthorized maybe different process  -> different ENVs?
   # #<Net::HTTPUnauthorized 401 Unauthorized readbody=true>
 
@@ -34,6 +36,10 @@ class Story < ApplicationRecord
       io: File.open("#{STORIES_FIXTURE_IMAGES_DIR}/#{filename}"),
       filename: filename )
   end
+  # Just a test!
+  def attach_test_image()
+    self.additional_images.attach(io: File.open(Rails.root.join('app/assets/images/kids/doll.jpg')), filename: 'doll.jpg')
+  end
 
   def paragraphs
     genai_output.split("\n").reject{ |c| c.length < 4  } rescue [] # empty?
@@ -43,6 +49,10 @@ class Story < ApplicationRecord
     self.internal_notes ||= '🌍'
     self.internal_notes += "::append:: #{Time.now} #{str}\n"
     #self.update_column(:internal_notes => self.internal_notes) rescue nil
+  end
+
+  def to_s
+    "#{Story.emoji}.#{self.id} '#{title}'"
   end
 
 

@@ -10,6 +10,25 @@ puts 'Creating a couple of test kids, completely randomic...'
 
 create_kids = Kid.find_by_nick('AJ').nil?
 
+puts "1. Creating fake child..."
+doll = Kid.create(
+  id: 1337,
+  name: 'Fake',
+  nick: 'doll',
+  date_of_birth: '2021-01-30',
+  #app/assets/images/kids/doll.jpg
+)
+puts doll.errors.full_messages
+path = 'app/assets/images/kids/doll.jpg'
+
+puts "2. Attaching avatar..."
+doll.avatar.attach(path)
+#Story.last.attach_test_image
+doll.save
+puts(doll)
+
+exit 42
+
 if create_kids
   aj = Kid.create_kid_on_steorids(
     name: 'Alessandro',

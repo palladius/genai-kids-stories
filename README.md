@@ -4,25 +4,20 @@ This README would normally document whatever steps are necessary to get the
 application up and running.
 
 Things you may want to cover:
-
 * Ruby version
-
 * System dependencies
-
 * Configuration
-
 * Database creation
-
 * Database initialization
-
 * How to run the test suite
-
 * Services (job queues, cache servers, search engines, etc.)
-
 * Deployment instructions
-
 * ...
 
+# INSTALL
+
+* make sure you create yur own .enrc.yourname and assign the ENV vars you want
+* Create A svcAcct for GCS and download it under `private/sa.json`. do NOT check it in :)
 
 # Entities
 

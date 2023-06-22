@@ -91,3 +91,8 @@ genai-create-joke2:
 
 run-from-docker:
 	APPLICATION_DEFAULT_CREDENTIALS=/sa.json RAILS_ENV=development rails s -b 0.0.0.0
+
+# attach random Story with GCS image
+# s.additional_images.attach(io: File.open(Rails.root.join('app/assets/images/kids/doll.jpg')), filename: 'doll.jpg')
+genai-test-gcs:
+	echo 'Story.last.attach_test_image' | rails c
