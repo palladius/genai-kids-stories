@@ -1,0 +1,30 @@
+<p style="color: green"><%= notice %></p>
+
+<%#= render @story %>
+
+<h2><%= StoryParagraph.emoji %><%= @story.title %> 👷‍♀️ Rebuilt (v2)</h2>
+
+If the translated text is empty, reload or call from rails c this command:
+
+<table border="1" >
+    <tr>
+      <th>IX
+      <th>Original Text 🇬🇧
+      <th>Translated text
+  <% @paragraphs.each do |p| %>
+    <tr>
+      <td><%= p.story_index %>🔷
+      <td width="45%" ><%= p.original_text %>
+      <td><%= p.flag %>
+      <td  width="45%"><%= p.translated_text or "<pre>StoryParagraph.find(#{ p.id }).after_creation_magic</pre>".html_safe %>
+  <% end %>
+</table>
+
+<div>
+  <%= link_to "📝 Edit this story", edit_story_path(@story) %> |
+  <%= link_to "🔙 Back to stories", stories_path %>
+
+  <%= button_to "💣 Destroy this story", @story, method: :delete %>
+  <%= button_to "🚧 New alternative story", @story, method: :genai_alternative %>
+  <%= button_to "🚧 New Sequel", @story, method: :genai_sequel %>
+</div>

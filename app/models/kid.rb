@@ -88,6 +88,12 @@ class Kid < ApplicationRecord
     super_attached_stuff_info(:avatar)
   end
 
+  def akkusativ
+    return 'them' if is_male.nil?
+
+    is_male ? 'him' : 'her'
+  end
+
   # so cool! Copied from here https://pragmaticstudio.com/tutorials/using-active-storage-in-rails
   def acceptable_image
     return unless avatar.attached?

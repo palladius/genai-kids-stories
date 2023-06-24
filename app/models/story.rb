@@ -24,6 +24,7 @@ class Story < ApplicationRecord
   # This works
   # # Note: after_save creates a loop!!!
   after_create :genai_magic # DEBUG
+  before_destroy :cleanup_story_dependencies
 
   def self.emoji
     '📚'
@@ -56,6 +57,13 @@ class Story < ApplicationRecord
       identify: true
 
     }
+  end
+
+  def cleanup_story_dependencies
+    story_paragraphs.each do |p|
+      # puts 'p', p
+      p.delete
+    end
   end
 
   # Just a test!

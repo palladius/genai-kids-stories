@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   resources :stories
   resources :kids
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  #
+  #  match '//' # => StoryRebuiltControler
+  get '/story_rebuilt/:id', to: 'stories#show_rebuilt', as: 'story_rebuilt'
 
   match '/delayed_job' => DelayedJobWeb, :anchor => false, :via => %i[get post]
 

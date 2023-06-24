@@ -17,6 +17,10 @@
   </p>
     <% end  %>
 
+    story_paragraphs: <b><%= story.story_paragraphs.size  %></b>
+
+    See them here: <%= link_to "story_paragraphs for Story.#{story.id}",  "/story_rebuilt/#{story.id}" %>
+
 <h3>📈 Story Stats</h3>
 
 <% %w{genai_summary genai_input genai_output internal_notes }.each do |xxx| %>

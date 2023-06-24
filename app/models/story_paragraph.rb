@@ -1,6 +1,16 @@
 # A story is composed of N paragraphs
 # #
-# StoryParagraph(id: integer, story_index: integer, original_text: text, genai_input_for_image: text, internal_notes: text, translated_text: text, language: string, story_id: integer, rating: integer, created_at: datetime, updated_at: datetime)
+# StoryParagraph(id: integer,
+#    story_index: integer,
+#    original_text: text,
+#    genai_input_for_image: text,
+#    internal_notes: text,
+#    translated_text: text,
+#    language: string,
+#    story_id: integer,
+#    rating: integer,
+#    created_at: datetime,
+#    updated_at: datetime)
 class StoryParagraph < ApplicationRecord
   belongs_to :story
 
@@ -14,7 +24,8 @@ class StoryParagraph < ApplicationRecord
 
   def after_creation_magic
     puts '1 [DELAYED] if translation  is nil but we have original text AND language => trigger GTranslate (DELAY)'
-    puts '2 [NOW] if video text not available -> generate it determiniistically (now)'
+    puts '2 [NOW] if picture text not available -> generate it determiniistically (now)'
+    generate_genai_text_for_paragraph if genai_input_for_image.nil?
     puts '3 [DELAYED] if video text available -> generate image '
   end
 
@@ -47,5 +58,15 @@ class StoryParagraph < ApplicationRecord
 
   def self.emoji
     '📜'
+  end
+
+  def generate_genai_text_for_paragraph(_opts = {})
+    puts 'generate_genai_text_for_paragraph(): START'
+    kid = story.kid
+    style = _opts.fetch :style, 'Pixar'
+
+    genai_input_for_image = "Imagine a #{kid.visual_description}. Beside #{kid.akkusativ}, #{original_text}, in the style of #{style}"
+    ret = save
+    puts 'SAVE ERROR: ' unless ret
   end
 end

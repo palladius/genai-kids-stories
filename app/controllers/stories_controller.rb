@@ -13,6 +13,11 @@ class StoriesController < ApplicationController
   # GET /stories/1 or /stories/1.json
   def show; end
 
+  def show_rebuilt
+    @story = Story.find(params[:id])
+    @paragraphs = @story.story_paragraphs
+  end
+
   # GET /stories/new
   def new
     @story = Story.new

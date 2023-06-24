@@ -7,7 +7,10 @@ class CreateStoryParagraphs < ActiveRecord::Migration[7.0]
       t.text :internal_notes
       t.text :translated_text
       t.string :language
-      t.references :story, null: false, foreign_key: true
+      # t.references :story, null: false, foreign_key: true
+      t.references :story, null: false, index: true, foreign_key: { on_delete: :cascade }
+      #  t.references :parent, index: true, foreign_key: {on_delete: :cascade}
+
       t.integer :rating
 
       t.timestamps
