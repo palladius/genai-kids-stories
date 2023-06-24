@@ -1,5 +1,26 @@
 <p style="color: green"><%= notice %></p>
+<%= link_to "New story paragraph", new_story_paragraph_path %>
 
+<table border=1 >
+<% @stories_with_paragraphs.each do |story_id|
+      inefficient_story = Story.find(story_id)
+     inefficient_story_paragraphs = @story_paragraphs.select{|sp| sp.story_id == story_id }
+
+%>
+  <tr>
+    <td>
+      <%= story_id  %>
+    <td>
+      <%= link_to inefficient_story.title, inefficient_story  %>
+    <td>
+      <% inefficient_story_paragraphs.each do |p|  %>
+        <%= render_excerpt(p) %><br/>
+      <% end %>
+
+
+<% end  %>
+</table>
+<!--
 <h1>Story paragraphs</h1>
 
 <div id="story_paragraphs">
@@ -10,5 +31,4 @@
     </p>
   <% end %>
 </div>
-
-<%= link_to "New story paragraph", new_story_paragraph_path %>
+ -->

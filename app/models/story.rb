@@ -3,6 +3,7 @@
 class Story < ApplicationRecord
   belongs_to :kid
   #  has_one_attached :cover_image
+  has_many :story_paragraphs
 
   has_one_attached :cover_image, service: :google do |attachable|
     attachable.variant :thumb, resize_to_limit: [200, 200]
@@ -80,7 +81,7 @@ class Story < ApplicationRecord
 
   def paragraphs
     # needs to remove '**Act 1**'
-    genai_output.split("\n").reject { |c| c.length < 10 }.map { |x| x.chomp }
+    genai_output.split("\n").reject { |c| c.length < 12 }.map { |x| x.chomp }
   rescue StandardError
     []
     # empty?
@@ -272,22 +273,28 @@ class Story < ApplicationRecord
     false
   end
 
-  def generate_paragraphs
+  def generate_paragraphs(_opts = {})
+    lang = _opts.fetch(:lang, DEFAULT_LANGUAGE)
     puts 'generate_paragraphs START..'
     puts "Size: #{paragraphs.size}"
     # return if StoryParagraph.find(story_id: id).count > 0
-    paragraphs.each_with_index do |p, ix|
-      story_index = ix + 1 # start from 1.. Im pretty sure Im gonna regret this :)
-      puts "TODO #{StoryParagraph.emoji} [#{story_index}] #{p}"
+    paragraphs.each_with_index do |p, _ix|
+      story_ix = _ix + 1 # start from 1.. Im pretty sure Im gonna regret this :)
+      puts "TODO #{StoryParagraph.emoji} [#{story_ix}] #{p}"
       # StoryParagraph(story_index: integer, original_text: text, genai_input_for_image: text,
-      # internal_notes: text, translated_text: text, language: string,
-      # #story_id: integer, rating: integer)
-      s = StoryParagraph.create(
-        language: DEFAULT_LANGUAGE,
+      sp = StoryParagraph.create(
+        language: lang,
+        story_index: story_ix,
         story_id: id,
-        rating: nil
+        # rating: nil,
+        internal_notes: "Created via Story.generate_paragraphs on #{Time.now}\n",
+        # translated_text: nil,
+        original_text: p
+        # genai_input_for_image: nil
       )
+      puts "SP ERROR: #{sp.errors.full_messages}" unless sp.save
+      # s.save!
     end
-    puts 'generate_paragraphs END..'
+    # puts 'generate_paragraphs END..'
   end
 end

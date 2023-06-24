@@ -10,24 +10,28 @@ puts 'Creating a couple of test kids, completely randomic...'
 
 create_kids = Kid.find_by_nick('AJ').nil?
 
-puts "1. Creating fake child..."
+puts '1. Creating fake child...'
 doll = Kid.create(
   id: 1337,
   name: 'Fake',
   nick: 'doll',
-  date_of_birth: '2021-01-30',
-  #app/assets/images/kids/doll.jpg
+  date_of_birth: '2021-01-30'
+  # app/assets/images/kids/doll.jpg
 )
 puts doll.errors.full_messages
 path = 'app/assets/images/kids/doll.jpg'
 
-puts "2. Attaching avatar..."
-doll.avatar.attach(path)
-#Story.last.attach_test_image
+puts '2. Attaching avatar...'
+begin
+  doll.avatar.attach(path)
+rescue StandardError
+  puts "💔 SomeErrorAttaching Seby image: #{$!}"
+end
+# Story.last.attach_test_image
 doll.save
 puts(doll)
 
-exit 42
+# exit 42
 
 if create_kids
   aj = Kid.create_kid_on_steorids(
@@ -37,17 +41,17 @@ if create_kids
     visual_description: '5-year-old brown-eyed boy with light brown hair',
     internal_info: 'My oldest son',
     user_id: 1,
-    fixture_avatar: 'aj.png', # fixture :)
+    fixture_avatar: 'aj.png' # fixture :)
   )
   seby = Kid.create_kid_on_steorids(
     id: 2020,
     name: 'Sebastian Leonardo',
     nick: 'Seby',
     date_of_birth: '2020-05-18', is_male: true,
-    #visual_description: '5-year-old brown-eyed boy with light brown hair',
+    # visual_description: '5-year-old brown-eyed boy with light brown hair',
     internal_info: 'My younger son', user_id: 1,
-    fixture_avatar: 'seby.png',
-    #:fixture_avatar: 'colon.png',
+    fixture_avatar: 'seby.png'
+    # :fixture_avatar: 'colon.png',
   )
 
   anonymous = Kid.create_kid_on_steorids(
@@ -58,8 +62,8 @@ if create_kids
     is_male: false,
     visual_description: '15-year-old brown-eyed japanese girl with long black hair',
     internal_info: 'Fake person',
-    user_id: 1,
-  # NO fixture_avatar > I want the default
+    user_id: 1
+    # NO fixture_avatar > I want the default
   )
   puf = Kid.create_kid_on_steorids(
     name: 'Puffin',
@@ -70,16 +74,16 @@ if create_kids
     visual_description: 'grown up boy who looks like a puffin with a yellow hat',
     internal_info: 'Fake person inspired to my avatar..',
     user_id: 1,
-    fixture_avatar: 'puffin-cappello-giallo.png',
+    fixture_avatar: 'puffin-cappello-giallo.png'
   )
-begin
+
   puts 'Skipping kids - I presume theyre already created.'
-end
+
 end
 #######################
 # Stories
 #######################
-#STORIES_FIXTURE_IMAGES_DIR = "#{Rails.root}/db/fixtures/stories/"
+# STORIES_FIXTURE_IMAGES_DIR = "#{Rails.root}/db/fixtures/stories/"
 
 seby_story1_body = "Sebastian was a fearless firefighter. He loved his job and he was always ready to help people in need. One day, Sebastian was called to a fire at a busy train station in Zurich. When he arrived, he saw that the fire was spreading quickly and there were people trapped inside. Sebastian knew he had to act fast. He ran into the burning building and started to help people to safety.
 
@@ -119,47 +123,65 @@ Alessandro era un eroe. Aveva salvato la città dalla casa stregata. Gli zurighe
 
 seby = Kid.find_by_nick('Seby')
 
+seby_story1 = begin
+  Story.create(
+    id: 2020,
+    title: 'Seby firefighter saves a giraffe',
+    genai_input: 'TODO(ricc) from Guillaume',
+    genai_output: seby_story1_body,
+    # genai_summary:text TODO
+    internal_notes: '(story is in Engish)',
+    user_id: 1,
+    kid: Kid.find_by_nick('Seby')
+  )
+rescue StandardError
+  Story.find(2020)
+end
 
-seby_story1 = Story.create(
-  id: 2020,
-  title: 'Seby firefighter saves a giraffe',
-  genai_input: 'TODO(ricc) from Guillaume',
-  genai_output: seby_story1_body,
-   # genai_summary:text TODO
-  internal_notes: '(story is in Engish)',
-  user_id: 1,
-  kid: Kid.find_by_nick('Seby'),
-) rescue Story.find(2020)
+begin
+  seby_story1.attach_cover('seby-firefighter.png')
+rescue StandardError
+  puts "💔 SomeErrorAttaching Seby image: #{$!}"
+end
+# its in English :)
+seby_story1.generate_paragraphs(lang: 'it')
 
-seby_story1.attach_cover('seby-firefighter.png')
-
-aj_story1 = Story.create(
-  id: 2018,
-  title: 'Il cavaliere Alessandro e lo spirito di Tutankhamen  ',
-  genai_input: 'Useless since im seeding',
-  genai_output: aj_story2_body,
-   # genai_summary:text TODO
-  internal_notes: '(story is in Italian)',
-  user_id: 1,
-  kid: Kid.find_by_nick('AJ'),
-) rescue  Story.find(2018)
+aj_story1 = begin
+  Story.create(
+    id: 2018,
+    title: 'Il cavaliere Alessandro e lo spirito di Tutankhamen  ',
+    genai_input: 'Useless since im seeding',
+    genai_output: aj_story2_body,
+    # genai_summary:text TODO
+    internal_notes: '(story is in Italian)',
+    user_id: 1,
+    kid: Kid.find_by_nick('AJ')
+  )
+rescue StandardError
+  Story.find(2018)
+end
 aj_story1.attach_cover('aj-knight.png')
 
-joke_story = Story.create(
-  id: 142,
-  #title: 'Il cavaliere Alessandro e lo spirito di Tutankhamen  ',
-  genai_input: 'Tell me a funny joke that would make a Google Engineer laugh. Make the story not too short.',
-  #genai_output: aj_story2_body,
-   # genai_summary:text TODO
-  internal_notes: '(joke from seeds)',
-  user_id: 1,
-  kid: Kid.last,
-) rescue Story.find(142)
+joke_story = begin
+  Story.create(
+    id: 142,
+    # title: 'Il cavaliere Alessandro e lo spirito di Tutankhamen  ',
+    genai_input: 'Tell me a funny joke that would make a Google Engineer laugh. Make the story not too short.',
+    # genai_output: aj_story2_body,
+    # genai_summary:text TODO
+    internal_notes: '(joke from seeds)',
+    user_id: 1,
+    kid: Kid.last
+  )
+rescue StandardError
+  Story.find(142)
+end
+joke_story.generate_paragraphs(lang: 'de')
 
-#puts seby_story1.errors
-#puts "📚 Story just created: #{seby_story1}. Errors: #{seby_story1.errors.full_messages}" # if opts_debug
-#puts "📚 Story just created: #{aj_story1}. Errors: #{aj_story1.errors.full_messages}" # if opts_debug
-[seby_story1, aj_story1, joke_story ].each do |seeded_story|
+# puts seby_story1.errors
+# puts "📚 Story just created: #{seby_story1}. Errors: #{seby_story1.errors.full_messages}" # if opts_debug
+# puts "📚 Story just created: #{aj_story1}. Errors: #{aj_story1.errors.full_messages}" # if opts_debug
+[seby_story1, aj_story1, joke_story].each do |seeded_story|
   error_messages = seeded_story.errors.full_messages
-  puts "📚 Story just created: #{seeded_story}. Errors: #{error_messages == [] ? '✅ ' : error_messages.join(',') }" # if opts_debug
+  puts "📚 Story just created: #{seeded_story}. Errors: #{error_messages == [] ? '✅ ' : error_messages.join(',')}" # if opts_debug
 end

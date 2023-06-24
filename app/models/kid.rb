@@ -90,13 +90,13 @@ class Kid < ApplicationRecord
 
   # so cool! Copied from here https://pragmaticstudio.com/tutorials/using-active-storage-in-rails
   def acceptable_image
-    return unless main_image.attached?
+    return unless avatar.attached?
 
-    errors.add(:main_image, 'is too big (10 megs?!?)') unless main_image.blob.byte_size <= 10.megabyte
+    errors.add(:avatar, 'is too big (10 megs?!?)') unless avatar.blob.byte_size <= 10.megabyte
 
     acceptable_types = ['image/jpeg', 'image/png']
-    return if acceptable_types.include?(main_image.content_type)
+    return if acceptable_types.include?(avatar.content_type)
 
-    errors.add(:main_image, 'must be a JPEG or PNG')
+    errors.add(:avatar, 'must be a JPEG or PNG')
   end
 end
