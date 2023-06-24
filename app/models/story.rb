@@ -4,11 +4,11 @@ class Story < ApplicationRecord
   belongs_to :kid
   #  has_one_attached :cover_image
 
-  has_one_attached :cover_image do |attachable|
+  has_one_attached :cover_image, service: :google do |attachable|
     attachable.variant :thumb, resize_to_limit: [200, 200]
   end
   # GCS test :)
-  has_many_attached :additional_images # , service: :google
+  has_many_attached :additional_images, service: :google
 
   # validates :title, uniqueness: { scope: :user_id }
 
