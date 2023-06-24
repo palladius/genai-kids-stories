@@ -13,12 +13,21 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def super_attached_stuff_info(field_name)
-    ret = begin
-      send(field_name).attached?
-    rescue StandardError
-      :ERROR
+    ret = {
+      header: "AR::attached_stuff_info(#{field_name}) v1.1",
+      is_attached: send(field_name).attached?
+    }
+    if send(field_name).attached?
+      ret[:attachment_name] = send(field_name).attachment.blob.filename.to_s
+      ret[:content_type] = send(field_name).attachment.blob.content_type # .keys
+      ret[:service_name] = send(field_name).attachment.blob.service_name # .keys
+      # ret[:blob] = send(field_name).attachment.blob.inspect # .keys
+      ret[:created_at] = send(field_name).attachment.blob.created_at
+      ret[:byte_size] = send(field_name).attachment.blob.byte_size
+      ret[:metadata] = send(field_name).attachment.blob.metadata
+
     end
-    attachment_name = send(field_name).attachment.blob.filename if ret
-    "AR::attached_stuff_info(#{field_name}): attacched? = #{ret} ; attachment_name=#{attachment_name}"
+    # ": attacched? = #{ret} ; attachment_name=#{attachment_name}"
+    ret
   end
 end

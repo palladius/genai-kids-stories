@@ -37,6 +37,10 @@ class Story < ApplicationRecord
     )
   end
 
+  def attached_stuff_info
+    super_attached_stuff_info(:cover_image)
+  end
+
   def self.test_image_attachment(_path = nil)
     # path ||= Rails.root.join('app/assets/images/kids/doll.jpg')
     # filename = 'test_image_attachment_doll.png'
