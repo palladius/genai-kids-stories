@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  story_index: 1
+  original_text: MyText
+  genai_input_for_image: MyText
+  internal_notes: MyText
+  translated_text: MyText
+  language: MyString
+  story: one
+  rating: 1
+
+two:
+  story_index: 1
+  original_text: MyText
+  genai_input_for_image: MyText
+  internal_notes: MyText
+  translated_text: MyText
+  language: MyString
+  story: two
+  rating: 1

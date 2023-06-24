@@ -79,7 +79,8 @@ class Story < ApplicationRecord
   end
 
   def paragraphs
-    genai_output.split("\n").reject { |c| c.length < 4 }
+    # needs to remove '**Act 1**'
+    genai_output.split("\n").reject { |c| c.length < 10 }.map { |x| x.chomp }
   rescue StandardError
     []
     # empty?
@@ -269,5 +270,24 @@ class Story < ApplicationRecord
       end
     end
     false
+  end
+
+  def generate_paragraphs
+    puts 'generate_paragraphs START..'
+    puts "Size: #{paragraphs.size}"
+    # return if StoryParagraph.find(story_id: id).count > 0
+    paragraphs.each_with_index do |p, ix|
+      story_index = ix + 1 # start from 1.. Im pretty sure Im gonna regret this :)
+      puts "TODO #{StoryParagraph.emoji} [#{story_index}] #{p}"
+      # StoryParagraph(story_index: integer, original_text: text, genai_input_for_image: text,
+      # internal_notes: text, translated_text: text, language: string,
+      # #story_id: integer, rating: integer)
+      s = StoryParagraph.create(
+        language: DEFAULT_LANGUAGE,
+        story_id: id,
+        rating: nil
+      )
+    end
+    puts 'generate_paragraphs END..'
   end
 end

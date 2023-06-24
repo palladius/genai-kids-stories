@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @story_paragraph %>
+
+<div>
+  <%= link_to "Edit this story paragraph", edit_story_paragraph_path(@story_paragraph) %> |
+  <%= link_to "Back to story paragraphs", story_paragraphs_path %>
+
+  <%= button_to "Destroy this story paragraph", @story_paragraph, method: :delete %>
+</div>

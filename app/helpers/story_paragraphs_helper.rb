@@ -1,0 +1,2 @@
+module StoryParagraphsHelper
+end

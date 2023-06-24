@@ -1,0 +1,57 @@
+<%= form_with(model: story_paragraph) do |form| %>
+  <% if story_paragraph.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(story_paragraph.errors.count, "error") %> prohibited this story_paragraph from being saved:</h2>
+
+      <ul>
+        <% story_paragraph.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :story_index, style: "display: block" %>
+    <%= form.number_field :story_index %>
+  </div>
+
+  <div>
+    <%= form.label :original_text, style: "display: block" %>
+    <%= form.text_area :original_text %>
+  </div>
+
+  <div>
+    <%= form.label :genai_input_for_image, style: "display: block" %>
+    <%= form.text_area :genai_input_for_image %>
+  </div>
+
+  <div>
+    <%= form.label :internal_notes, style: "display: block" %>
+    <%= form.text_area :internal_notes %>
+  </div>
+
+  <div>
+    <%= form.label :translated_text, style: "display: block" %>
+    <%= form.text_area :translated_text %>
+  </div>
+
+  <div>
+    <%= form.label :language, style: "display: block" %>
+    <%= form.text_field :language %>
+  </div>
+
+  <div>
+    <%= form.label :story_id, style: "display: block" %>
+    <%= form.text_field :story_id %>
+  </div>
+
+  <div>
+    <%= form.label :rating, style: "display: block" %>
+    <%= form.number_field :rating %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

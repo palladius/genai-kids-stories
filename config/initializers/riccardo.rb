@@ -3,6 +3,7 @@ require "#{Rails.root}/lib/genai/aiplatform_text_curl"
 
 # ENV parsing
 PROJECT_ID = ENV.fetch('PROJECT_ID') # , '_PROJECT_NON_DATUR_')
+DEFAULT_LANGUAGE = ENV.fetch('DEFAULT_LANGUAGE', 'it')
 raise('I need a project id under PROJECT_ID ENV var!!!') if PROJECT_ID.nil?
 
 # Note, we might need to refresh it from time to time :)
@@ -32,6 +33,7 @@ arzigogolo = '⬢⬡⬢⬡⬢⬡'
 puts("#{arzigogolo} Welcome to #{APP_NAME} by Riccardo💛Carlesso #{arzigogolo}")
 puts("⬢ Thanks for providing GCP Project: '#{PROJECT_ID}'")
 puts("⬢ Rails.Env: '#{Rails.env}'")
+puts("⬢ Language: '#{DEFAULT_LANGUAGE}'")
 puts("⬢ Database:  '#{begin
   Rails.configuration.database_configuration[Rails.env]['adapter']
 rescue StandardError
