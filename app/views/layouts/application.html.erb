@@ -22,10 +22,14 @@
     <%= yield %>
     <div class='footer' style='align:center' ><center>
       <hr/>
-      Welcome to <%= APP_NAME %>  v<b><%= APP_VERSION %></b> env=<b><%= Rails.env %></b>- <a href='/delayed_job/overview'>jobs</a> <br/>
+      Welcome to <%= APP_NAME %>  v<b><%= APP_VERSION %></b>
+      env=<b class="debug" ><%= Rails.env %></b>
+      <br/>
+       <a href='/delayed_job/overview'>jobs</a>
       PROJECT_ID: <%=PROJECT_ID%>
-      - <a href="TODO secret still" >Code on GitHub</a>
-      - inspired by a <a href="https://glaforge.dev/posts/2023/06/08/creating-kids-stories-with-generative-ai/" >Tale</a> from my friend Guillaume
+      - 🐙😼 <a href="https://github.com/palladius/genai-kids-stories" >Code</a>
+      <br/>
+      ..strongly inspired by a <a href="https://glaforge.dev/posts/2023/06/08/creating-kids-stories-with-generative-ai/" >Tale</a> from my friend Guillaume
       </center></div>
   </body>
 </html>
