@@ -17,6 +17,7 @@ def google_translate(_body, _language = 'it')
   )
   translation = translate.translate _body, to: _language
   # translation.text #=> "Salve mundi!"
-  translation.text
+  translation.text.gsub('&#39;', "'").gsub('&quot;', '"')
 end
-translate('yesterday i fell off a cliff and broke a knee. Today im fine')
+
+# translate('yesterday i fell off a cliff and broke a knee. Today im fine')

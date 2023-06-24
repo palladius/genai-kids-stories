@@ -16,9 +16,10 @@ gem 'delayed_job_active_record' # from https://github.com/collectiveidea/delayed
 gem 'postgresql'
 gem 'rubocop' # vscode complains otherwise
 #gem 'easy_translate'
-# gem 'google-cloud-translate'
-
-#gem 'google-translate'
+gem 'google-cloud-translate' # ATTENTZIONE!!!
+# downgrades:
+# * googleauth (1.6.0) -> becomes   googleauth (0.17.1)
+# * faraday (2.7.7) -> becomes  faraday (1.2.0)
 # /Riccardo
 ############
 

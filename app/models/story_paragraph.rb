@@ -20,10 +20,19 @@ class StoryParagraph < ApplicationRecord
   validates :language, presence: true,
                        format: { with: /\A(it|es|pt|de|en|ru|jp)\z/i, message: 'We only support ITalian, Spanish, portuguese, german, english, Russian and Japanese now. Exactly, all my colleagues are 🇫🇷 :)' }
 
+  # PROD
   after_create :after_creation_magic
+  # DEV: easier to debug
+  # after_save :after_creation_magic
+  after_save :after_creation_delayed_magic
+
+  def after_creation_delayed_magic
+    delay.after_creation_magic
+  end
 
   def after_creation_magic
     puts '1 [DELAYED] if translation  is nil but we have original text AND language => trigger GTranslate (DELAY)'
+    write_translated_content_for_paragraph if translated_text.to_s.length < 5
     puts '2 [NOW] if picture text not available -> generate it determiniistically (now)'
     generate_genai_text_for_paragraph if genai_input_for_image.nil?
     puts '3 [DELAYED] if video text available -> generate image '
@@ -58,6 +67,11 @@ class StoryParagraph < ApplicationRecord
 
   def self.emoji
     '📜'
+  end
+
+  def write_translated_content_for_paragraph(_opts = {})
+    self.translated_text = google_translate(original_text, language) # language
+    save
   end
 
   def generate_genai_text_for_paragraph(_opts = {})

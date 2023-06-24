@@ -10,13 +10,18 @@ If the translated text is empty, reload or call from rails c this command:
     <tr>
       <th>IX
       <th>Original Text 🇬🇧
+      <th>Lang
       <th>Translated text
+      <th>Opts
   <% @paragraphs.each do |p| %>
     <tr>
-      <td><%= p.story_index %>🔷
+      <td><%= link_to p.story_index, p %>🔷
       <td width="45%" ><%= p.original_text %>
       <td><%= p.flag %>
       <td  width="45%"><%= p.translated_text or "<pre>StoryParagraph.find(#{ p.id }).after_creation_magic</pre>".html_safe %>
+      <td>
+          <%= link_to p.id, p %>
+          <%= link_to '✍🏿', edit_story_paragraph_path(p) %>
   <% end %>
 </table>
 
