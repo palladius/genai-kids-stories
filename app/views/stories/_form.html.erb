@@ -1,4 +1,7 @@
-<%= form_with(model: story) do |form| %>
+<!--
+  Need multipart for attachments: https://stackoverflow.com/questions/50483901/rails-activestorage-error-messageverifier-invalidsignature
+-->
+<%= form_with(model: story, multipart: true) do |form| %>
   <% if story.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(story.errors.count, "error") %> prohibited this story from being saved:</h2>
