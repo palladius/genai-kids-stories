@@ -9,7 +9,7 @@ class Story < ApplicationRecord
     attachable.variant :thumb, resize_to_limit: [200, 200]
   end
   # GCS test :)
-  has_many_attached :additional_images, service: :google
+  has_many_attached :additional_images # , service: :google
 
   #validates :title, uniqueness: { scope: :user_id }
 
@@ -37,8 +37,13 @@ class Story < ApplicationRecord
       filename: filename )
   end
   # Just a test!
-  def attach_test_image()
+  def attach_test_image(opts={})
+    opts_save_afterwards = opts.fetch :save_afterwards, true
     self.additional_images.attach(io: File.open(Rails.root.join('app/assets/images/kids/doll.jpg')), filename: 'doll.jpg')
+    if opts_save_afterwards
+      save = self.save!
+      puts save
+    end
   end
 
   def paragraphs

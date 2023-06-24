@@ -10,7 +10,7 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
-dev-pgsql-gcp: # This use GCP for Rails Storage and Pgsql for DB
+dev-on-gcp: # This use GCP for Rails Storage and Pgsql for DB
   adapter: postgresql
   #encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
