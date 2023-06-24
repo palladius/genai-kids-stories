@@ -2,11 +2,15 @@
 
 <p>  Env: <b><%= Rails.env %></b>    </p>
 
+<h2>ENV</h2>
+
+<p>  PROJECT_ID: <b><%= PROJECT_ID %></b>    </p>
+<p>  GCLOUD_ACCESS_TOKEN.length: <b><%= GCLOUD_ACCESS_TOKEN.to_s.length %></b>    </p>
+
 
 <h2>config</h2>
 
-* Active_storage: <b><%= Rails.application.config.active_storage.service_configurations[Rails.env] %></b><br/>
-
+* Active_storage: <b><%= Rails.application.config.active_storage.service_configurations[Rails.env] rescue 'Some error with AS!' %></b><br/>
 * Database: <b><%= Rails.configuration.database_configuration[Rails.env]['adapter'] %></b><br/><br/><br/>
 
 <h2>Entities</h2>

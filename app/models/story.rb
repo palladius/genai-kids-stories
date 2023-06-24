@@ -38,7 +38,11 @@ class Story < ApplicationRecord
   end
 
   def attached_stuff_info
-    super_attached_stuff_info(:cover_image)
+    {
+      cover_image: super_attached_stuff_info(:cover_image),
+      additional_images: super_attached_stuff_info(:additional_images)
+
+    }
   end
 
   def self.test_image_attachment(_path = nil)
