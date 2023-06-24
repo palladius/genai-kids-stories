@@ -6,6 +6,8 @@ PROJECT_ID = ricc-genai
 install:
 # not sure why,,,
 	bundle lock --add-platform aarch64-linux
+	brew install imagemagick
+	#sudo apt-get install imagemagick
 
 # .PHONY: help
 # help: ## Shows all targets and help from the Makefile (this message).

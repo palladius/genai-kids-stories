@@ -16,8 +16,7 @@ class Kid < ApplicationRecord
   validates :date_of_birth, presence: true
   validates :date_of_birth, comparison: { less_than: DateTime.tomorrow }
   # validates :visual_description, presence: true
-
-  # validates_presence_of :is_male
+  validate :acceptable_image
 
   # (attributes = {}, options = {})
   def self.initialize
@@ -87,5 +86,17 @@ class Kid < ApplicationRecord
 
   def attached_stuff_info
     super_attached_stuff_info(:avatar)
+  end
+
+  # so cool! Copied from here https://pragmaticstudio.com/tutorials/using-active-storage-in-rails
+  def acceptable_image
+    return unless main_image.attached?
+
+    errors.add(:main_image, 'is too big (10 megs?!?)') unless main_image.blob.byte_size <= 10.megabyte
+
+    acceptable_types = ['image/jpeg', 'image/png']
+    return if acceptable_types.include?(main_image.content_type)
+
+    errors.add(:main_image, 'must be a JPEG or PNG')
   end
 end

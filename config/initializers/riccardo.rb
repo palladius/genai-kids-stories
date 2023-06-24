@@ -5,7 +5,6 @@ require "#{Rails.root}/lib/genai/aiplatform_text_curl"
 PROJECT_ID = ENV.fetch('PROJECT_ID') # , '_PROJECT_NON_DATUR_')
 raise('I need a project id under PROJECT_ID ENV var!!!') if PROJECT_ID.nil?
 
-puts("⬢ Thanks for providing GCP Project: '#{PROJECT_ID}'")
 # Note, we might need to refresh it from time to time :)
 GCLOUD_ACCESS_TOKEN = ENV.fetch(
   'GCLOUD_ACCESS_TOKEN',
@@ -18,7 +17,7 @@ end
 STORIES_FIXTURE_IMAGES_DIR ||= "#{Rails.root}/db/fixtures/stories/"
 
 # App stuff
-APP_NAME = '🤖GenAI 👶🏾Kids 📔Stories' + GCLOUD_ACCESS_TOKEN
+APP_NAME = '🤖GenAI 👶🏾Kids 📔Stories'
 APP_VERSION = File.read(File.expand_path("#{Rails.root}/VERSION")).chomp
 
 # Active storage
@@ -27,3 +26,21 @@ APP_VERSION = File.read(File.expand_path("#{Rails.root}/VERSION")).chomp
 
 # DB is defined under config/database.yml
 # Storage for dev vs dev-on-gcp is defined under config/storage.yml
+
+arzigogolo = '⬢⬡⬢⬡⬢⬡'
+
+puts("#{arzigogolo} Welcome to #{APP_NAME} by Riccardo💛Carlesso #{arzigogolo}")
+puts("⬢ Thanks for providing GCP Project: '#{PROJECT_ID}'")
+puts("⬢ Rails.Env: '#{Rails.env}'")
+puts("⬢ Database:  '#{begin
+  Rails.configuration.database_configuration[Rails.env]['adapter']
+rescue StandardError
+  '?'
+end}")
+puts("⬢ ActiveStorage:  '#{begin
+  Rails.application.config.active_storage.service_configurations[Rails.env]
+rescue StandardError
+  '?!?'
+end}'")
+
+puts(arzigogolo * 12)

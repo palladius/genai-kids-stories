@@ -33,9 +33,22 @@ rails g scaffold Story title:string \
     genai_input:text genai_output:text genai_summary:text \
     internal_notes:text \
     user_id:integer kid:references \
-    cover_image:attachment --force
+    --force
+
+# dont add 'cover_image:attachment'
+# or      images:attachment \
 
  rails g controller page_controller index about help
+
+rails g scaffold StoryParagraph \
+     story_index:integer \
+     original_text:text \
+     genai_input_for_image:text \
+     internal_notes:text \
+     translated_text:text \
+     language:string \
+     story:references \
+     rating:integer
 
 
 ```
