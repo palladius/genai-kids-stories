@@ -98,3 +98,7 @@ run-from-docker:
 # requires private/sa.json
 genai-test-gcs: private/sa.json
 	echo 'Story.last.attach_test_image' | rails c
+
+
+lint:
+	rubocop --autocorrect app/models/story.rb

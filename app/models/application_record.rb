@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationRecord < ActiveRecord::Base
   primary_abstract_class
 
@@ -7,7 +9,6 @@ class ApplicationRecord < ActiveRecord::Base
 
   # woohoo https://stackoverflow.com/questions/49525843/rails-get-a-random-record-from-db
   def self.find_sample
-    self.find(self.ids.sample)
+    find(ids.sample)
   end
-
 end

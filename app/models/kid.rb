@@ -1,9 +1,11 @@
-FIXTURE_DIR ||= "#{Rails.root}/db/fixtures/images/"
+# frozen_string_literal: true
+
+FIXTURE_DIR ||= "#{Rails.root}/db/fixtures/images/".freeze
 
 class Kid < ApplicationRecord
   # unique keys
   validates :nick, presence: true, uniqueness: { scope: :user_id }
-  #has_one_attached :avatar, service: :local
+  # has_one_attached :avatar, service: :local
 
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_limit: [200, 200]
@@ -13,12 +15,13 @@ class Kid < ApplicationRecord
   validates :name, presence: true
   validates :date_of_birth, presence: true
   validates :date_of_birth, comparison: { less_than: DateTime.tomorrow }
-  #validates :visual_description, presence: true
+  # validates :visual_description, presence: true
 
-  #validates_presence_of :is_male
+  # validates_presence_of :is_male
 
-  def self.initialize # (attributes = {}, options = {})
-    #super
+  # (attributes = {}, options = {})
+  def self.initialize
+    # super
     @visual_description ||= "#{@age}-year-old #{@is_male ? 'boy' : 'girl'}"
   end
 
@@ -31,7 +34,7 @@ class Kid < ApplicationRecord
   end
 
   def to_s
-#    "Kiddo.#{id}: #{nick}, #{age}y: '#{visual_description}'"
+    #    "Kiddo.#{id}: #{nick}, #{age}y: '#{visual_description}'"
     "#{Kid.emoji} #{nick}, #{age}y"
   end
 
@@ -39,8 +42,6 @@ class Kid < ApplicationRecord
   def about
     "#{name} is a #{age}-year-old #{visual_description}"
   end
-
-
 
   def self.emoji
     '👶'
@@ -51,21 +52,21 @@ class Kid < ApplicationRecord
     opts_debug = attributes.fetch :opts_debug, false
 
     puts "Kid.create_kid_on_steorids(): Provided attributes: #{attributes}" if opts_debug
-    #puts "FA: #{yellow attributes[:fixture_avatar] }"
+    # puts "FA: #{yellow attributes[:fixture_avatar] }"
     fixture_avatar_pic = attributes.fetch(:fixture_avatar, 'anonymous.png')
 
-    cleaned_up_attributes = attributes.delete_if { |key, value| key.to_s.match(/fixture_avatar/) }
-    #puts "cleaned_up_attributes: #{cleaned_up_attributes}"
-    #puts Kid.column_names.join(', ')
-    #puts cleaned_up_attributes if opts_debug
+    cleaned_up_attributes = attributes.delete_if { |key, _value| key.to_s.match(/fixture_avatar/) }
+    # puts "cleaned_up_attributes: #{cleaned_up_attributes}"
+    # puts Kid.column_names.join(', ')
+    # puts cleaned_up_attributes if opts_debug
 
-    #puts "DEB fixture_avatar_pic=#{yellow fixture_avatar_pic}" if opts_debug
-    #cleaned_up_attributes['visual_description'] ||= ''
-    #cleaned_up_attributes['visual_description'] += "DEBUG -- fixture_avatar_pic=#{fixture_avatar_pic}"
+    # puts "DEB fixture_avatar_pic=#{yellow fixture_avatar_pic}" if opts_debug
+    # cleaned_up_attributes['visual_description'] ||= ''
+    # cleaned_up_attributes['visual_description'] += "DEBUG -- fixture_avatar_pic=#{fixture_avatar_pic}"
 
     ################################################
     # Creation of object...
-    kid = Kid.create(cleaned_up_attributes )
+    kid = Kid.create(cleaned_up_attributes)
     puts "👶 Kid just created: #{kid}. Errors: #{kid.errors.full_messages}" # if opts_debug
     # ... now it exists and I can methods like age() and so on.
     ################################################
@@ -74,13 +75,13 @@ class Kid < ApplicationRecord
     #   attributes[:visual_description] ||= "#{@age}-year-old #{@is_male ? 'boy' : 'girl'}"
     # end
 
-    kid.avatar.attach(io: File.open("#{FIXTURE_DIR}/#{fixture_avatar_pic}"), filename: fixture_avatar_pic )
+    kid.avatar.attach(io: File.open("#{FIXTURE_DIR}/#{fixture_avatar_pic}"), filename: fixture_avatar_pic)
 
     # Saving for second time with additional stuff..
-    ret = kid.save
-    #puts "ret=#{ret}"
-    #puts "DEB kid: #{kid}"
-    #puts ''
+    kid.save
+    # puts "ret=#{ret}"
+    # puts "DEB kid: #{kid}"
+    # puts ''
     kid
   end
 end
