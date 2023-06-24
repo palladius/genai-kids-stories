@@ -15,6 +15,10 @@ gem 'delayed_job_active_record' # from https://github.com/collectiveidea/delayed
   gem "delayed_job_web" # shows on web too: https://github.com/ejschmitt/delayed_job_web
 gem 'postgresql'
 gem 'rubocop' # vscode complains otherwise
+#gem 'easy_translate'
+# gem 'google-cloud-translate'
+
+#gem 'google-translate'
 # /Riccardo
 ############
 

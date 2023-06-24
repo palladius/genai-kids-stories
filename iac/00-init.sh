@@ -19,6 +19,7 @@ PROJECT_ID=$(gcloud config get-value project)
     # Enable APIs...
 gcloud services enable \
     artifactregistry.googleapis.com \
+  translate.googleapis.com \
     cloudbuild.googleapis.com \
     clouddeploy.googleapis.com \
     compute.googleapis.com \

@@ -1,5 +1,7 @@
-# for Ricc lib/ APIs.
+# BEGIN Ricc lib/ APIs.
 require "#{Rails.root}/lib/genai/aiplatform_text_curl"
+require "#{Rails.root}/lib/genai/google_translate"
+# END
 
 # ENV parsing
 PROJECT_ID = ENV.fetch('PROJECT_ID') # , '_PROJECT_NON_DATUR_')
