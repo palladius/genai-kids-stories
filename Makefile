@@ -101,4 +101,5 @@ genai-test-gcs: private/sa.json
 
 
 lint:
-	rubocop --autocorrect app/models/story.rb
+	rubocop --lint app/
+	rubocop --autocorrect app/ lib/ # app/models/story.rb

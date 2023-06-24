@@ -1,5 +1,5 @@
 class KidsController < ApplicationController
-  before_action :set_kid, only: %i[ show edit update destroy ]
+  before_action :set_kid, only: %i[show edit update destroy]
 
   # GET /kids or /kids.json
   def index
@@ -7,8 +7,7 @@ class KidsController < ApplicationController
   end
 
   # GET /kids/1 or /kids/1.json
-  def show
-  end
+  def show; end
 
   # GET /kids/new
   def new
@@ -16,8 +15,7 @@ class KidsController < ApplicationController
   end
 
   # GET /kids/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /kids or /kids.json
   def create
@@ -25,7 +23,7 @@ class KidsController < ApplicationController
 
     respond_to do |format|
       if @kid.save
-        format.html { redirect_to kid_url(@kid), notice: "Kid was successfully created." }
+        format.html { redirect_to kid_url(@kid), notice: 'Kid was successfully created.' }
         format.json { render :show, status: :created, location: @kid }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +36,7 @@ class KidsController < ApplicationController
   def update
     respond_to do |format|
       if @kid.update(kid_params)
-        format.html { redirect_to kid_url(@kid), notice: "Kid was successfully updated." }
+        format.html { redirect_to kid_url(@kid), notice: 'Kid was successfully updated.' }
         format.json { render :show, status: :ok, location: @kid }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,19 +50,21 @@ class KidsController < ApplicationController
     @kid.destroy
 
     respond_to do |format|
-      format.html { redirect_to kids_url, notice: "Kid was successfully destroyed." }
+      format.html { redirect_to kids_url, notice: 'Kid was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_kid
-      @kid = Kid.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def kid_params
-      params.require(:kid).permit(:name, :surname, :nick, :visual_description, :is_male, :date_of_birth, :internal_info, :user_id, :avatar)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_kid
+    @kid = Kid.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def kid_params
+    params.require(:kid).permit(:name, :surname, :nick, :visual_description, :is_male, :date_of_birth,
+                                :internal_info, :user_id, :avatar)
+  end
 end
