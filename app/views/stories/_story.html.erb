@@ -22,14 +22,15 @@
 <% %w{genai_summary genai_input genai_output internal_notes }.each do |xxx| %>
  -📈 Size:  :<b><%=story.send(xxx).size rescue '?' %></b>B <%= xxx %> <br/>
 <% end %>
--📈 ImageAttached:  :<b><%=story.cover_image.attached? %></b>
-<% if story.cover_image.attached? and story.cover_image.analyzed?
-    #story.cover_image.analyze
-%>
+-📈 cover_image Attached:  :<b><%=story.cover_image.attached? %></b>
+<% if story.cover_image.attached? and story.cover_image.analyzed? %>
 <!-- (file: <%= story.cover_image %>) -->
 (metadata: <%= link_to 'todo', 'https://stackoverflow.com/questions/60130926/activestorage-get-image-dimensions-after-upload' %>
-)
-<% end %>
+) <% end %>
+<br/>
+-📈 additional_images Attached:  :<b><%=story.additional_images.attached? %></b><br/>
+
+
 
 <br/>
 

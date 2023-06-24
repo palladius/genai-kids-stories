@@ -37,16 +37,37 @@ class Story < ApplicationRecord
     )
   end
 
+  def self.test_image_attachment(_path = nil)
+    # path ||= Rails.root.join('app/assets/images/kids/doll.jpg')
+    # filename = 'test_image_attachment_doll.png'
+    {
+      io: File.open(Rails.root.join('app/assets/images/kids/doll.jpg')),
+      filename: 'doll.jpg',
+      # content_type: 'image/jpeg',
+      identify: true
+
+    }
+  end
+
   # Just a test!
   def attach_test_image(opts = {})
     opts_save_afterwards = opts.fetch :save_afterwards, true
-    additional_images.attach(io: File.open(Rails.root.join('app/assets/images/kids/doll.jpg')),
-                             filename: 'doll.jpg')
+    opts_purge_before = opts.fetch :purge_before, true
+
+    # https://stackoverflow.com/questions/45870021/how-to-update-attachment-in-activestorage-rails-5-2
+    begin
+      cover_image.purge
+    rescue StandardError
+      :maybe_nothing_topurge
+    end # if opts_purge_before
+    # cover_image.attach(io: File.open(Rails.root.join('app/assets/images/kids/doll.jpg')),
+    #                    filename: 'doll.jpg')
+    cover_image.attach(Story.test_image_attachment)
     return unless opts_save_afterwards
 
-    save = save!
-    puts("ERRORS: #{errors.full_messages}")
-    puts save
+    save_ok = save!
+    puts("save_ok=#{save_ok} - ERRORS: #{errors.full_messages}")
+    puts save_ok
   end
 
   def paragraphs

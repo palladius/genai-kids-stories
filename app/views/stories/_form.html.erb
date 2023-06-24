@@ -47,10 +47,19 @@
     <%= form.select :kid_id, options_for_select(Kid.all.map{|s|[s.nick, s.id]}, :selected => @story.kid_id ) %>
   </div>
 
+<h4>Files</h4>
+
   <div>
-    <%= form.label :cover_image, style: "display: block" %>
+    <%= form.label :cover_image %>
     <%= form.file_field :cover_image %>
   </div>
+
+<div>
+    <%= form.label :additional_images %>
+    <%= form.file_field :additional_images, multiple: true, direct_upload: true %>
+  </div>
+
+
 
   <div>
     <%= form.submit %>
