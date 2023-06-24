@@ -28,6 +28,10 @@ run-local: # runs locally after starting a daemon for delayed jobs..
 	make delayed-jobs-daemon &
 	bundle exec rails s -b 0.0.0.0
 
+run-local-dev-on-gcp:
+	RAILS_ENV='dev-on-gcp' make delayed-jobs-daemon &
+	RAILS_ENV='dev-on-gcp' bundle exec rails s -b 0.0.0.0
+
 delayed-jobs-start-daemon:
 	RAILS_ENV=development bin/delayed_job start -l --logfilename log/riccardo-delayed-jobs.log
 delayed-jobs-start-foreground:

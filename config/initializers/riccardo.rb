@@ -1,4 +1,3 @@
-
 # for Ricc lib/ APIs.
 require "#{Rails.root}/lib/genai/aiplatform_text_curl"
 
@@ -14,9 +13,8 @@ APP_NAME = '🤖GenAI 👶🏾Kids 📔Stories'
 APP_VERSION = File.read(File.expand_path("#{Rails.root}/VERSION")).chomp
 
 # Active storage
-# :development
 # ACTIVE_STORAGE_DEV = :local
-# ACTIVE_STORAGE_PROD = :local
-# # dev-on-gcp
-#ACTIVE_STORAGE_DEV = :google
-#ACTIVE_STORAGE_PROD = :google
+# ACTIVE_STORAGE_DEV_ON_GCP = :google
+
+# DB is defined under config/database.yml
+# Storage for dev vs dev-on-gcp is defined under config/storage.yml

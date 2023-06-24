@@ -35,4 +35,7 @@ rails g scaffold Story title:string \
     user_id:integer kid:references \
     cover_image:attachment --force
 
+ rails g controller page_controller index about help
+
+
 ```

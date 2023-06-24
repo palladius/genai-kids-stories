@@ -40,6 +40,10 @@ google:
 #   primary: local
 #   mirrors: [ amazon, google, microsoft ]
 development:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+dev-on-gcp: # This use GCP for Rails Storage and Pgsql for DB
   service: Mirror
   primary: local
   mirrors:

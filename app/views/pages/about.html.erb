@@ -1,0 +1,17 @@
+<h1>🐬 About</h1>
+
+<p>Find me in app/views/pages/about.html.erb</p>
+
+
+<h2>config</h2>
+
+* Active_storage: <b><%= Rails.application.config.active_storage.service_configurations[Rails.env] %></b><br/>
+
+* Database: <b><%= Rails.configuration.database_configuration[Rails.env]['adapter'] %></b><br/><br/><br/>
+
+<h2>Entities</h2>
+
+* #Kids: <b><%= Kid.all.count %></b><br/>
+* #Stories: <b><%= Story.all.count %></b><br/>
+* #Attachments: <b><%= :TODOs %></b><br/>
+
