@@ -11,9 +11,9 @@
 
     <i><%= story.genai_summary %></i>
 
-    <% story.paragraphs.each do |p|  %>
+    <% story.paragraphs.each_with_index do |p, ix|  %>
   <p>
-    🔸 <%= p %>
+    🔸 <%= ix+1 %> <%= p %>
   </p>
     <% end  %>
 
