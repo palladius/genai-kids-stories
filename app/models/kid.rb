@@ -84,4 +84,8 @@ class Kid < ApplicationRecord
     # puts ''
     kid
   end
+
+  def attached_stuff_info
+    super_attached_stuff_info(:avatar)
+  end
 end

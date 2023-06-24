@@ -1,6 +1,6 @@
-require_relative "boot"
+require_relative 'boot'
 
-require "rails/all"
+require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -19,17 +19,16 @@ module GenaiKidsStories
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += %W[#{config.root}/lib]
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
 
     # fixes Zeitwerk issue: https://stackoverflow.com/questions/57277351/rails-6-zeitwerknameerror-doesnt-load-class-from-module
     config.autoloader = :classic
 
-    # Google internal procy
+    # Google internal proxy stuff TODO(ricc): abstract so it doesnt clog everyone else..
     config.hosts << /.*\.proxy\.googleprod\.com/
-    config.hosts << "derek.zrh.corp.google.com"
-    config.hosts << "derek.zrh"
-
-
+    config.hosts << 'derek.zrh.corp.google.com'
+    config.hosts << 'derek.zrh'
+    config.hosts << 'localhost'
   end
 end

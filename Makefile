@@ -103,6 +103,8 @@ run-from-docker:
 genai-test-gcs: private/sa.json
 	echo 'Story.last.attach_test_image' | rails c
 
+gsutil-images-list:
+	gsutil ls gs://$(GCS_BUCKET)/
 
 lint:
 	rubocop --lint app/

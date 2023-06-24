@@ -1,20 +1,6 @@
-test:
-  service: Disk
-  root: <%= Rails.root.join("tmp/storage") %>
-
-local:
-  service: Disk
-  root: <%= Rails.root.join("storage") %>
-
-development:
-  service: Disk
-  root: <%= Rails.root.join("storage") %>
-
-
+# Remember not to checkin your GCS keyfile to a repository
 # Use bin/rails credentials:edit to set the GCP Storage secret (as gcp_storage:storage_access_key)
 #   storage_access_key: <%= Rails.application.credentials.dig(:gcp_storage, :storage_access_key) %>
-
-# Remember not to checkin your GCS keyfile to a repository
 google:
   service: GCS
   project: <%= ENV['PROJECT_ID'] %>
@@ -27,11 +13,18 @@ google:
   # doesnt work on G policies :/
   #public: true
 
+test:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
 
-# mirror:
-#   service: Mirror
-#   primary: local
-#   mirrors: [ amazon, google, microsoft ]
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+# Like Local
+development:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
 
 dev-on-gcp: # This use GCP for Rails Storage and Pgsql for DB
   service: Mirror

@@ -37,3 +37,7 @@
 .git-privatize
 .echodo_history
 private/
+
+# Riccardo
+.tmp*
+.story*json
