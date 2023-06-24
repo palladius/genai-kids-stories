@@ -10,7 +10,7 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
-development: #
+dev-pgsql-gcp: # This use GCP for Rails Storage and Pgsql for DB
   adapter: postgresql
   #encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
@@ -20,9 +20,9 @@ development: #
   password: <%= ENV['APP_DB_PASS'] %>
   host: <%= ENV['APP_DB_HOST'] %>
 
-# development:
-#   <<: *default
-#   database: db/development.sqlite3
+development:
+  <<: *default
+  database: db/development.sqlite3
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
