@@ -4,7 +4,7 @@ This README would normally document whatever steps are necessary to get the
 application up and running.
 
 Things you may want to cover:
-* Ruby version
+* Ruby version: 3.0x
 * System dependencies
 * Configuration
 * Database creation
@@ -52,3 +52,8 @@ rails g scaffold StoryParagraph \
 
 
 ```
+
+## Build on Google
+
+* Cloud Build (on ricc project `ror-goldie`).
+* manually created build with `_RAILS_MASTER_KEY` set to `cat config/master.key`
