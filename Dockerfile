@@ -4,6 +4,10 @@
 ARG RUBY_VERSION=3.2.0
 FROM ruby:$RUBY_VERSION
 
+# if it fails it fails FIRST :)
+RUN bin/prep-dockerfile.sh
+RUN ls -la private/sa.json
+
 # Install libvips for Active Storage preview support
 RUN apt-get update -qq && \
     apt-get install -y build-essential libvips && \
@@ -50,7 +54,6 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Service Account to make gcloud work (security issue!)
 # Note this will fail unless you set up a SA appropriately
-RUN bin/prep-dockerfile.sh
 
 # works locally but not in the cloud
 #RUN cp private/sa.json /sa.json
