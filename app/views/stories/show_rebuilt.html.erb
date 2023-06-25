@@ -1,8 +1,9 @@
 <p style="color: green"><%= notice %></p>
 
-<% if @translate_to %>
+<% if @translate_to &&  @paragraphs.size == 0 %>
   <h2> @translate_to activated! for ''<%= @translate_to %>''  </h2>
-  Please wait a minute while I conjure the powers of AI...
+  <p>@paragraphs.size = <%= @paragraphs.size %></p>
+  <p>Please wait a minute while I conjure the powers of AI...
 
   <% if params[:now] == 'true' %>
     IMMEDIATE execution...
@@ -11,7 +12,7 @@
     Delayed execution... use (now=true) to make it immediate
   <%  @story.delay.generate_paragraphs(lang: @translate_to) %>
   <%  end %>
-  ... and since Im a crappy FE developer, please hit reload in a while :P
+  ... and since Im a crappy FE developer, please hit reload in a while :P</p>
 <% end %>
 
 <% if params[:beautfied] == 'true' %>

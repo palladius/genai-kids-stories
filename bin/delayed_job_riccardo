@@ -2,7 +2,11 @@
 
 set -euo pipefail
 
-# ensure its not empty :)
-echo "PROJECT_ID: $PROJECT_ID"
+MY_RAILS_ENV=dev-on-gcp
 
-RUBYOPT='-W0' RAILS_ENV="development" nice bin/delayed_job run
+# ensure its not empty :)
+echo "Suggested Argument: run"
+echo "PROJECT_ID: $PROJECT_ID"
+echo "MY_RAILS_ENV: $MY_RAILS_ENV"
+
+RUBYOPT='-W0' RAILS_ENV="$MY_RAILS_ENV" nice bin/delayed_job "$@"

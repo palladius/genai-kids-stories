@@ -73,13 +73,15 @@ class StoryParagraph < ApplicationRecord
       '🇦🇷'
     when 'pt'
       '🇧🇷'
+    when 'ru'
+      '🇷🇺'
 
     # when 'foo', 'bar'
     #   "It's either foo or bar"
     # when String
     #   'You passed a string'
     else
-      "You gave me #{x} -- I have no idea what to do with that."
+      "You gave me #{language} -- I have no idea what to do with that."
     end
   end
 

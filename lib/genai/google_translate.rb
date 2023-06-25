@@ -11,16 +11,21 @@ def google_translate(_body, _language = 'it', _gtranslate_key = nil)
 
   raise 'No/small Key! ' if key_i_use.to_s.size < 10
 
-  puts("DEB google_translate().key='#{key_i_use.to_s.first(5)}'..")
-  translate = Google::Cloud::Translate::V2.new(
-    # NOTE: should be viceversa: first argument, then ENV.
-    key: key_i_use # ENV.fetch('GOOGLE_TRANSLATE_KEY', _gtranslate_key)
-  )
-  translation = translate.translate _body, to: _language
-  # translation.text #=> "Salve mundi!"
+  # puts("DEB google_translate().key='#{key_i_use.to_s.first(5)}'..")
+
+  begin
+    translate_request = Google::Cloud::Translate::V2.new(key: key_i_use)
+    translation_response = translate_request.translate(_body, to: _language)
+  rescue StandardError
+    # flash.alert =
+    logger.error("Google Translate error: #{$!}")
+    return ''
+  end
+
+  # translation_response.text #=> "Salve mundi!"
 
   # Removing the 's and "s
-  translation.text.gsub('&#39;', "'").gsub('&quot;', '"')
+  translation_response.text.gsub('&#39;', "'").gsub('&quot;', '"')
 end
 
 # translate('yesterday i fell off a cliff and broke a knee. Today im fine')

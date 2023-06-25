@@ -1,5 +1,6 @@
 require 'active_support/core_ext/integer/time'
 
+# Riccardo, read https://www.akshaykhot.com/configuring-rails-environments/
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
