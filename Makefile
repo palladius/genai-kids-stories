@@ -44,7 +44,8 @@ delayed-jobs-daemon-stop:
 
 cloud-build-local:
 	bin/cloud-build-local.sh
-
+cloud-build-submit:
+	gcloud builds submit --config gcp/cloudbuild.yaml
 
 .PHONY: test
 test:
