@@ -9,6 +9,7 @@ DEFAULT_LANGUAGE = ENV.fetch('DEFAULT_LANGUAGE', 'it')
 raise('I need a project id under PROJECT_ID ENV var!!!') if PROJECT_ID.nil?
 
 GOOGLE_TRANSLATE_KEY = ENV.fetch('GOOGLE_TRANSLATE_KEY', nil)
+GOOGLE_TRANSLATE_KEY2 = Rails.application.credentials.dig(:gcp, :google_translate_key)
 
 # Note, we might need to refresh it from time to time :)
 GCLOUD_ACCESS_TOKEN = ENV.fetch(
