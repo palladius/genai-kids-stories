@@ -17,9 +17,15 @@
   </p>
     <% end  %>
 
-    story_paragraphs: <b><%= story.story_paragraphs.size  %></b>
+<h3>StoryParagraph</h3>
+    # story_paragraphs: <b><%= story.story_paragraphs.size  %></b>
 
-    See them here: <%= link_to "story_paragraphs for Story.#{story.id}",  "/story_rebuilt/#{story.id}" %>
+    See them here: <%= link_to "story_paragraphs for Story.#{story.id}",  "/story_rebuilt/#{story.id}" %><br/>
+
+<% StoryParagraph.available_lanugages.each do |language| %>
+  - <%= link_to "🚧 Translate to #{language}", "/story_rebuilt/#{@story.id}?translate_to=#{language}", method: :post %><br/>
+<% end if  story.story_paragraphs.size  == 0 %>
+
 
 <h3>📈 Story Stats</h3>
 

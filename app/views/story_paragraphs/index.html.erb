@@ -16,6 +16,8 @@
       <% inefficient_story_paragraphs.each do |p|  %>
         <%= render_excerpt(p) %><br/>
       <% end %>
+  <td>
+      <%= link_to "#{StoryParagraph.emoji} SP #{story_id}", "/story_rebuilt/#{story_id}"  %>
 
 
 <% end  %>

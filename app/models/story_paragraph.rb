@@ -65,6 +65,10 @@ class StoryParagraph < ApplicationRecord
     end
   end
 
+  def self.available_lanugages
+    %w( it es jp ru de pt).sort
+  end
+
   def self.emoji
     '📜'
   end
