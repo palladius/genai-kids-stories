@@ -6,7 +6,7 @@ def google_translate(_body, _language = 'it', _gtranslate_key = nil)
   require 'google/cloud/translate/v2'
   translate = Google::Cloud::Translate::V2.new(
     # NOTE: should be viceversa: first argument, then ENV.
-    key: ENV.fetch('GOOGLE_TRANSLATE_KEY', _gtranslate_key)
+    key: GOOGLE_TRANSLATE_KEY # ENV.fetch('GOOGLE_TRANSLATE_KEY', _gtranslate_key)
   )
   translation = translate.translate _body, to: _language
   # translation.text #=> "Salve mundi!"

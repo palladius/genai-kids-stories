@@ -6,7 +6,11 @@ module AiImageable
 
   included do
     # t0d0
+    #
+    # This for SP
     def generate_one_genai_image_from_image_description!
+      raise 'generate_one_genai_image_from_image_description(): wrong class ' unless is_a?(StoryParagraph)
+
       genai_compute_single_image!(p_image1)
     end
 

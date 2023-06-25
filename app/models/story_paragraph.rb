@@ -53,7 +53,7 @@ class StoryParagraph < ApplicationRecord
     puts '2 [NOW] if picture text not available -> generate it determiniistically (now)'
     generate_genai_text_for_paragraph if genai_input_for_image.to_s.length < 10 # genai_input_for_image.nil?
     puts '3 [DELAYED] if video text available -> generate image '
-    generate_genai_image_from_image_description! if genai_input_for_image.to_s.length > 20
+    generate_one_genai_image_from_image_description! if genai_input_for_image.to_s.length > 20
   end
 
   def flag
@@ -112,17 +112,4 @@ class StoryParagraph < ApplicationRecord
   end
 
   # rails c >  StoryParagraph.first.generate_genai_image_from_image_description
-
-  def generate_genai_image_from_image_description!(_opts = {})
-    puts :TODO
-    if genai_input_for_image.to_s.length < 10
-      puts 'BUG! We shouldnt be here at all.'
-      return false
-    end
-
-    extend Genai::AiplatformTextCurl
-    # ret, tmp_image = ai_curl_images_by_content(genai_input_for_image, _opts)
-    puts 'ok'
-    true
-  end
 end

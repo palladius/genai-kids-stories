@@ -16,6 +16,8 @@ class StoriesController < ApplicationController
   def show_rebuilt
     @story = Story.find(params[:id])
     @paragraphs = @story.story_paragraphs
+    @translate_to = params[:translate_to] # or , nil)
+    # if @translate_to do magic in controller?
   end
 
   # GET /stories/new

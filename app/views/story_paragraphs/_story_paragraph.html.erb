@@ -1,7 +1,14 @@
 <div id="<%= dom_id story_paragraph %>">
   <p>
-    <strong>Image :</strong>
+    <strong>Image1234 (4 single):</strong>
     <%= render_image_if_attached(story_paragraph.p_image1) %>
+    <%= render_image_if_attached(story_paragraph.p_image2) %>
+    <%= render_image_if_attached(story_paragraph.p_image3) %>
+    <%= render_image_if_attached(story_paragraph.p_image4) %>
+  </p>
+    <p>
+    <strong>Images (multi) :</strong>
+    <%= render_image_if_attached(story_paragraph.p_images) %>
   </p>
 
   <p>
