@@ -3,8 +3,9 @@
 
 <table border=1 >
 <% @stories_with_paragraphs.each do |story_id|
-      inefficient_story = Story.find(story_id)
-     inefficient_story_paragraphs = @story_paragraphs.select{|sp| sp.story_id == story_id }
+    # TODO(ricc): make them efficient with a SQL group by.
+     inefficient_story = Story.find(story_id)
+     inefficient_story_paragraphs = @story_paragraphs.select{|sp| sp.story_id == story_id }.sort
 
 %>
   <tr>
