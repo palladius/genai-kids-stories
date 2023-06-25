@@ -23,9 +23,9 @@ steps:
    args: ['build', '-t', "gcr.io/$PROJECT_ID/genai-kids-stories", '.']
    dir: .
 
- - name: 'ruby:3.2.0'
-   id: 3 Ruby rake test ok if it fails
-   args: ['rake || echo ok anyway']
+#  - name: 'ruby:3.2.0'
+#    id: 3 Ruby rake test ok if it fails
+#    args: ['rake || echo ok anyway']
 
 #  - name: 'gcr.io/cloud-builders/gcloud'
 #    entrypoint: 'bash'
