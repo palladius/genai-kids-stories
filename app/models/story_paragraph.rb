@@ -20,11 +20,18 @@ class StoryParagraph < ApplicationRecord
   validates :language, presence: true,
                        format: { with: /\A(it|es|pt|de|en|ru|jp)\z/i, message: 'We only support ITalian, Spanish, portuguese, german, english, Russian and Japanese now. Exactly, all my colleagues are 🇫🇷 :)' }
 
+  # image attachments. Not sure whether to force 4 or ahev any. 4 would be easy for frontend (square with 4)
+  has_many_attached :p_images # , service: :google
+  has_one_attached :p_image1 # , service: :google
+  has_one_attached :p_image2 # , service: :google
+  has_one_attached :p_image3 # , service: :google
+  has_one_attached :p_image4 # , service: :google
+
   # PROD
   after_create :after_creation_magic
   # DEV: easier to debug
   # after_save :after_creation_magic
-  after_save :after_creation_delayed_magic
+  # after_save :after_creation_delayed_magic
 
   def after_creation_delayed_magic
     delay.after_creation_magic
@@ -34,8 +41,9 @@ class StoryParagraph < ApplicationRecord
     puts '1 [DELAYED] if translation  is nil but we have original text AND language => trigger GTranslate (DELAY)'
     write_translated_content_for_paragraph if translated_text.to_s.length < 5
     puts '2 [NOW] if picture text not available -> generate it determiniistically (now)'
-    generate_genai_text_for_paragraph if genai_input_for_image.nil?
+    generate_genai_text_for_paragraph if genai_input_for_image.to_s.length < 10 # genai_input_for_image.nil?
     puts '3 [DELAYED] if video text available -> generate image '
+    generate_genai_image_from_image_description if genai_input_for_image.to_s.length > 20
   end
 
   def flag
@@ -66,7 +74,7 @@ class StoryParagraph < ApplicationRecord
   end
 
   def self.available_lanugages
-    %w( it es jp ru de pt).sort
+    %w[it es jp ru de pt].sort
   end
 
   def self.emoji
@@ -81,10 +89,28 @@ class StoryParagraph < ApplicationRecord
   def generate_genai_text_for_paragraph(_opts = {})
     puts 'generate_genai_text_for_paragraph(): START'
     kid = story.kid
-    style = _opts.fetch :style, 'Pixar'
+    my_style = _opts.fetch :style, 'Pixar'
 
-    genai_input_for_image = "Imagine a #{kid.visual_description}. Beside #{kid.akkusativ}, #{original_text}, in the style of #{style}"
+    self.genai_input_for_image = "Imagine a #{kid.visual_description}. Beside #{kid.akkusativ}, #{original_text}, in the style of #{my_style}"
+    puts "Proposed genai_input_for_image for SP.#{id}: #{yellow genai_input_for_image}"
     ret = save
-    puts 'SAVE ERROR: ' unless ret
+    if ret
+      puts 'SAVE OK!'
+    else
+      puts "SAVE ERROR: #{errors.full_messages}"
+    end
+  end
+
+  def generate_genai_image_from_image_description(_opts = {})
+    puts :TODO
+    if genai_input_for_image.to_s.length < 10
+      puts 'BUG! We shouldnt be here at all.'
+      return false
+    end
+
+    extend Genai::AiplatformTextCurl
+    ret, tmp_image = ai_curl_images_by_content(genai_input_for_image, _opts)
+    puts 'ok'
+    true
   end
 end

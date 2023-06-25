@@ -1,4 +1,5 @@
 # BEGIN Ricc lib/ APIs.
+require "#{Rails.root}/lib/ric_utils"
 require "#{Rails.root}/lib/genai/aiplatform_text_curl"
 require "#{Rails.root}/lib/genai/google_translate"
 # END
