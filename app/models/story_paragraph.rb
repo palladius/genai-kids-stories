@@ -44,7 +44,7 @@ class StoryParagraph < ApplicationRecord
     # end
     case language
     when 'it'
-      '🍕'
+      '🇮🇹'
     when 'fr'
       '🇫🇷'
     when 'jp'

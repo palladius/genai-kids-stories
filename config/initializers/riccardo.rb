@@ -8,6 +8,8 @@ PROJECT_ID = ENV.fetch('PROJECT_ID') # , '_PROJECT_NON_DATUR_')
 DEFAULT_LANGUAGE = ENV.fetch('DEFAULT_LANGUAGE', 'it')
 raise('I need a project id under PROJECT_ID ENV var!!!') if PROJECT_ID.nil?
 
+GOOGLE_TRANSLATE_KEY = ENV.fetch('GOOGLE_TRANSLATE_KEY', nil)
+
 # Note, we might need to refresh it from time to time :)
 GCLOUD_ACCESS_TOKEN = ENV.fetch(
   'GCLOUD_ACCESS_TOKEN',
@@ -34,6 +36,7 @@ arzigogolo = '⬢⬡⬢⬡⬢⬡'
 
 puts("#{arzigogolo} Welcome to #{APP_NAME} by Riccardo💛Carlesso #{arzigogolo}")
 puts("⬢ Thanks for providing GCP Project: '#{PROJECT_ID}'")
+puts("⬢ Google Translate key: '#{GOOGLE_TRANSLATE_KEY}'")
 puts("⬢ Rails.Env: '#{Rails.env}'")
 puts("⬢ Language: '#{DEFAULT_LANGUAGE}'")
 puts("⬢ Database:  '#{begin
