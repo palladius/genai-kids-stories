@@ -58,18 +58,11 @@ docker-build:
 
 
 docker-run-bash-nobuild:
-	docker run -it -p 30080:3000 \
-		-e PROJECT_ID=$(PROJECT_ID) \
-		-e APPLICATION_DEFAULT_CREDENTIALS=/sa.json \
-		-e APP_DB_NAME=$(APP_DB_NAME) \
-		-e APP_DB_USER=$(APP_DB_USER) \
-		-e APP_DB_PASS=$(APP_DB_PASS) \
-		-e APP_DB_HOST=$(APP_DB_HOST) \
-		 "$(APP_NAME)":v`bin/version.sh` bash
-	# bundle exec rails s
+	bin/docker-run-locally.sh bash
+
 # No such file or directory - gcloud
 docker-run-nobuild:
-	docker run -it -p 30080:3000 -e PROJECT_ID=$(PROJECT_ID) "$(APP_NAME)":v`bin/version.sh`  bundle exec rails s
+	bin/docker-run-locally.sh bundle exec rails s -b 0.0.0.0
 
 docker-run: docker-build docker-run-nobuild
 docker-run-bash: docker-build docker-run-bash-nobuild
