@@ -98,6 +98,13 @@ genai-create-joke2:
 generate_paragraphs-test:
 	echo 'Story.first.generate_paragraphs' | rails c
 
+# Some times it fails.
+test-google-translate:
+	 echo "google_translate('hello from me', :es)" |  rails c
+
+test-generate-spanish-translation-of-story:
+	echo "Story.find(135).generate_paragraphs(lang: 'es')" | rails c
+
 run-from-docker:
 	APPLICATION_DEFAULT_CREDENTIALS=/sa.json RAILS_ENV=development rails s -b 0.0.0.0
 

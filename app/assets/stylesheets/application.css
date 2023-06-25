@@ -18,3 +18,33 @@
  .debug {
     background-color: aquamarine;
  }
+
+
+
+/* https://stackoverflow.com/questions/26973570/setting-a-max-character-length-in-css 00 */
+p.beautified-paragraph {
+   /* white-space: nowrap; */
+   overflow: hidden;
+   text-overflow: ellipsis;
+   max-width: 400px;
+ }
+ .wrapper {
+   padding: 20px;
+   background: #fff7af;
+   max-width: 400px;
+   margin: 10px auto;
+ }
+
+ .demo-1 {
+   overflow: hidden;
+   display: -webkit-box;
+   -webkit-line-clamp: 3;
+   -webkit-box-orient: vertical;
+ }
+
+ .demo-2 {
+   overflow: hidden;
+   /* white-space: nowrap; */
+   text-overflow: ellipsis;
+   max-width: 150px;
+ }

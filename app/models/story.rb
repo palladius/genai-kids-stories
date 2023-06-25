@@ -283,6 +283,8 @@ class Story < ApplicationRecord
 
   def generate_paragraphs(_opts = {})
     lang = _opts.fetch(:lang, DEFAULT_LANGUAGE)
+    key = _opts.fetch(:key, GOOGLE_TRANSLATE_KEY2)
+
     puts 'generate_paragraphs START..'
     puts "Size: #{paragraphs.size}"
     # return if StoryParagraph.find(story_id: id).count > 0
@@ -300,9 +302,11 @@ class Story < ApplicationRecord
         original_text: p
         # genai_input_for_image: nil
       )
+      puts(sp)
       puts "SP ERROR: #{sp.errors.full_messages}" unless sp.save
+      # sp.after_creation_delayed_magic
       # s.save!
     end
-    # puts 'generate_paragraphs END..'
+    puts 'generate_paragraphs END..'
   end
 end

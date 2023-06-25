@@ -3,35 +3,31 @@
 <% if @translate_to %>
   <h2> @translate_to activated! for ''<%= @translate_to %>''  </h2>
   Please wait a minute while I conjure the powers of AI...
-  <%  @story.generate_paragraphs(lang: @translate_to) %>
+
+  <% if params[:now] == 'true' %>
+    IMMEDIATE execution...
+    <%  @story.generate_paragraphs(lang: @translate_to) %>
+  <%  else %>
+    Delayed execution... use (now=true) to make it immediate
+  <%  @story.delay.generate_paragraphs(lang: @translate_to) %>
+  <%  end %>
   ... and since Im a crappy FE developer, please hit reload in a while :P
 <% end %>
 
-<h2><%= StoryParagraph.emoji %><%= @story.title %> 👷‍♀️ Rebuilt (v2)</h2>
+<% if params[:beautfied] == 'true' %>
+<h1>BEAUTY</h1>
+bb
+   See <%= link_to '👨‍🚒 Normal working story', "/story_rebuilt/#{@story.id}?beautfied=false" %>
+  <%= render 'stories/beautified_story' %>
 
-If the translated text is empty, reload or call from rails c this command:
+<% else  %>
+aaa
+   See <%= link_to '💄Beautified translated story', "/story_rebuilt/#{@story.id}?beautfied=true" %>
+  <%#= render @story %>
+  <%= render 'stories/working_story' %>
 
-<table border="1" >
-    <tr>
-      <th>IX
-      <th>Original Text 🇬🇧
-      <th>Lang / Pic
-      <th>Translated text
-      <th>Opts
-  <% @paragraphs.each do |p| %>
-    <tr>
-      <td><%= link_to p.story_index, p %>🔷
-      <td width="45%" ><%= p.original_text %>
-      <td>
-        <%= p.flag %>
-        <%= render_image_if_attached(p.p_image1, verbose: false ) %>
 
-      <td  width="45%"><%= p.translated_text or "<pre>StoryParagraph.find(#{ p.id }).after_creation_magic</pre>".html_safe %>
-      <td>
-          <%= link_to p.id, p %>
-          <%= link_to '✍🏿', edit_story_paragraph_path(p) %>
-  <% end %>
-</table>
+<% end  %>
 
 <div>
   <%= link_to "📝 Edit this story", edit_story_path(@story) %> |
