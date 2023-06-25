@@ -8,6 +8,7 @@ options:
   machineType: 'N1_HIGHCPU_8'
 images:
   - 'gcr.io/$PROJECT_ID/genai-kids-stories'
+  - "europe-north1-docker.pkg.dev/$PROJECT_ID/genai"
 steps:
  - name: 'bash'
    id: 1 Prova a vedere se bash aiuta con ENV
