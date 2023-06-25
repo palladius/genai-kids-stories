@@ -1,5 +1,10 @@
 <div id="<%= dom_id story_paragraph %>">
   <p>
+    <strong>Image :</strong>
+    <%= render_image_if_attached(story_paragraph.p_image1) %>
+  </p>
+
+  <p>
     <strong>Story index:</strong>
     <%= story_paragraph.story_index %>
   </p>

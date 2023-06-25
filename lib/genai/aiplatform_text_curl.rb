@@ -77,7 +77,7 @@ module Genai
 
     # I make it a static method which accepts a story..
     def _convert_base64_image_to_file(story, json_body, ix)
-      raise 'I need a Story!' unless story.is_a? Story
+      raise 'I need a Story !' unless story.is_a? Story
       raise 'I need an integer!' unless ix.is_a? Integer
 
       # Self is probably the story.
@@ -287,7 +287,11 @@ module Genai
       # puts 'prediction_size_minus_one: ', prediction_size_minus_one
       (0..prediction_size_minus_one).each do |ix|
         # puts "my_one_file[#{ix}] BEFORE: #{my_one_file}"
-        filename = _convert_base64_image_to_file(self, json_body, ix)
+        if is_a? Story
+          filename = _convert_base64_image_to_file(self, json_body, ix)
+        elsif is_a? StoryParagraph
+          filename = _convert_base64_image_to_file(story, json_body, ix)
+        end
         next if filename.nil?
 
         my_one_file = filename if File.exist?(filename) and `file '#{filename}'`.match(/PNG image data/)

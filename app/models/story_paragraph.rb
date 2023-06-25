@@ -1,5 +1,6 @@
 # A story is composed of N paragraphs
-# #
+
+# # MODEL
 # StoryParagraph(id: integer,
 #    story_index: integer,
 #    original_text: text,
@@ -11,7 +12,15 @@
 #    rating: integer,
 #    created_at: datetime,
 #    updated_at: datetime)
+#
+# # POLYMORPHIC
+# p_images (many)
+# p_image1 (one)
+# p_image2 (one)
+# p_image3 (one)
+# p_image4 (one)
 class StoryParagraph < ApplicationRecord
+  include AiImageable
   belongs_to :story
 
   validates :story_index, uniqueness: { scope: :story_id }
@@ -22,6 +31,7 @@ class StoryParagraph < ApplicationRecord
 
   # image attachments. Not sure whether to force 4 or ahev any. 4 would be easy for frontend (square with 4)
   has_many_attached :p_images # , service: :google
+
   has_one_attached :p_image1 # , service: :google
   has_one_attached :p_image2 # , service: :google
   has_one_attached :p_image3 # , service: :google
@@ -43,7 +53,7 @@ class StoryParagraph < ApplicationRecord
     puts '2 [NOW] if picture text not available -> generate it determiniistically (now)'
     generate_genai_text_for_paragraph if genai_input_for_image.to_s.length < 10 # genai_input_for_image.nil?
     puts '3 [DELAYED] if video text available -> generate image '
-    generate_genai_image_from_image_description if genai_input_for_image.to_s.length > 20
+    generate_genai_image_from_image_description! if genai_input_for_image.to_s.length > 20
   end
 
   def flag
@@ -101,7 +111,9 @@ class StoryParagraph < ApplicationRecord
     end
   end
 
-  def generate_genai_image_from_image_description(_opts = {})
+  # rails c >  StoryParagraph.first.generate_genai_image_from_image_description
+
+  def generate_genai_image_from_image_description!(_opts = {})
     puts :TODO
     if genai_input_for_image.to_s.length < 10
       puts 'BUG! We shouldnt be here at all.'
@@ -109,7 +121,7 @@ class StoryParagraph < ApplicationRecord
     end
 
     extend Genai::AiplatformTextCurl
-    ret, tmp_image = ai_curl_images_by_content(genai_input_for_image, _opts)
+    # ret, tmp_image = ai_curl_images_by_content(genai_input_for_image, _opts)
     puts 'ok'
     true
   end
