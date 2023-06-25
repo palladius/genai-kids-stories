@@ -56,4 +56,8 @@ rails g scaffold StoryParagraph \
 ## Build on Google
 
 * Cloud Build (on ricc project `ror-goldie`).
-* manually created build with `_RAILS_MASTER_KEY` set to `cat config/master.key`
+* manually created build with:
+*
+1. `_RAILS_MASTER_KEY` set to `cat config/master.key`
+2. `_DANGEROUS_SA_JSON_VALUE` set to `cat private/sa.json`
+3.
