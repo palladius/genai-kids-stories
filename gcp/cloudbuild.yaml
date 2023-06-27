@@ -13,7 +13,7 @@ images:
 #2. But build is on ror-goldie, so trying this instead since CB weorks on steps 1/2!
 #   Yet it manages to fail finally :(
   - "gcr.io/ror-goldie/genai-kids-stories"
-  - "europe-north1-docker.pkg.dev/ror-goldie/genai"
+  - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories"
   
 steps:
  - name: 'bash'
@@ -28,7 +28,7 @@ steps:
    id: 2 Docker Build - the big deal
    #args: ['build', '-t', "gcr.io/$PROJECT_ID/genai-kids-stories", '.']
    #args: ['build', '-t', "gcr.io/ror-goldie/genai-kids-stories", '.']
-   args: ['build', '-t', "europe-north1-docker.pkg.dev/ror-goldie/genai", '.']
+   args: ['build', '-t', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories", '.']
    dir: .
 
 #  - name: 'ruby:3.2.0'
@@ -54,3 +54,8 @@ tags: ['rails', 'genai', 'gh' , 'devrel' ]
 #- 'gcr.io/[PRODUCT_ID]/[CONTAINER_IMAGE]'
 # 15min for RoR :/
 timeout: 900s
+
+
+# options:
+#   # This allows for missing ENV variables.
+#   substitution_option: 'ALLOW_LOOSE'
