@@ -102,6 +102,8 @@ test-generate-spanish-translation-of-story:
 run-from-docker:
 	APPLICATION_DEFAULT_CREDENTIALS=/sa.json RAILS_ENV=development rails s -b 0.0.0.0
 
+test-postgres:
+	echo Story.count | RAILS_ENV='dev-on-gcp' rails console
 # attach random Story with GCS image
 # s.additional_images.attach(io: File.open(Rails.root.join('app/assets/images/kids/doll.jpg')), filename: 'doll.jpg')
 
