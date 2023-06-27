@@ -17,8 +17,8 @@ images:
   
 steps:
  - name: 'bash'
-   id: 1 Prova a vedere se bash aiuta con ENV
-   args: ['echo', 'Scopiazzato da sinatroccolo poi Goldie.. voglio togliere il bifido pero']
+   id: 1 Bash RiccTest # Prova a vedere se bash aiuta con ENV
+   args: ['echo', "Scopiazzato PROJECT_ID='$PROJECT_ID'"]
 
 # - name: 'ruby:3.2.0'
 #   id: 2 Ruby rake test
