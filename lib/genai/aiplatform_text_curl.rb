@@ -76,12 +76,14 @@ module Genai
     end
 
     # I make it a static method which accepts a story..
-    def _convert_base64_image_to_file(story, json_body, ix)
+    # Note: this is a PRIVATE method that shouldnt be called 
+    # if not from `ai_curl_images_by_content`
+    def _convert_base64_image_to_file(story, object_class_name, json_body, ix)
       raise 'I need a Story !' unless story.is_a? Story
       raise 'I need an integer!' unless ix.is_a? Integer
 
       # Self is probably the story.
-      filename = "tmp/story.id=#{begin
+      filename = "tmp/#{object_class_name}.id=#{begin
         id
       rescue StandardError
         'dunno'
@@ -201,6 +203,7 @@ module Genai
       [response, predicted_content]
     end
 
+    # Note: `self` needs to be a Story or a StoryParagraph 
     def ai_curl_images_by_content(content, opts = {})
       # options
       opts_debug = opts.fetch 'DEBUG', false
@@ -287,10 +290,10 @@ module Genai
       # puts 'prediction_size_minus_one: ', prediction_size_minus_one
       (0..prediction_size_minus_one).each do |ix|
         # puts "my_one_file[#{ix}] BEFORE: #{my_one_file}"
-        if is_a? Story
-          filename = _convert_base64_image_to_file(self, json_body, ix)
-        elsif is_a? StoryParagraph
-          filename = _convert_base64_image_to_file(story, json_body, ix)
+        if is_a?(Story)
+          filename = _convert_base64_image_to_file(self, "story", json_body, ix)
+        elsif is_a?(StoryParagraph)
+          filename = _convert_base64_image_to_file(self.story, "story_paragraph", json_body, ix)
         end
         next if filename.nil?
 
@@ -318,18 +321,29 @@ module Genai
       File.write('stories.yaml', output)
     end
 
-    def sample_invokation
+    def sample_invokation_text
       puts 'Now I doi a manual curl'
-      story_idea = "Write \"a kid story about Sebowski ' ' ci\"ao the Egyptologist teleported in ancient Egypt to meet the evil twin of Tutankhamen"
+      #story_idea = "Write \"a kid story about Sebowski ' ' ci\"ao the Egyptologist teleported in ancient Egypt to meet the evil twin of Tutankhamen"
+      story_idea = "Write a kid story about Sebowski the Egyptologist teleported in ancient Egypt to meet the evil twin of Tutankhamen"
       response, content = ai_curl_by_content(story_idea, PROJECT_ID, debug: true)
       puts "Content received: '''#{content}'''"
       # add_to_yaml_db(story_idea, content)
       puts '👍 Everything is ok. But Riccardo you should think about 🌍rewriting it in Terraform🌍'
       content
     end
+
+    def sample_invokation_image
+      puts 'Now I do a manual curl to download an image'
+      image_idea = "Siobhan is an Irish 5-year-old girl with red heair, freckles and green eyes"
+      #response, content = ai_curl_by_content(story_idea, PROJECT_ID, debug: true)
+      #puts "Content received: '''#{content}'''"
+      content
+    end
+    
+
   end
 end
 
 # extend Genai::AiplatformTextCurl
 # ai_curl_by_content('blah blah blah poo')
-# sample_invokation()
+# sample_invokation_text()

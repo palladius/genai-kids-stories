@@ -1,8 +1,23 @@
 # frozen_string_literal: true
 
+# create_table "kids", force: :cascade do |t|
+#   t.string "name"
+#   t.string "surname"
+#   t.string "nick"
+#   t.string "visual_description"
+#   t.boolean "is_male"
+#   t.date "date_of_birth"
+#   t.text "internal_info"
+#   t.integer "user_id"
+# end
+# Storage:
+# * `avatar` (with thumnb)
+
 FIXTURE_DIR ||= "#{Rails.root}/db/fixtures/images/".freeze
 
 class Kid < ApplicationRecord
+  include AiImageable
+
   # unique keys
   validates :nick, presence: true, uniqueness: { scope: :user_id }
   # has_one_attached :avatar, service: :local

@@ -9,14 +9,35 @@ module AiImageable
     #
     # This for SP
     def generate_one_genai_image_from_image_description!
-      raise 'generate_one_genai_image_from_image_description(): wrong class ' unless is_a?(StoryParagraph)
-
-      genai_compute_single_image!(p_image1)
+      return genai_compute_single_image!(p_image1) if is_a?(StoryParagraph)
+      return genai_compute_single_image!(:avatar) if is_a?(Kid)
+      raise "generate_one_genai_image_from_image_description(): wrong class: #{self.class} " unless is_a?(StoryParagraph)
     end
 
     def genai_compute_single_image!(model_attached_single_image, gcp_opts = {})
       extend Genai::AiplatformTextCurl
 
+      if model_attached_single_image.attached?
+        puts('genai_compute_single_image!(): pointless since I already have an attachment!')
+        return false
+      end
+
+      case self.class
+        when StoryParagraph
+          genai_input = genai_input_for_image # if SP
+          genai_output_size = 42 # you need to define it in SP
+          title = story.title
+          genai_output = original_text
+        when Kid
+          # Todo consider putting the code in the model itself, seems less stupid :)
+          # when "foo", "bar"
+        #   "It's either foo or bar"
+        # when String
+        #   "You passed a string"
+        else
+          raise "Unsupported class: #{self.class}"
+      end
+        
       if is_a? StoryParagraph
         genai_input = genai_input_for_image # if SP
         genai_output_size = 42 # you need to define it in SP
@@ -24,10 +45,6 @@ module AiImageable
         genai_output = original_text
       end
       # I get a lot of recursive on this - so better get out immediately
-      if model_attached_single_image.attached?
-        puts('genai_compute_single_image!(): pointless since I already have an attachment!')
-        return false
-      end
 
       puts("genai_compute_single_image!(opts=#{gcp_opts.to_s.first(25)}..): output-size=#{genai_output_size}")
       # self.append_notes "genai_compute_single_image called."
