@@ -31,6 +31,9 @@ steps:
    args: ['build', '-t', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories", '.']
    dir: .
 
+ - name: 'gcr.io/cloud-builders/docker'
+   args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories"]
+ 
 #  - name: 'ruby:3.2.0'
 #    id: 3 Ruby rake test ok if it fails
 #    args: ['rake || echo ok anyway']
