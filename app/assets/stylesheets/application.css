@@ -48,3 +48,12 @@ p.beautified-paragraph {
    text-overflow: ellipsis;
    max-width: 150px;
  }
+
+
+/* https://css-tricks.com/almanac/properties/i/initial-letter/ */
+/* .subhead {
+  initial-letter: 2;
+} */
+.subhead::first-letter {
+  initial-letter: 3;
+}
