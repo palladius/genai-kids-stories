@@ -38,12 +38,12 @@ module AiImageable
           raise "Unsupported class: #{self.class}"
       end
         
-      if is_a? StoryParagraph
-        genai_input = genai_input_for_image # if SP
-        genai_output_size = 42 # you need to define it in SP
-        title = story.title
-        genai_output = original_text
-      end
+      # if is_a? StoryParagraph
+      #   genai_input = genai_input_for_image # if SP
+      #   genai_output_size = 42 # you need to define it in SP
+      #   title = story.title
+      #   genai_output = original_text
+      # end
       # I get a lot of recursive on this - so better get out immediately
 
       puts("genai_compute_single_image!(opts=#{gcp_opts.to_s.first(25)}..): output-size=#{genai_output_size}")

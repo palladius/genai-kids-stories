@@ -50,7 +50,7 @@ rails g scaffold StoryParagraph \
      story:references \
      rating:integer
 
-rails g scaffold StoryTemplate \    
+rails g scaffold --force StoryTemplate \
     short_code:string \
     description:string \
     template:text \

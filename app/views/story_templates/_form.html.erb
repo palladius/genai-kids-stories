@@ -1,0 +1,42 @@
+<%= form_with(model: story_template) do |form| %>
+  <% if story_template.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(story_template.errors.count, "error") %> prohibited this story_template from being saved:</h2>
+
+      <ul>
+        <% story_template.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :short_code, style: "display: block" %>
+    <%= form.text_field :short_code %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.text_field :description %>
+  </div>
+
+  <div>
+    <%= form.label :template, style: "display: block" %>
+    <%= form.text_area :template %>
+  </div>
+
+  <div>
+    <%= form.label :internal_notes, style: "display: block" %>
+    <%= form.text_area :internal_notes %>
+  </div>
+
+  <div>
+    <%= form.label :user_id, style: "display: block" %>
+    <%= form.number_field :user_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Story templates</h1>
+
+<div id="story_templates">
+  <% @story_templates.each do |story_template| %>
+    <%= render story_template %>
+    <p>
+      <%= link_to "Show this story template", story_template %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New story template", new_story_template_path %>

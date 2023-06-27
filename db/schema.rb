@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_24_153308) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_27_172444) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -95,6 +95,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_24_153308) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["story_id"], name: "index_story_paragraphs_on_story_id"
+  end
+
+  create_table "story_templates", force: :cascade do |t|
+    t.string "short_code"
+    t.string "description"
+    t.text "template"
+    t.text "internal_notes"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

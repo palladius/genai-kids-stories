@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @story_template %>
+
+<div>
+  <%= link_to "Edit this story template", edit_story_template_path(@story_template) %> |
+  <%= link_to "Back to story templates", story_templates_path %>
+
+  <%= button_to "Destroy this story template", @story_template, method: :delete %>
+</div>

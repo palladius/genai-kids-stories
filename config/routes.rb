@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :story_templates
   resources :story_paragraphs
   get 'pages/index'
   get 'pages/about'
