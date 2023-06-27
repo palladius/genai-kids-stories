@@ -50,3 +50,7 @@ steps:
 #    dir: .
 
 tags: ['rails', 'genai', 'gh' , 'devrel' ]
+#images: 
+#- 'gcr.io/[PRODUCT_ID]/[CONTAINER_IMAGE]'
+# 15min for RoR :/
+timeout: 900s
