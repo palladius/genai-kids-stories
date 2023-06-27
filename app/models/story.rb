@@ -87,13 +87,73 @@ class Story < ApplicationRecord
     puts save_ok
   end
 
-  def paragraphs
+  def paragraphs_old
     # needs to remove '**Act 1**'
     genai_output.split("\n").reject { |c| c.length < 12 }.map { |x| x.chomp }
   rescue StandardError
     []
     # empty?
   end
+  def paragraphs
+    #paragraphs_old
+    smart_paragraphs(min_chunk_size=150)
+  end
+
+  def smart_paragraphs(min_chunk_size=200)
+    #TODO(ricc): split intelligently and a bit bigger chuinks
+    split_paragraphs_brd(genai_output, min_chunk_size)
+    #split_into_chunks_cg(genai_output, min_chunk_size)
+  end
+
+  # wrong
+  def split_paragraphs_brd(str, min_chunk_size)
+    paragraphs = []
+    current_paragraph = ""
+    str.each_line do |line|
+      if current_paragraph.length >= min_chunk_size
+        paragraphs << current_paragraph
+        current_paragraph = ""
+      end
+      current_paragraph += line
+    end
+    paragraphs << current_paragraph
+    #paragraphs
+    paragraphs.reject {|c| c.length < 5 }.map {|x| x.chomp }
+  end
+
+  def split_into_chunks_cg(str, min_chunk_size)
+    paragraphs = str.split("\n")
+    chunks = []
+  
+    current_chunk = ""
+    paragraphs.each do |paragraph|
+      if current_chunk.length + paragraph.length <= min_chunk_size
+        current_chunk += paragraph + "\n"
+      else
+        chunks << current_chunk.rstrip unless current_chunk.empty?
+        current_chunk = paragraph + "\n"
+      end
+    end
+    # ???
+    chunks << current_chunk.rstrip unless current_chunk.empty?
+    #chunks
+    chunks.reject {|c| c.length < 5 }.map {|x| x.chomp }
+  end
+  
+  # # Example usage:
+  # big_string = "Paragraph 1\nParagraph 2\nParagraph 3\nParagraph 4\nParagraph 5\nParagraph 6"
+  # chunks = split_into_chunks(big_string)
+  # puts chunks.inspect
+  # In this example, the split_into_chunks method takes a string as input and returns an array of chunks. It splits the string into paragraphs using the "\n" delimiter and then loops through the paragraphs. It keeps adding paragraphs to the current_chunk variable as long as the length of the chunk (including the current paragraph) does not exceed 200 characters. Once the length limit is reached, the current chunk is added to the chunks array, and a new chunk is started with the current paragraph.
+  
+  # The resulting chunks are stored in the chunks array, and in this example, we print the array using inspect. You can modify the code to suit your specific needs, such as storing the chunks in a variable or performing further processing on them.
+  
+  
+  
+  
+  
+  
+  
 
   def append_notes(str)
     self.internal_notes ||= '🌍'

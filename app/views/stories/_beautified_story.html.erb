@@ -28,7 +28,7 @@ https://www.inmotionhosting.com/support/website/website-design/align-float-image
     <div class='beautified_paragraph wrapper'  >
       <p  class="beautified-paragraph demo-2" >🔷
         <%= render_image_if_attached(p.p_image1, verbose: false , style: alternative_style, width: 100) %>
-        <%= p.translated_text %>
+        <%= raw p.translated_text %>
       <%#= p.original_text %>
         <%= p.flag %>
         </p>
