@@ -12,6 +12,8 @@ puts 'Creating a couple of test kids, completely randomic...'
 
 if CREATE_STORY_TEMPLATES 
  # StoryTemplate.create('blah')
+  puts 'TODO from fixtures YAML'
+  raise 'TODO implement me ricc :) i half baked one in the YAML'
 end
 create_kids = Kid.find_by_nick('AJ').nil?
 
