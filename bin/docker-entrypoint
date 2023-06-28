@@ -11,7 +11,8 @@ set -euo pipefail
 # This is what Cloud Run wants
 export PORT="${PORT:-8080}"
 # default is using postgres for DB + GCS for Storage
-export RAILS_ENV="${RAILS_ENV:-dev-on-gcp}"
+#export RAILS_ENV="${RAILS_ENV:-dev-on-gcp}"
+export RAILS_ENV="${RAILS_ENV:-production}"
 
 echo '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍'
 echo "👍👍👍👍👍👍👍👍👍👍 genai-kids-stories docker entrypoint 👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍"
@@ -31,22 +32,26 @@ if [ "${*}" == "./bin/rails server" ]; then
 fi
 
 if [ "${*}" == "" ]; then
-  echo '1. You were too lazy to give me any var. No probs, sit back and relax, Ricc will do it for you'
+  echo '01. You were too lazy to give me any var. No probs, sit back and relax, Ricc will do it for you'
   #echo ./bin/rails db:prepare
 
   # Great ideas from https://github.com/gilcierweb/rails-docker/blob/master/entrypoint.sh
   # Checking PostgreS is ready:
-  echo "2. Chekcing that postgreS is ready.."
+  echo "02. Chekcing that postgreS is ready.."
   while ! pg_isready -q -h $APP_DB_HOST -U $APP_DB_USER ; do
     echo "$(date) 🔋 waiting for PG DB ($APP_DB_HOST) to start.."
     sleep 2
   done
 
-  echo "3. Running database migrations..."
+  echo "03. Running database migrations..."
   bundle exec rails db:migrate 2>/dev/null || bundle exec rails db:create db:migrate
   #echo "Finished running database migrations."
 
-  echo "4. Deleting server.pid file..."
+  # TODO obly execute if needed (from ENV=prod or from RAILS_SERVE_STATIC_FILES ? )
+  echo "04. Assets precomp in PROD :)"
+  rails assets:precompile
+
+  echo "05. Deleting server.pid file..."
   rm -f /tmp/pids/server.pid
 
   echo "99. Finally starting rails server..."
