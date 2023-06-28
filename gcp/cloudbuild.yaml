@@ -8,9 +8,9 @@ options:
 
 
 steps:
- - name: 'bash'
-   id: 1 Bash RiccTest # Prova a vedere se bash aiuta con ENV
-   args: ['echo', "Scopiazzato PROJECT_ID='$PROJECT_ID'"]
+#  - name: 'bash'
+#    id: 1 Bash RiccTest # Prova a vedere se bash aiuta con ENV
+#    args: ['echo', "Scopiazzato PROJECT_ID='$PROJECT_ID'"]
 
 # - name: 'ruby:3.2.0'
 #   id: Ruby rake test
@@ -22,7 +22,6 @@ steps:
  - name: 'gcr.io/cloud-builders/docker'
    id: 2 Docker Build - to LATEST
    #args: ['build', '-t', "gcr.io/$PROJECT_ID/genai-kids-stories", '.']
-   #args: ['build', '-t', "gcr.io/ror-goldie/genai-kids-stories", '.']
    args: ['build', '-t', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories", '.']
    dir: .
 
@@ -30,18 +29,18 @@ steps:
    id: 3 Tag latest to vVERSION
    args:
     - 'tag'
-    - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories"
+    - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest"
     - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"
    dir: .
 
   #### DOCKER PUSH
 
  - name: 'gcr.io/cloud-builders/docker'
-   id: Docker push LATEST
-   args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories"]
+   id: Docker push CB LATEST
+   args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest"]
 
  - name: 'gcr.io/cloud-builders/docker'
-   id: Docker push vVERSION
+   id: Docker push vSHA
    args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"]
 
 images:
@@ -51,7 +50,8 @@ images:
 #2. But build is on ror-goldie, so trying this instead since CB weorks on steps 1/2!
 #   Yet it manages to fail finally :(
   #- "gcr.io/ror-goldie/genai-kids-stories"
-  - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories" # Artifact Repo!
+  - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest" # Artifact Repo!
+  - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"
 
 #docker tag "$MYAPP_DOCKER_IMAGE_WITH_VERSION" "$SKAFFOLD_DEFAULT_REPO/$MYAPP_DOCKER_IMAGE_WITH_VERSION"
 #docker tag "$MYAPP_DOCKER_IMAGE_WITH_VERSION" "$SKAFFOLD_DEFAULT_REPO/$MYAPP_DOCKER_IMAGE_NAME"
