@@ -1,0 +1,31 @@
+/*
+SO card: https://stackoverflow.com/questions/62992220/html-card-with-title-image-on-left-and-text-on-the-right
+*/
+
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 40%;
+  }
+  p{
+      margin-left:  3em;
+      padding-top: 1em;
+      margin-top: 1em;
+  }
+  .part2{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin: 1em;
+      padding: 1em;
+  }
+  h4{
+      margin: 1em;
+  }
+
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  b {
+    padding: 2px 16px;
+  }

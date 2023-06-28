@@ -45,7 +45,6 @@ Rails.application.configure do
   # Added for Devise by Ricc on 27jun23
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
-
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
@@ -63,6 +62,10 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
+
+  # Ricc added from https://dev.to/a_chris/rails-live-reloading-assets-1k9e
+  config.assets.compile = true
+  config.assets.digest = false
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true

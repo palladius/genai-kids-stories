@@ -2,6 +2,8 @@
 
 class ApplicationRecord < ActiveRecord::Base
   primary_abstract_class
+  # DEFLT for everyone: https://github.com/mislav/will_paginate
+  WillPaginate.per_page = 10
 
   def self.yellow(s)
     "\033[1;33m#{s}\033[0m"

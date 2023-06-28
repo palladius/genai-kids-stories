@@ -64,6 +64,10 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
+  # Ricc added from https://dev.to/a_chris/rails-live-reloading-assets-1k9e
+  config.assets.compile = true
+  config.assets.digest = false
+
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
