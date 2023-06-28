@@ -36,7 +36,8 @@ fi
 # No argument: plenty of actions.
 # 1 argument? Skip to it (for bash and other stuff)
 ##########################################################
-if [ "${*}" == "" ]; then
+# https://www.youtube.com/watch?v=frN4MU-8JNw
+if [ "${*}" == "" -o "${*}" == "echo activate omega13" ]; then
 
   echo '01. You were too lazy to give me any var. No probs, sit back and relax, Ricc will do it for you'
   #echo ./bin/rails db:prepare
@@ -82,7 +83,7 @@ if [ "${*}" == "" ]; then
   echo "🌱99.🌱 No arg given to entrypoint => Starting rails server..."
   rails s -b 0.0.0.0 -p "$PORT"
 else
-  echo "🌱99.🌱 Entrypoint 🌱 Executing now this command: '$@'"
+  echo "🌱99.🌱 Non-empty Entrypoint 🌱 Executing now this command: '$@'"
   exec "${@}"
 fi
 
