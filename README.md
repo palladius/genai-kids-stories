@@ -69,3 +69,14 @@ rails g scaffold --force StoryTemplate \
 1. `_RAILS_MASTER_KEY` set to `cat config/master.key`
 2. `_DANGEROUS_SA_JSON_VALUE` set to `cat private/sa.json`
 
+## Dockerization from M1
+
+According to https://beebom.com/how-fix-exec-user-process-caused-exec-format-error-linux/ :
+
+`docker buildx build --platform=linux/amd64 -t <image_name>:<version>-amd64 .`
+
+Then update your Docker file’s “FROM” statement using this syntax:
+
+`FROM --platform=linux/amd64 <base_image>:<version>`
+
+Not sure its that easy but.. happy to try someday.

@@ -3,10 +3,10 @@
 set -euo pipefail
 
 
-
+export ARCH=`arch` # arm64, amd64, ...
 export APP_VERSION="$(bin/version.sh)"
-export APP_IMAGE_LOCAL=genai-kids-stories
-export APP_IMAGE_LOCAL_WITH_VER=genai-kids-stories:v$APP_VERSION
+export APP_IMAGE_LOCAL="genai-kids-stories-$ARCH"
+export APP_IMAGE_LOCAL_WITH_VER="$APP_IMAGE_LOCAL":v$APP_VERSION
 
 export APP_IMAGE_REMOTE="$ARTIFACT_REPO/$APP_IMAGE_LOCAL"
 export APP_IMAGE_REMOTE_WITH_VER="$ARTIFACT_REPO/$APP_IMAGE_LOCAL_WITH_VER"
