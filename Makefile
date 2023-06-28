@@ -63,9 +63,6 @@ test:
 
 docker-build:
 	docker build -t "$(APP_NAME)":v`bin/version.sh` .
-# docker-build2:
-# 	docker build -f Dockerfile -t "$(APP_NAME):v`bin/version.sh`" .
-
 
 
 docker-run-bash-nobuild:
@@ -74,7 +71,6 @@ docker-run-bash-nobuild:
 # No such file or directory - gcloud
 docker-run-nobuild:
 	bin/docker-run-locally.sh
-# bundle exec rails s -b 0.0.0.0
 
 docker-run: docker-build docker-run-nobuild
 docker-run-bash: docker-build docker-run-bash-nobuild

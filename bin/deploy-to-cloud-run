@@ -8,9 +8,13 @@ function _fatal() {
 #source .envrc || _fatal 'Couldnt source this'
 set -euo pipefail
 
+DEPLOY_SCRIPT_VERSION="1.0a"
+
 VERSION=$(bin/version.sh)
 UPLOADED_IMAGE="$ARTIFACT_REPO/genai-kids-stories"
 UPLOADED_IMAGE_WITH_VER="$UPLOADED_IMAGE:latest"
+# could bne sha-`git rev-parse --short HEAD`
+
 CLOUDRUN_PROJECT_ID=${CLOUDRUN_PROJECT_ID:-ror-goldie}
 RAILS_ENV=${RAILS_ENV:-production}
 
@@ -38,16 +42,27 @@ else
 	export APP_DB_HOST="$DEV_DB_HOST"
 fi
 
-# 	--set-env-vars="DANGEROUS_SA_JSON_VALUE=$(cat private/sa.json | xargs)" \
+# 	--set-env-vars="DANGEROUS_SA_JSON_VALUE=^@^$(cat private/sa.json | xargs)" \
+# => genai-service-account
+# Make sure you save this as a secret to have CRun work fine
+# https://console.cloud.google.com/security/secret-manager/secret/genai-service-account/versions?e=-13802955&project=ror-goldie
+# projects/932724269481/secrets/genai-service-account
+# 1. You need to give access to the Compute SA READ to this value. then you're good to go.
+#    * Secret Manager Secret Accessor
+#    * to 932724269481-compute@developer.gserviceaccount.com
+# As seen in https://console.cloud.google.com/security/secret-manager/secret/genai-service-account/permissions?e=-13802955&project=ror-goldie
 
 set -x
-#--command="echo activate omega13" \
+#--command="echo activate omega13" # this is entrypoint - WRONG!
+# --????="" -> OK
 gcloud --project "$CLOUDRUN_PROJECT_ID" beta run deploy "genai-kids-stories-gcloud" \
    --image    "$UPLOADED_IMAGE_WITH_VER" \
    --platform managed \
    --region   "$REGION" \
    --set-env-vars='COLOR=yellow' \
+
    --set-env-vars='Description=created-from-gcloud-on-bin-folder' \
+   --set-env-vars="DEPLOY_SCRIPT_VERSION=${DEPLOY_SCRIPT_VERSION//[.]/-}" \
    --set-env-vars="TARGET=$HOSTNAME-command-line" \
    \
     --set-env-vars="RAILS_ENV=production" \
@@ -62,9 +77,14 @@ gcloud --project "$CLOUDRUN_PROJECT_ID" beta run deploy "genai-kids-stories-gclo
 	--set-env-vars="APP_DB_HOST=$APP_DB_HOST" \
 	--set-env-vars="GOOGLE_TRANSLATE_KEY=$GOOGLE_TRANSLATE_KEY" \
     \
-   --labels="env=semi-prod" \
+    --update-secrets=DANGEROUS_SA_JSON_VALUE=genai-service-account:latest \
+    \
+   --labels="env=prod" \
    --labels="ver=${VERSION//[.]/-}" \
    --allow-unauthenticated
+
+# Secrets
+# gcloud run deploy SERVICE --image IMAGE_URL --update-secrets=DANGEROUS_SA_JSON_VALUE=genai-service-account:latest
 
 # --allow-unauthenticated failes, and it tells you how to fix it.
 # Of course, this command WILL FAIL in google.com thingy.

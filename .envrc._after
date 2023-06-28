@@ -6,3 +6,4 @@
 
 export CLOUD_REGION="$REGION"
 export MODEL_ID=''
+
