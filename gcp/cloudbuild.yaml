@@ -25,14 +25,35 @@ steps:
 #   args: ['bundle', 'exec', 'rake', 'test']
 
  - name: 'gcr.io/cloud-builders/docker'
-   id: 2 Docker Build - the big deal
+   id: 2 Docker Build - to LATEST
    #args: ['build', '-t', "gcr.io/$PROJECT_ID/genai-kids-stories", '.']
    #args: ['build', '-t', "gcr.io/ror-goldie/genai-kids-stories", '.']
-   args: ['build', '-t', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:v`cat VERSION`", '.']
+   args: ['build', '-t', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories", '.']
    dir: .
 
  - name: 'gcr.io/cloud-builders/docker'
+   id: 3 Tag latest to vVERSION
+   args:
+    - 'tag'
+    - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories"
+    - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:v`cat VERSION`"
+   dir: .
+
+
+ - name: 'gcr.io/cloud-builders/docker'
+   id: Docker push LATEST
+   args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories"]
+ - name: 'gcr.io/cloud-builders/docker'
+   id: Docker push vVERSION
    args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:v`cat VERSION`"]
+
+#docker tag "$MYAPP_DOCKER_IMAGE_WITH_VERSION" "$SKAFFOLD_DEFAULT_REPO/$MYAPP_DOCKER_IMAGE_WITH_VERSION"
+#docker tag "$MYAPP_DOCKER_IMAGE_WITH_VERSION" "$SKAFFOLD_DEFAULT_REPO/$MYAPP_DOCKER_IMAGE_NAME"
+# and push with version
+#docker push "$SKAFFOLD_DEFAULT_REPO/$MYAPP_DOCKER_IMAGE_WITH_VERSION"
+# Now also push the latest.
+#docker push "$SKAFFOLD_DEFAULT_REPO/$MYAPP_DOCKER_IMAGE_NAME"
+
 
 #  - name: 'ruby:3.2.0'
 #    id: 3 Ruby rake test ok if it fails
