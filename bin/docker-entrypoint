@@ -10,6 +10,8 @@ set -euo pipefail
 # Setting smart defaults
 # This is what Cloud Run wants
 export PORT="${PORT:-8080}"
+# This GalaxyQuest quote enables the long
+export ACTIVATE_OMEGA13="${ACTIVATE_OMEGA13:-false}"
 # default is using postgres for DB + GCS for Storage
 #export RAILS_ENV="${RAILS_ENV:-dev-on-gcp}"
 export RAILS_ENV="${RAILS_ENV:-production}"
@@ -37,9 +39,13 @@ fi
 # 1 argument? Skip to it (for bash and other stuff)
 ##########################################################
 # https://www.youtube.com/watch?v=frN4MU-8JNw
-if [ "${*}" == "" -o "${*}" == "echo activate omega13" ]; then
+#ACTIVATE_OMEGA13=true
+if [ "${*}" == "" -o "${*}" == "echo activate omega13" -o "true" == "$ACTIVATE_OMEGA13" ]; then
+  echo '🌌🌌🌌🌌🌌🌌🌌🌌🌌🌌🌌'
+  echo '🌌 Omega13 enabled! 🌌'
+  echo '🌌🌌🌌🌌🌌🌌🌌🌌🌌🌌🌌'
 
-  echo '01. You were too lazy to give me any var. No probs, sit back and relax, Ricc will do it for you'
+  echo '01. [Ω13] You were too lazy to give me any var. No probs, sit back and relax, Ricc will do it for you'
   #echo ./bin/rails db:prepare
 
   # Great ideas from https://github.com/gilcierweb/rails-docker/blob/master/entrypoint.sh

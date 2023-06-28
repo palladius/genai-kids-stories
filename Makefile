@@ -73,7 +73,8 @@ docker-run-bash-nobuild:
 
 # No such file or directory - gcloud
 docker-run-nobuild:
-	bin/docker-run-locally.sh bundle exec rails s -b 0.0.0.0
+	bin/docker-run-locally.sh
+# bundle exec rails s -b 0.0.0.0
 
 docker-run: docker-build docker-run-nobuild
 docker-run-bash: docker-build docker-run-bash-nobuild
