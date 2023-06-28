@@ -206,6 +206,9 @@ GEM
     json (2.6.3)
     jwt (2.7.1)
     language_server-protocol (3.17.0.3)
+    listen (3.8.0)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
     lolcat (100.0.1)
       manpages (~> 0.6.1)
       optimist (~> 3.0.0)
@@ -289,6 +292,11 @@ GEM
     rails-html-sanitizer (1.6.0)
       loofah (~> 2.21)
       nokogiri (~> 1.14)
+    rails_live_reload (0.3.4)
+      listen
+      nio4r
+      railties
+      websocket-driver
     railties (7.0.5)
       actionpack (= 7.0.5)
       activesupport (= 7.0.5)
@@ -298,6 +306,9 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
+    rb-fsevent (0.11.2)
+    rb-inotify (0.10.1)
+      ffi (~> 1.0)
     regexp_parser (2.8.1)
     reline (0.3.5)
       io-console (~> 0.5)
@@ -410,6 +421,7 @@ DEPENDENCIES
   postgresql
   puma (~> 5.0)
   rails (~> 7.0.5)
+  rails_live_reload
   rubocop
   ruby-vips
   selenium-webdriver
