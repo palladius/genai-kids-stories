@@ -36,7 +36,7 @@ steps:
    args:
     - 'tag'
     - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories"
-    - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:v`cat VERSION`"
+    - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"
    dir: .
 
 
@@ -45,7 +45,7 @@ steps:
    args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories"]
  - name: 'gcr.io/cloud-builders/docker'
    id: Docker push vVERSION
-   args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:v`cat VERSION`"]
+   args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"]
 
 #docker tag "$MYAPP_DOCKER_IMAGE_WITH_VERSION" "$SKAFFOLD_DEFAULT_REPO/$MYAPP_DOCKER_IMAGE_WITH_VERSION"
 #docker tag "$MYAPP_DOCKER_IMAGE_WITH_VERSION" "$SKAFFOLD_DEFAULT_REPO/$MYAPP_DOCKER_IMAGE_NAME"
