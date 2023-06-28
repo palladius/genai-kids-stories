@@ -14,7 +14,7 @@
 #    updated_at: datetime)
 #
 # # POLYMORPHIC
-# p_images (many)
+# p_images (many)  Example which works: s.p_image1.attach(io: File.open('whiskers.png'), filename: :whiskers)
 # p_image1 (one)
 # p_image2 (one)
 # p_image3 (one)
@@ -42,6 +42,11 @@ class StoryParagraph < ApplicationRecord
   # DEV: easier to debug
   # after_save :after_creation_magic
   # after_save :after_creation_delayed_magic
+
+  ## MAGIC thing
+  def attach_file(_filename)
+    p_image1.attach(io: File.open(_filename), filename: _filename)
+  end
 
   def after_creation_delayed_magic
     delay.after_creation_magic

@@ -7,7 +7,13 @@ install:
 # not sure why,,,
 	bundle lock --add-platform aarch64-linux
 	brew install imagemagick
+	brew install vips
 	#sudo apt-get install imagemagick
+	# https://stackoverflow.com/questions/70849182/could-not-open-library-vips-42-could-not-open-library-libvips-42-dylib
+	#sudo apt-get install libvips-tools OPPURE libvips-dev E/O ruby-vips
+	# Alternatively: config.active_storage.variant_processor = :mini_magick
+	# https://packages.debian.org/source/buster/vips
+
 
 # .PHONY: help
 # help: ## Shows all targets and help from the Makefile (this message).

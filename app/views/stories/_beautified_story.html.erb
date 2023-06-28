@@ -27,8 +27,8 @@ https://www.inmotionhosting.com/support/website/website-design/align-float-image
   %>
     <div class='beautified_paragraph wrapper'  >
       <p  class="beautified-paragraph demo-2 subhead" >
-        <%= render_image_if_attached(p.p_image1, verbose: false , style: alternative_style, width: 100) %>
-        <%= raw p.translated_text %>
+        <%= render_image_if_attached(p.p_image1, verbose: false , style: alternative_style, width: 200) %>
+        <%= raw( p.translated_text.gsub(/\*\*(A.* [1-5])\*\*/) { "<span class='act15' ><b><u>#{Regexp.last_match(1)}</u></b></span><br/><br/>" }.gsub('**','') )%>
       <%#= p.original_text %>
         <%= p.flag %>
         </p>
