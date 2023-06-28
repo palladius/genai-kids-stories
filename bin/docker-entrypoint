@@ -22,7 +22,6 @@ echo "👍 GOOGLE_TRANSLATE_KEY (redacted):    '${GOOGLE_TRANSLATE_KEY:1:20}..'"
 echo "👍 DANGEROUS_SA_JSON_VALUE (redacted): '$(echo -en ${DANGEROUS_SA_JSON_VALUE:1:50})..'"
 echo '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍'
 
-exit 42
 # If running the rails server then create or migrate existing database
 if [ "${*}" == "./bin/rails server" ]; then
   ./bin/rails db:prepare
@@ -30,8 +29,25 @@ if [ "${*}" == "./bin/rails server" ]; then
 fi
 
 if [ "${*}" == "" ]; then
-  echo 'You were too lazy to give me any var. No probs, sit back and relax, Ricc will do it for you'
+  echo '1. You were too lazy to give me any var. No probs, sit back and relax, Ricc will do it for you'
   #echo ./bin/rails db:prepare
+
+  # Great ideas from https://github.com/gilcierweb/rails-docker/blob/master/entrypoint.sh
+  # Checking PostgreS is ready:
+  echo "2. Chekcing that postgreS is ready.."
+  while ! pg_isready -q -h $APP_DB_HOST -U $APP_DB_USER ; do
+    echo "$(date) 🔋 waiting for PG DB ($APP_DB_HOST) to start.."
+    sleep 2
+  done
+
+  echo "3. Running database migrations..."
+  bundle exec rails db:migrate 2>/dev/null || bundle exec rails db:create db:migrate
+  #echo "Finished running database migrations."
+
+  echo "4. Deleting server.pid file..."
+  rm -f /tmp/pids/server.pid
+
+  echo "99. Finally starting rails server..."
   rails s -b 0.0.0.0 -p "$PORT"
   exit 0
 fi
