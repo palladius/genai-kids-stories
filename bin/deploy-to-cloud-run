@@ -41,9 +41,9 @@ fi
 # 	--set-env-vars="DANGEROUS_SA_JSON_VALUE=$(cat private/sa.json | xargs)" \
 
 set -x
+#--command="echo activate omega13" \
 gcloud --project "$CLOUDRUN_PROJECT_ID" beta run deploy "genai-kids-stories-gcloud" \
    --image    "$UPLOADED_IMAGE_WITH_VER" \
-   --command="echo activate omega13" \
    --platform managed \
    --region   "$REGION" \
    --set-env-vars='COLOR=yellow' \
