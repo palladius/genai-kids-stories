@@ -119,7 +119,9 @@ genai-test-gcs: private/sa.json
 	echo 'Story.last.attach_test_image' | rails c
 
 gsutil-images-list:
-	gsutil ls gs://$(GCS_BUCKET)/
+	gsutil ls gs://$(GCS_BUCKET)/ | tee .tmp.gsutil-list
+	@echo -en 'Total objects: '
+	@cat .tmp.gsutil-list  | wc -l
 
 lint:
 	rubocop --lint app/
