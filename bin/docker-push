@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -euo pipefail
+
+
+
+export APP_VERSION="$(bin/version.sh)"
+export APP_IMAGE_LOCAL=genai-kids-stories
+export APP_IMAGE_LOCAL_WITH_VER=genai-kids-stories:v$APP_VERSION
+
+export APP_IMAGE_REMOTE="$ARTIFACT_REPO/$APP_IMAGE_LOCAL"
+export APP_IMAGE_REMOTE_WITH_VER="$ARTIFACT_REPO/$APP_IMAGE_LOCAL_WITH_VER"
+
+if docker image inspect "$APP_IMAGE_LOCAL_WITH_VER" ; then
+    echo 👍 Image APP_IMAGE_LOCAL_WITH_VER seems to exist. Proceeding
+else
+    echo 😬 Image APP_IMAGE_LOCAL_WITH_VER donest exist. Building
+    make docker-build
+fi
+
+set -x
+
+# Tag version and latest..
+docker tag "$APP_IMAGE_LOCAL_WITH_VER" "$APP_IMAGE_REMOTE"
+docker tag "$APP_IMAGE_LOCAL_WITH_VER" "$APP_IMAGE_REMOTE_WITH_VER"
+
+# and push with version
+docker push "$APP_IMAGE_REMOTE_WITH_VER"
+# Now also push the latest.
+docker push "$APP_IMAGE_REMOTE"
+
+echo done.

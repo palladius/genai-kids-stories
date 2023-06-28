@@ -83,6 +83,9 @@ docker-run-nobuild:
 docker-run: docker-build docker-run-nobuild
 docker-run-bash: docker-build docker-run-bash-nobuild
 
+docker-push:
+# check for build is inside..
+	bin/docker-push
 #PHONY: test
 tests:
 #	rails db:migrate RAILS_ENV=test

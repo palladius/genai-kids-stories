@@ -18,7 +18,7 @@ RUN ls -la /sa.json
 # Install libvips for Active Storage preview support
 # TODO ricc: test `google-cloud-cli` https://cloud.google.com/sdk/docs/install?hl=it#deb
 RUN apt-get update -qq && \
-    apt-get install -y build-essential libvips direnv postgresql-client && \
+    apt-get install -y build-essential libvips direnv postgresql-client libvips-tools && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man
 

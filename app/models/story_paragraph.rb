@@ -44,8 +44,12 @@ class StoryParagraph < ApplicationRecord
   # after_save :after_creation_delayed_magic
 
   ## MAGIC thing
-  def attach_file(_filename)
-    p_image1.attach(io: File.open(_filename), filename: _filename)
+  def attach(_filename)
+    attach!(_filename) unless p_image1.attached?
+  end
+
+  def attach!(_filename)
+    p_image1.attach(io: File.open(File.expand_path(_filename)), filename: _filename)
   end
 
   def after_creation_delayed_magic
