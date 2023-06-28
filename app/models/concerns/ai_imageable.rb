@@ -11,7 +11,9 @@ module AiImageable
     def generate_one_genai_image_from_image_description!
       return genai_compute_single_image!(p_image1) if is_a?(StoryParagraph)
       return genai_compute_single_image!(:avatar) if is_a?(Kid)
-      raise "generate_one_genai_image_from_image_description(): wrong class: #{self.class} " unless is_a?(StoryParagraph)
+      return if is_a?(StoryParagraph)
+
+      raise "generate_one_genai_image_from_image_description(): wrong class: #{self.class} "
     end
 
     def genai_compute_single_image!(model_attached_single_image, gcp_opts = {})
@@ -23,21 +25,23 @@ module AiImageable
       end
 
       case self.class
-        when StoryParagraph
-          genai_input = genai_input_for_image # if SP
-          genai_output_size = 42 # you need to define it in SP
-          title = story.title
-          genai_output = original_text
-        when Kid
-          # Todo consider putting the code in the model itself, seems less stupid :)
-          # when "foo", "bar"
+      when StoryParagraph
+        genai_input = genai_input_for_image # if SP
+        genai_output_size = 42 # you need to define it in SP
+        title = story.title
+        genai_output = original_text
+      when Kid
+        puts 'TODO'
+        # Todo consider putting the code in the model itself, seems less stupid :)
+        # when "foo", "bar"
         #   "It's either foo or bar"
         # when String
         #   "You passed a string"
-        else
-          raise "Unsupported class: #{self.class}"
+      else
+        puts "Unsupported class: #{self.class} (is=-a StoryParagraph ? #{is_a? StoryParagraph})"
+        return
       end
-        
+
       # if is_a? StoryParagraph
       #   genai_input = genai_input_for_image # if SP
       #   genai_output_size = 42 # you need to define it in SP
