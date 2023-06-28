@@ -27,7 +27,7 @@ class StoryParagraph < ApplicationRecord
   validates :story_index, numericality: { in: 1..100 }
   validates :rating, numericality: { in: 1..5 }, allow_nil: true
   validates :language, presence: true,
-                       format: { with: /\A(it|es|pt|de|en|ru|jp)\z/i, message: 'We only support ITalian, Spanish, portuguese, german, english, Russian and Japanese now. Exactly, all my colleagues are 🇫🇷 :)' }
+                       format: { with: /\A(it|es|fr|pt|de|en|ru|jp)\z/i, message: 'We only support ITalian, Spanish, portuguese, german, english, Russian and Japanese now. Ok now also 🇫🇷 :)' }
 
   # image attachments. Not sure whether to force 4 or ahev any. 4 would be easy for frontend (square with 4)
   has_many_attached :p_images # , service: :google
@@ -57,9 +57,6 @@ class StoryParagraph < ApplicationRecord
   end
 
   def flag
-    # case language
-    # when 'it': '🇫🇷'
-    # end
     case language
     when 'it'
       '🇮🇹'
@@ -75,18 +72,13 @@ class StoryParagraph < ApplicationRecord
       '🇧🇷'
     when 'ru'
       '🇷🇺'
-
-    # when 'foo', 'bar'
-    #   "It's either foo or bar"
-    # when String
-    #   'You passed a string'
     else
       "You gave me #{language} -- I have no idea what to do with that."
     end
   end
 
   def self.available_lanugages
-    %w[it es jp ru de pt].sort
+    %w[it de es fr jp pt ru].sort
   end
 
   def self.emoji
