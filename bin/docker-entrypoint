@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# Ricc: copied from https://fly.io/ruby-dispatch/rails-on-docker/
-# Also has a nice Dockerfile - worth copying
+# Ricc: Initially copied from https://fly.io/ruby-dispatch/rails-on-docker/
+#   (Also has a nice Dockerfile - worth copying)
+# Also inspired by:
+# - https://github.com/gilcierweb/rails-docker/blob/master/entrypoint.sh
 
 set -euo pipefail
 

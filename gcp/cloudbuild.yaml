@@ -13,8 +13,8 @@ images:
 #2. But build is on ror-goldie, so trying this instead since CB weorks on steps 1/2!
 #   Yet it manages to fail finally :(
   #- "gcr.io/ror-goldie/genai-kids-stories"
-  - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories"
-  
+  - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:v`cat VERSION`"
+
 steps:
  - name: 'bash'
    id: 1 Bash RiccTest # Prova a vedere se bash aiuta con ENV
@@ -28,12 +28,12 @@ steps:
    id: 2 Docker Build - the big deal
    #args: ['build', '-t', "gcr.io/$PROJECT_ID/genai-kids-stories", '.']
    #args: ['build', '-t', "gcr.io/ror-goldie/genai-kids-stories", '.']
-   args: ['build', '-t', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories", '.']
+   args: ['build', '-t', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:v`cat VERSION`", '.']
    dir: .
 
  - name: 'gcr.io/cloud-builders/docker'
-   args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories"]
- 
+   args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:v`cat VERSION`"]
+
 #  - name: 'ruby:3.2.0'
 #    id: 3 Ruby rake test ok if it fails
 #    args: ['rake || echo ok anyway']
@@ -53,7 +53,7 @@ steps:
 #    dir: .
 
 tags: ['rails', 'genai', 'gh' , 'devrel' ]
-#images: 
+#images:
 #- 'gcr.io/[PRODUCT_ID]/[CONTAINER_IMAGE]'
 # 15min for RoR :/
 timeout: 900s
