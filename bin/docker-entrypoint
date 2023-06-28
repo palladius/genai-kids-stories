@@ -31,17 +31,24 @@ if [ "${*}" == "./bin/rails server" ]; then
   # Then continue...
 fi
 
-#if [ "${*}" == "" ]; then
+
+##########################################################
+# No argument: plenty of actions.
+# 1 argument? Skip to it (for bash and other stuff)
+##########################################################
+if [ "${*}" == "" ]; then
+
   echo '01. You were too lazy to give me any var. No probs, sit back and relax, Ricc will do it for you'
   #echo ./bin/rails db:prepare
 
   # Great ideas from https://github.com/gilcierweb/rails-docker/blob/master/entrypoint.sh
   # Checking PostgreS is ready:
-  echo "02. Chekcing that postgreS is ready.."
+  echo "02. Checking that postgreS is ready.."
   while ! pg_isready -q -h $APP_DB_HOST -U $APP_DB_USER ; do
     echo "$(date) 🔋 waiting for PG DB ($APP_DB_HOST) to start.."
     sleep 2
   done
+  echo '👍 PostgreS works!'
 
 
   # TODO obly execute if needed (from ENV=prod or from RAILS_SERVE_STATIC_FILES ? )
@@ -55,26 +62,28 @@ fi
   echo "06. Setting up gcloud (TODO remove)"
   #echo TODO gcloud config set account  TODOricc
 #  if [ ! -f /sa.json ] ; then
+  ls -al /sa.json
   if [ ! -s /sa.json ] ; then # file not empty
    echo "$DANGEROUS_SA_JSON_VALUE" > /sa.json
-   echo "File /sa.json just created."
+   echo "👍 File /sa.json just created."
   else
-    echo POintless. File /sa.json already present
+    echo Pointless. File /sa.json already present
   fi
   gcloud auth activate-service-account --key-file  /sa.json
   gcloud config configurations list
+  gcloud auth print-access-token >/dev/null
+  echo '👍 gcloud auth print-access-token succesful!!!'
 
 
   echo "13. Running database migrations AFTER setting up gcloud..."
   bundle exec rails db:migrate 2>/dev/null || bundle exec rails db:create db:migrate
-  echo ".. Finished running database migrations."
+  echo "👍.. Finished running database migrations."
 
-
-  echo "99. Finally starting rails server..."
+  echo "🌱99.🌱 No arg given to entrypoint => Starting rails server..."
   rails s -b 0.0.0.0 -p "$PORT"
- # exit 0
-#fi
+else
+  echo "🌱99.🌱 Entrypoint 🌱 Executing now this command: '$@'"
+  exec "${@}"
+fi
 
-# else
-echo "🌱 Entrypoint 🌱 Executing now this command: '$@'"
-exec "${@}"
+echo "Exiting entrypoint succesfully. What a ride!"

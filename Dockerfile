@@ -10,6 +10,7 @@ WORKDIR /rails
 # Note this is USELESS since the var is not passed. It would be better NOT to pass and have entrypoint create it :)
 # Needs to be EMPTY for entrypoint to catch up
 RUN echo -en "$DANGEROUS_SA_JSON_VALUE" > /sa.json
+# for debug
 RUN ls -la /sa.json
 
 # Install libvips for Active Storage preview support
