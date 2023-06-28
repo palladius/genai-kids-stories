@@ -14,7 +14,7 @@ https://stackoverflow.com/questions/2156712/how-to-float-3-divs-side-by-side-usi
 <!--             distance_of_time_in_words(from_time, to_time)-->
 
       <div class="part2">
-        <%= image_tag(story.cover_image, alt: "avatar", style: "width:100%") %>
+        <%= image_tag(story.cover_image, alt: "avatar", style: "width:100%") if story.cover_image.attached? %>
         <h4> <%= story.cleaned_up_title %></h4>
         <i><%= distance_of_time_in_words(story.updated_at, Time.now) %> ago</i>
       </div>
