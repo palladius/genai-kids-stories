@@ -30,5 +30,8 @@ module GenaiKidsStories
     config.hosts << 'derek.zrh.corp.google.com'
     config.hosts << 'derek.zrh'
     config.hosts << 'localhost'
+    config.hosts << 'genai-kids-stories-manhouse-cdlu26pd4q-lz.a.run.app'
+    config.hosts << /genai-kids-stories-.*\.a\.run\.app/
+    config.hosts << /.*\.palladius\.it/
   end
 end
