@@ -10,15 +10,7 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
-dev-on-gcp: # This use GCP for Rails Storage and Pgsql for DB
-  adapter: postgresql
-  #encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 3000
-  database: <%= ENV['APP_DB_NAME'] %>
-  username: <%= ENV['APP_DB_USER'] %>
-  password: <%= ENV['APP_DB_PASS'] %>
-  host: <%= ENV['APP_DB_HOST'] %>
+
 
 development:
   <<: *default
@@ -35,12 +27,33 @@ test:
 #  <<: *default
 #  database: db/production.sqlite3
 #production:
+
+####################################################################################################
+# Note: dev and prod are configured with SAME name but then we provide different KEYS to those same env vars :)
+# Eg:
+# export DEV_DB_NAME='genai-kids-stories-db'
+# export PROD_DB_NAME='genai-kids-stories-db-prod'
+####################################################################################################
+dev-on-gcp: # This use GCP for Rails Storage and Pgsql for DB
+  adapter: postgresql
+  #encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 3000
+  database: <%= ENV['APP_DB_NAME'] %>
+  username: <%= ENV['APP_DB_USER'] %>
+  password: <%= ENV['APP_DB_PASS'] %>
+  host: <%= ENV['APP_DB_HOST'] %>
+
 production: # This use GCP for Rails Storage and Pgsql for DB
   adapter: postgresql
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 10 } %>
   timeout: 5000
-  database: <%= ENV['PROD_DB_NAME'] %>
-  username: <%= ENV['PROD_DB_USER'] %>
-  password: <%= ENV['PROD_DB_PASS'] %>
-  host: <%= ENV['PROD_DB_HOST'] %>
+  database: <%= ENV['APP_DB_NAME'] %>
+  username: <%= ENV['APP_DB_USER'] %>
+  password: <%= ENV['APP_DB_PASS'] %>
+  host: <%= ENV['APP_DB_HOST'] %>
+  # database: <%= ENV['PROD_DB_NAME'] %>
+  # username: <%= ENV['PROD_DB_USER'] %>
+  # password: <%= ENV['PROD_DB_PASS'] %>
+  # host: <%= ENV['PROD_DB_HOST'] %>
 
