@@ -48,10 +48,10 @@ production: # This use GCP for Rails Storage and Pgsql for DB
   adapter: postgresql
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 10 } %>
   timeout: 5000
-  database: <%= ENV['APP_DB_NAME'] %>
-  username: <%= ENV['APP_DB_USER'] %>
-  password: <%= ENV['APP_DB_PASS'] %>
-  host: <%= ENV['APP_DB_HOST'] %>
+  database: <%= ENV['APP_DB_NAME'] || ENV['PROD_DB_NAME'] %>
+  username: <%= ENV['APP_DB_USER'] || ENV['PROD_DB_USER']  %>
+  password: <%= ENV['APP_DB_PASS'] || ENV['PROD_DB_PASS'] %>
+  host: <%= ENV['APP_DB_HOST'] || ENV['PROD_DB_HOST'] %>
   # database: <%= ENV['PROD_DB_NAME'] %>
   # username: <%= ENV['PROD_DB_USER'] %>
   # password: <%= ENV['PROD_DB_PASS'] %>
