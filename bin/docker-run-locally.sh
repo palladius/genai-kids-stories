@@ -22,6 +22,7 @@ docker run -it -p 30080:8080 \
 		-e APP_DB_PASS="$APP_DB_PASS" \
 		-e APP_DB_HOST="$APP_DB_HOST" \
 		-e APP_VERSION="$APP_VERSION" \
+		-e DANGEROUS_SA_JSON_VALUE="$DANGEROUS_SA_JSON_VALUE" \
 		-e GOOGLE_TRANSLATE_KEY="$GOOGLE_TRANSLATE_KEY" \
 		 "$APP_NAME":v`bin/version.sh` \
 		"$@"

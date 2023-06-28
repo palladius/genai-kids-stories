@@ -1,19 +1,11 @@
 ###########################################
-# Ciao, sono                      ROOT/rails/cloudbuild-trigger.yaml
-# Ciao, sono  invocato da un trigger manuale che sta qui:
-# https://console.cloud.google.com/cloud-build/triggers/edit/3ea0601e-3544-4385-ab5a-f4c7f7aceb4c?hl=IT&project=ror-goldie
+# Hi Riccardo, here's where Im invoked: https://console.cloud.google.com/cloud-build/triggers/edit/3ea0601e-3544-4385-ab5a-f4c7f7aceb4c?hl=IT&project=ror-goldie
+# See CloudBuild samples: https://github.com/GoogleCloudPlatform/cloud-build-samples/blob/main/run-example-builddeploy/cloudbuild.yaml
 ###########################################
 timeout: 1200s
 options:
   machineType: 'N1_HIGHCPU_8'
-images:
-#1. These are ricc-genai
-#  - "gcr.io/$PROJECT_ID/genai-kids-stories"
-#  - "europe-north1-docker.pkg.dev/$PROJECT_ID/genai"
-#2. But build is on ror-goldie, so trying this instead since CB weorks on steps 1/2!
-#   Yet it manages to fail finally :(
-  #- "gcr.io/ror-goldie/genai-kids-stories"
-  - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories"
+
 
 steps:
  - name: 'bash'
@@ -21,8 +13,11 @@ steps:
    args: ['echo', "Scopiazzato PROJECT_ID='$PROJECT_ID'"]
 
 # - name: 'ruby:3.2.0'
-#   id: 2 Ruby rake test
+#   id: Ruby rake test
 #   args: ['bundle', 'exec', 'rake', 'test']
+
+
+  #### DOCKER BUILD
 
  - name: 'gcr.io/cloud-builders/docker'
    id: 2 Docker Build - to LATEST
@@ -39,13 +34,24 @@ steps:
     - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"
    dir: .
 
+  #### DOCKER PUSH
 
  - name: 'gcr.io/cloud-builders/docker'
    id: Docker push LATEST
    args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories"]
+
  - name: 'gcr.io/cloud-builders/docker'
    id: Docker push vVERSION
    args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"]
+
+images:
+#1. These are ricc-genai
+#  - "gcr.io/$PROJECT_ID/genai-kids-stories"
+#  - "europe-north1-docker.pkg.dev/$PROJECT_ID/genai"
+#2. But build is on ror-goldie, so trying this instead since CB weorks on steps 1/2!
+#   Yet it manages to fail finally :(
+  #- "gcr.io/ror-goldie/genai-kids-stories"
+  - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories" # Artifact Repo!
 
 #docker tag "$MYAPP_DOCKER_IMAGE_WITH_VERSION" "$SKAFFOLD_DEFAULT_REPO/$MYAPP_DOCKER_IMAGE_WITH_VERSION"
 #docker tag "$MYAPP_DOCKER_IMAGE_WITH_VERSION" "$SKAFFOLD_DEFAULT_REPO/$MYAPP_DOCKER_IMAGE_NAME"
