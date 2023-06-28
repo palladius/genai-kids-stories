@@ -45,7 +45,7 @@ if [ "${*}" == "" ]; then
 
   echo "03. Running database migrations..."
   bundle exec rails db:migrate 2>/dev/null || bundle exec rails db:create db:migrate
-  #echo "Finished running database migrations."
+  echo ".. Finished running database migrations."
 
   # TODO obly execute if needed (from ENV=prod or from RAILS_SERVE_STATIC_FILES ? )
   echo "04. Assets precomp in PROD :)"
@@ -53,6 +53,19 @@ if [ "${*}" == "" ]; then
 
   echo "05. Deleting server.pid file..."
   rm -f /tmp/pids/server.pid
+
+  # I pray Ill be able soon to remove this and use APIs instead of gcloud :)
+  echo "06. Setting up gcloud (TODO remove)"
+  #echo TODO gcloud config set account  TODOricc
+#  if [ ! -f /sa.json ] ; then
+  if [ ! -s /sa.json ] ; then # file not empty
+   echo "$DANGEROUS_SA_JSON_VALUE" > /sa.json
+   echo "File /sa.json just created."
+  else
+    echo POintless. File /sa.json already present
+  fi
+  gcloud auth activate-service-account --key-file  /sa.json
+  gcloud config configurations list
 
   echo "99. Finally starting rails server..."
   rails s -b 0.0.0.0 -p "$PORT"
