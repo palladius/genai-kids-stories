@@ -76,6 +76,10 @@ if [ "${*}" == "" -o "${*}" == "echo activate omega13" -o "true" == "$ACTIVATE_O
   else
     echo Pointless. File /sa.json already present
   fi
+  # if [ -d /rails/private/ ]; then
+  #   # Dockerized version...
+  #    echo "$DANGEROUS_SA_JSON_VALUE" > /rails/private/sa.json
+  # fi
   gcloud auth activate-service-account --key-file  /sa.json
   gcloud config configurations list
   gcloud auth print-access-token >/dev/null

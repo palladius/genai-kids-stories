@@ -23,8 +23,9 @@ set -x
 
 # i provide both DEV and PROD :)
 docker run -it -p 30080:8080 \
-		-e PROJECT_ID="$PROJECT_ID" \
         -e RAILS_ENV="$RAILS_ENV" \
+		-e PROJECT_ID="$PROJECT_ID" \
+		-e GCS_BUCKET="$GCS_BUCKET" \
 		-e APP_VERSION="$APP_VERSION" \
 		-e RAILS_MASTER_KEY="$(cat config/master.key)"  \
 		-e APPLICATION_DEFAULT_CREDENTIALS="/sa.json" \
