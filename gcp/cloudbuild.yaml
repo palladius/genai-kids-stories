@@ -13,7 +13,7 @@ images:
 #2. But build is on ror-goldie, so trying this instead since CB weorks on steps 1/2!
 #   Yet it manages to fail finally :(
   #- "gcr.io/ror-goldie/genai-kids-stories"
-  - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:v`cat VERSION`"
+  - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories"
 
 steps:
  - name: 'bash'
