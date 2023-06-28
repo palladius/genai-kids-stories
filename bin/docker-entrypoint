@@ -31,7 +31,7 @@ if [ "${*}" == "./bin/rails server" ]; then
   # Then continue...
 fi
 
-if [ "${*}" == "" ]; then
+#if [ "${*}" == "" ]; then
   echo '01. You were too lazy to give me any var. No probs, sit back and relax, Ricc will do it for you'
   #echo ./bin/rails db:prepare
 
@@ -43,9 +43,6 @@ if [ "${*}" == "" ]; then
     sleep 2
   done
 
-  echo "03. Running database migrations..."
-  bundle exec rails db:migrate 2>/dev/null || bundle exec rails db:create db:migrate
-  echo ".. Finished running database migrations."
 
   # TODO obly execute if needed (from ENV=prod or from RAILS_SERVE_STATIC_FILES ? )
   echo "04. Assets precomp in PROD :)"
@@ -67,10 +64,16 @@ if [ "${*}" == "" ]; then
   gcloud auth activate-service-account --key-file  /sa.json
   gcloud config configurations list
 
+
+  echo "13. Running database migrations AFTER setting up gcloud..."
+  bundle exec rails db:migrate 2>/dev/null || bundle exec rails db:create db:migrate
+  echo ".. Finished running database migrations."
+
+
   echo "99. Finally starting rails server..."
   rails s -b 0.0.0.0 -p "$PORT"
-  exit 0
-fi
+ # exit 0
+#fi
 
 # else
 echo "🌱 Entrypoint 🌱 Executing now this command: '$@'"
