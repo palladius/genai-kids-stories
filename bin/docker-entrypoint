@@ -3,9 +3,39 @@
 # Ricc: copied from https://fly.io/ruby-dispatch/rails-on-docker/
 # Also has a nice Dockerfile - worth copying
 
+set -euo pipefail
+
+# Setting smart defaults
+# This is what Cloud Run wants
+export PORT="${PORT:-8080}"
+# default is using postgres for DB + GCS for Storage
+export RAILS_ENV="${RAILS_ENV:-dev-on-gcp}"
+
+echo '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍'
+echo "👍👍👍👍👍👍👍👍👍👍 genai-kids-stories docker entrypoint 👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍"
+echo '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍'
+echo "👍 PORT:                               '$PORT'"
+echo "👍 PROJECT_ID:                         '$PROJECT_ID'"
+echo "👍 APP_VERSION:                        '$APP_VERSION'"
+echo "👍 RAILS_ENV:                          '$RAILS_ENV'"
+echo "👍 GOOGLE_TRANSLATE_KEY (redacted):    '${GOOGLE_TRANSLATE_KEY:1:20}..'"
+echo "👍 DANGEROUS_SA_JSON_VALUE (redacted): '$(echo -en ${DANGEROUS_SA_JSON_VALUE:1:50})..'"
+echo '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍'
+
+exit 42
 # If running the rails server then create or migrate existing database
 if [ "${*}" == "./bin/rails server" ]; then
   ./bin/rails db:prepare
+  # Then continue...
 fi
 
+if [ "${*}" == "" ]; then
+  echo 'You were too lazy to give me any var. No probs, sit back and relax, Ricc will do it for you'
+  #echo ./bin/rails db:prepare
+  rails s -b 0.0.0.0 -p "$PORT"
+  exit 0
+fi
+
+# else
+echo "🌱 Entrypoint 🌱 Executing now this command: '$@'"
 exec "${@}"
