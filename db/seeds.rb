@@ -6,14 +6,14 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-CREATE_STORY_TEMPLATES = true 
+CREATE_STORY_TEMPLATES = true
 
 puts 'Creating a couple of test kids, completely randomic...'
 
-if CREATE_STORY_TEMPLATES 
- # StoryTemplate.create('blah')
+if CREATE_STORY_TEMPLATES
+  # StoryTemplate.create('blah')
   puts 'TODO from fixtures YAML'
-  raise 'TODO implement me ricc :) i half baked one in the YAML'
+  # raise 'TODO implement me ricc :) i half baked one in the YAML'
 end
 create_kids = Kid.find_by_nick('AJ').nil?
 

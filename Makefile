@@ -29,6 +29,16 @@ install:
 run-local: # runs locally after starting a daemon for delayed jobs..
 	make delayed-jobs-daemon &
 	bundle exec rails s -b 0.0.0.0
+run-local-prod: # runs locally after starting a daemon for delayed jobs..
+	RAILS_LOG_TO_STDOUT="1" \
+    RAILS_SERVE_STATIC_FILES="true" \
+    RAILS_ENV="production" \
+    BUNDLE_WITHOUT="development" \
+	APP_DB_NAME="$(PROD_DB_NAME)" \
+	APP_DB_USER="$(PROD_DB_USER)" \
+	APP_DB_PASS="$(PROD_DB_PASS)" \
+	APP_DB_HOST="$(PROD_DB_HOST)" \
+	bundle exec rails s -b 0.0.0.0
 
 run-local-dev-on-gcp:
 	RAILS_ENV='dev-on-gcp' make delayed-jobs-daemon &
