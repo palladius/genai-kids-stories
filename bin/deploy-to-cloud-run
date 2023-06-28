@@ -1,0 +1,75 @@
+#!/bin/bash
+
+function _fatal() {
+    echo "[FATAL] $*" >&1
+    exit 42
+}
+
+#source .envrc || _fatal 'Couldnt source this'
+set -euo pipefail
+
+VERSION=$(bin/version.sh)
+UPLOADED_IMAGE="$ARTIFACT_REPO/genai-kids-stories"
+UPLOADED_IMAGE_WITH_VER="$UPLOADED_IMAGE:latest"
+CLOUDRUN_PROJECT_ID=${CLOUDRUN_PROJECT_ID:-ror-goldie}
+RAILS_ENV=${RAILS_ENV:-production}
+
+echo "++++++++++++++++++++++++++++++++++++++++++"
+echo "REGION: $REGION"
+echo "UPLOADED_IMAGE: $UPLOADED_IMAGE"
+echo "PROJECT_ID: $PROJECT_ID"
+echo "RAILS_ENV: $RAILS_ENV"
+echo "CLOUDRUN_PROJECT_ID: $CLOUDRUN_PROJECT_ID"
+echo "DANGEROUS_SA_JSON_VALUE: $DANGEROUS_SA_JSON_VALUE"
+
+echo "++++++++++++++++++++++++++++++++++++++++++"
+
+if [ "production" = "$RAILS_ENV" ]; then
+	echo Configuring PostgreS for PROD
+	export APP_DB_NAME="$PROD_DB_NAME"
+	export APP_DB_USER="$PROD_DB_USER"
+	export APP_DB_PASS="$PROD_DB_PASS"
+	export APP_DB_HOST="$PROD_DB_HOST"
+else
+	echo Configuring PostgreS for DEV on GCP or anything else..
+	export APP_DB_NAME="$DEV_DB_NAME"
+	export APP_DB_USER="$DEV_DB_USER"
+	export APP_DB_PASS="$DEV_DB_PASS"
+	export APP_DB_HOST="$DEV_DB_HOST"
+fi
+
+# 	--set-env-vars="DANGEROUS_SA_JSON_VALUE=$(cat private/sa.json | xargs)" \
+
+set -x
+gcloud --project "$CLOUDRUN_PROJECT_ID" beta run deploy "genai-kids-stories-gcloud" \
+   --image    "$UPLOADED_IMAGE_WITH_VER" \
+   --platform managed \
+   --region   "$REGION" \
+   --set-env-vars='COLOR=yellow' \
+   --set-env-vars='Description=created-from-gcloud-on-bin-folder' \
+   --set-env-vars="TARGET=$HOSTNAME-command-line" \
+   \
+    --set-env-vars="RAILS_ENV=production" \
+    --set-env-vars="PROJECT_ID=$PROJECT_ID" \
+ 	--set-env-vars="APP_VERSION=$APP_VERSION" \
+	--set-env-vars="RAILS_MASTER_KEY=$(cat config/master.key)"  \
+	--set-env-vars="APPLICATION_DEFAULT_CREDENTIALS=/sa.json" \
+	--set-env-vars="APP_DB_NAME=$APP_DB_NAME" \
+	--set-env-vars="APP_DB_USER=$APP_DB_USER" \
+	--set-env-vars="APP_DB_PASS=$APP_DB_PASS" \
+	--set-env-vars="APP_DB_HOST=$APP_DB_HOST" \
+	--set-env-vars="GOOGLE_TRANSLATE_KEY=$GOOGLE_TRANSLATE_KEY" \
+    \
+   --labels="env=semi-prod" \
+   --labels="ver=${VERSION//[.]/-}" \
+   --allow-unauthenticated
+
+# --allow-unauthenticated failes, and it tells you how to fix it.
+# Of course, this command WILL FAIL in google.com thingy.
+# gcloud beta run services add-iam-policy-binding --region=europe-west1 --member=allUsers --role=roles/run.invoker onramp-manual
+
+
+
+#echo 'Cloud Run pushed. Note that the AllowUnauthenticated wont work in Google Org per policy, so Valentin suggests to instead use the proxy:'
+#echo Try: bin/proxy-to-cloud-run
+#echo 'IMPORTANT! If you get this error, make sure you allowlist the newly-found CRun domain on firebase. Instructions here: https://stackoverflow.com/questions/48076968/firebase-auth-unauthorized-domain-domain-is-not-authorized'

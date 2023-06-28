@@ -74,5 +74,6 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 # Probably this should stay in the docker run :)
 #ENV APPLICATION_DEFAULT_CREDENTIALS=/sa.json
 # Start the server by default, this can be overwritten at runtime
-EXPOSE 3000
-CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
+EXPOSE 8080
+
+#CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
