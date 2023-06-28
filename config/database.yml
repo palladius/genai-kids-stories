@@ -39,10 +39,10 @@ dev-on-gcp: # This use GCP for Rails Storage and Pgsql for DB
   #encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 3000
-  database: <%= ENV['APP_DB_NAME'] %>
-  username: <%= ENV['APP_DB_USER'] %>
-  password: <%= ENV['APP_DB_PASS'] %>
-  host: <%= ENV['APP_DB_HOST'] %>
+  database: <%= ENV['APP_DB_NAME'] or ENV['DEV_DB_NAME']  %>
+  username: <%= ENV['APP_DB_USER'] or ENV['DEV_DB_USER']  %>
+  password: <%= ENV['APP_DB_PASS'] or ENV['DEV_DB_PASS']  %>
+  host: <%= ENV['APP_DB_HOST'] or ENV['DEV_DB_HOST']  %>
 
 production: # This use GCP for Rails Storage and Pgsql for DB
   adapter: postgresql
