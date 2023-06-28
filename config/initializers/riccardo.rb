@@ -35,17 +35,21 @@ APP_VERSION = File.read(File.expand_path("#{Rails.root}/VERSION")).chomp
 # Storage for dev vs dev-on-gcp is defined under config/storage.yml
 
 arzigogolo = '⬢⬡⬢⬡⬢⬡'
+database =   Rails.configuration.database_configuration[Rails.env]['adapter']
+# rescue StandardError
+#  '?'
+# end
 
 puts("#{arzigogolo} Welcome to #{APP_NAME} by Riccardo💛Carlesso #{arzigogolo}")
 puts("⬢ Thanks for providing GCP Project: '#{PROJECT_ID}'")
 puts("⬢ Google Translate key: '#{GOOGLE_TRANSLATE_KEY}'")
 puts("⬢ Rails.Env: '#{Rails.env}'")
 puts("⬢ Language: '#{DEFAULT_LANGUAGE}'")
-puts("⬢ Database:  '#{begin
-  Rails.configuration.database_configuration[Rails.env]['adapter']
-rescue StandardError
-  '?'
-end}")
+puts("⬢ Database:  '#{database}'")
+if database == 'postgresql'
+  puts("⬢ * APP_DB_NAME:  '#{ENV['APP_DB_NAME']}'")
+  puts("⬢ * APP_DB_HOST:  '#{ENV['APP_DB_HOST']}'")
+end
 puts("⬢ ActiveStorage:  '#{begin
   Rails.application.config.active_storage.service_configurations[Rails.env]
 rescue StandardError

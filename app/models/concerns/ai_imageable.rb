@@ -24,22 +24,24 @@ module AiImageable
         return false
       end
 
-      case self.class
-      when StoryParagraph
+      case self.class.name.to_sym
+      when :StoryParagraph
+        puts 'StoryParagraph, yay!'
         genai_input = genai_input_for_image # if SP
         genai_output_size = 42 # you need to define it in SP
         title = story.title
         genai_output = original_text
-      when Kid
+
+      when :Kid
         puts 'TODO'
         # Todo consider putting the code in the model itself, seems less stupid :)
         # when "foo", "bar"
         #   "It's either foo or bar"
         # when String
         #   "You passed a string"
-      else
-        puts "Unsupported class: #{self.class} (is=-a StoryParagraph ? #{is_a? StoryParagraph})"
-        return
+        # else
+        #   puts "Unsupported class: #{self.class} (is=-a StoryParagraph ? #{is_a? StoryParagraph})"
+        #   return
       end
 
       # if is_a? StoryParagraph

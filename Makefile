@@ -30,6 +30,8 @@ run-local: # runs locally after starting a daemon for delayed jobs..
 	make delayed-jobs-daemon &
 	bundle exec rails s -b 0.0.0.0
 run-local-prod: # runs locally after starting a daemon for delayed jobs..
+	RAILS_ENV="production" rails assets:precompile
+
 	RAILS_LOG_TO_STDOUT="1" \
     RAILS_SERVE_STATIC_FILES="true" \
     RAILS_ENV="production" \

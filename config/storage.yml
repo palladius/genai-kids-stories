@@ -4,7 +4,9 @@
 google:
   service: GCS
   project: <%= ENV['PROJECT_ID'] %>
-  credentials: <%= Rails.root.join("private/sa.json") %>
+  # Locally I ahve private/sa.json but in the cloud sometimes it gives me error, so /sa.json is always set up
+  # correctly from entrypoint and i dont want to introduce duplication...
+  credentials: <%= File.exist?(Rails.root.join("private/sa.json")) ? Rails.root.join("private/sa.json") : '/sa.json' %>
   # TODO(ricc): set up thos for public access:
   # https://cloud.google.com/storage/docs/access-control/making-data-public?hl=it#buckets
   bucket: <%= ENV['GCS_BUCKET'] %>
@@ -32,8 +34,8 @@ dev-on-gcp: # This use GCP for Rails Storage and Pgsql for DB
   mirrors:
     - google
 
-production:
-  service: Mirror
-  primary: local
-  mirrors:
-    - google
+production: &google
+#  service: Mirror
+#  primary: local
+#  mirrors:
+#    - google
