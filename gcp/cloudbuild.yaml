@@ -8,9 +8,6 @@ options:
 
 
 steps:
-#  - name: 'bash'
-#    id: 1 Bash RiccTest # Prova a vedere se bash aiuta con ENV
-#    args: ['echo', "Scopiazzato PROJECT_ID='$PROJECT_ID'"]
 
 # - name: 'ruby:3.2.0'
 #   id: Ruby rake test
@@ -22,7 +19,7 @@ steps:
  - name: 'gcr.io/cloud-builders/docker'
    id: 2 Docker Build - to LATEST
    #args: ['build', '-t', "gcr.io/$PROJECT_ID/genai-kids-stories", '.']
-   args: ['build', '-t', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories", '.']
+   args: ['build', '-t', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest", '.']
    dir: .
 
  - name: 'gcr.io/cloud-builders/docker'
