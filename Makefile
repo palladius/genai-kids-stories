@@ -14,6 +14,8 @@ install:
 	# Alternatively: config.active_storage.variant_processor = :mini_magick
 	# https://packages.debian.org/source/buster/vips
 
+install-linux:
+	sudo apt-get install libvips-tools
 
 # .PHONY: help
 # help: ## Shows all targets and help from the Makefile (this message).
