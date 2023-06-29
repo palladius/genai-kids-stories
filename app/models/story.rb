@@ -296,12 +296,14 @@ class Story < ApplicationRecord
     # description = "Once upon a time, there was a young spy named Agent X. Agent X was the best spy in the world, and she was always on the lookout for new mysteries to solve. One day, Agent X was sent on a mission to investigate a mysterious cave at the bottom of a mountain."
     # tmp_imagez = ai_curl_images_by_content(self.kid.about)
     #
+    # TODO(ricc): better with Templates used properly
     description = if genai_input =~ /Kids love hearing about the stories you invent/
                     # Story for kids..
                     "Imagine #{kid.about}. In the background, #{title}".gsub("\n", ' ')
                   else
                     # TODO: add a field like "story for kids", "joke, or whatever..."
-                    "Imagine: #{title}.\nAdditional context: #{genai_output}" # .gsub("\n",' ')
+                    #                    "Imagine: #{title}.\nAdditional context: #{genai_output}" # .gsub("\n",' ')
+                    "Imagine: #{kid.about}.\nAdditional context: #{genai_output}" # .gsub("\n",' ')
                   end
 
     _, tmp_image = ai_curl_images_by_content(description, gcp_opts)
