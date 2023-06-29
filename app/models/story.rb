@@ -368,12 +368,22 @@ class Story < ApplicationRecord
   end
 
   def fix_paragraphs(_now = true)
-    StoryParagraph.where(story_id: 142).each_with_index do |p, _ix|
+    StoryParagraph.where(story_id: id).each_with_index do |p, _ix|
       if _now
         p.after_creation_magic
       else
         p.delay(queue: 'story__fix_paragraphs').after_creation_magic
       end
+    end
+  end
+
+  def fix
+    fix_paragraphs(true)
+  end
+
+  def self.fix_all
+    Story.all.each do |story|
+      story.fix
     end
   end
 end
