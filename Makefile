@@ -118,7 +118,8 @@ test-google-translate:
 
 test-generate-spanish-translation-of-story:
 	echo "Story.find(135).generate_paragraphs(lang: 'es')" | rails c
-
+fix-story-17-in-prod:
+	echo 'Story.find(17).fix' | RAILS_ENV=production rails c
 run-from-docker:
 	APPLICATION_DEFAULT_CREDENTIALS=/sa.json RAILS_ENV=development rails s -b 0.0.0.0
 
