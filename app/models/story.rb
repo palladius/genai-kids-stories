@@ -381,6 +381,7 @@ class Story < ApplicationRecord
 
   def fix
     fix_paragraphs(true)
+    genai_magic
   end
 
   def self.fix_all

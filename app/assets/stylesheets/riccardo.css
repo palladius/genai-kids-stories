@@ -6,7 +6,6 @@ Porting here what was in application.css now deleted by bootstrap..
     background-color: aquamarine;
  }
 
-
 /* https://stackoverflow.com/questions/26973570/setting-a-max-character-length-in-css 00 */
 p.beautified-paragraph {
    /* white-space: nowrap; */
