@@ -1,5 +1,8 @@
 <p style="color: green"><%= notice %></p>
 
+      <%= image_tag(@story.cover_image,  style: "float:right;height:200px;") if @story.cover_image.attached? %>
+   See <%= link_to '📚 Normal story', "/stories/#{@story.id}" %>
+
 <% if @translate_to &&  @paragraphs.size == 0 %>
   <h2> @translate_to activated! for ''<%= @translate_to %>''  </h2>
   <p>@paragraphs.size = <%= @paragraphs.size %></p>
@@ -16,18 +19,11 @@
 <% end %>
 
 <% if params[:beautfied] == 'true' %>
-<h1>BEAUTY</h1>
-bb
-   See <%= link_to '👨‍🚒 Normal working story', "/story_rebuilt/#{@story.id}?beautfied=false" %>
+   See <%= link_to '👨‍🚒 Normal RebuiltStory', "/story_rebuilt/#{@story.id}?beautfied=false" %>
   <%= render 'stories/beautified_story' %>
-
 <% else  %>
-aaa
-   See <%= link_to '💄Beautified translated story', "/story_rebuilt/#{@story.id}?beautfied=true" %>
-  <%#= render @story %>
+   See <%= link_to '💄 Beautified RebuiltStory', "/story_rebuilt/#{@story.id}?beautfied=true" %>
   <%= render 'stories/working_story' %>
-
-
 <% end  %>
 
 <div>
