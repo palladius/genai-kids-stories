@@ -190,7 +190,7 @@ class Story < ApplicationRecord
 
   def delayed_job_genai_magic
     Rails.logger.info("delayed_job_genai_magic(): 1. Enqueuing GenAI Magic for Story.#{id}")
-    delay.genai_magic(delay: true)
+    delay(queue: 'story__genai_magic').genai_magic(delay: true)
   end
 
   def should_compute_genai_output?
