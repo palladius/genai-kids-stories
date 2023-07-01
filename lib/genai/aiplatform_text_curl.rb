@@ -2,14 +2,14 @@
 # However I want able to invoke the proper library when I tried.
 #
 # TODOs:
-# * region is now hardcoded as us-central1.
+# * P3 region is now hardcoded as us-central1.
 # * login is via curl and gcloud :/
 # * TOKEN should be at very least cached for 10min or so.
 
 module Genai
   # Only allow authenticated admins access to precious resources.
   module AiplatformTextCurl
-    VERSION = '0.3_21jun23'
+    VERSION = '0.4_30jun23'
 
     require 'net/http'
     require 'uri'
@@ -17,10 +17,9 @@ module Genai
     require 'yaml'
     require 'base64'
 
-    # PROJECT_ID ||= ENV.fetch('PROJECT_ID') # from intiializers
-    # GCLOUD_ACCESS_TOKEN ||= `gcloud --project '#{PROJECT_ID}' auth print-access-token`.strip
-
+    # Text must be 001
     MODEL_ID = 'text-bison@001'
+    # Video can be 002 (se below)
 
     # taken by my buddy Guillaume: https://github.com/glaforge/bedtimestories/blob/main/src/main/resources/public/index.html
     CHARACTERS = [
@@ -76,7 +75,7 @@ module Genai
     end
 
     # I make it a static method which accepts a story..
-    # Note: this is a PRIVATE method that shouldnt be called 
+    # Note: this is a PRIVATE method that shouldnt be called
     # if not from `ai_curl_images_by_content`
     def _convert_base64_image_to_file(story, object_class_name, json_body, ix)
       raise 'I need a Story !' unless story.is_a? Story
@@ -203,7 +202,7 @@ module Genai
       [response, predicted_content]
     end
 
-    # Note: `self` needs to be a Story or a StoryParagraph 
+    # NOTE: `self` needs to be a Story or a StoryParagraph
     def ai_curl_images_by_content(content, opts = {})
       # options
       opts_debug = opts.fetch 'DEBUG', false
@@ -214,7 +213,8 @@ module Genai
       model_id = opts.fetch :model_id, MODEL_ID
       region = opts.fetch :region, 'us-central1'
 
-      ai_url = "https://us-central1-aiplatform.googleapis.com/v1/projects/#{project_id}/locations/us-central1/publishers/google/models/imagegeneration:predict"
+      # ai_url = "https://us-central1-aiplatform.googleapis.com/v1/projects/#{project_id}/locations/us-central1/publishers/google/models/imagegeneration:predict"
+      ai_url = "https://us-central1-aiplatform.googleapis.com/v1/projects/#{project_id}/locations/us-central1/publishers/google/models/imagegeneration@002:predict"
       puts("ai_url: #{ai_url}") if opts_debug
 
       uri = URI(ai_url)
@@ -291,9 +291,9 @@ module Genai
       (0..prediction_size_minus_one).each do |ix|
         # puts "my_one_file[#{ix}] BEFORE: #{my_one_file}"
         if is_a?(Story)
-          filename = _convert_base64_image_to_file(self, "story", json_body, ix)
+          filename = _convert_base64_image_to_file(self, 'story', json_body, ix)
         elsif is_a?(StoryParagraph)
-          filename = _convert_base64_image_to_file(self.story, "story_paragraph", json_body, ix)
+          filename = _convert_base64_image_to_file(story, 'story_paragraph', json_body, ix)
         end
         next if filename.nil?
 
@@ -323,8 +323,8 @@ module Genai
 
     def sample_invokation_text
       puts 'Now I doi a manual curl'
-      #story_idea = "Write \"a kid story about Sebowski ' ' ci\"ao the Egyptologist teleported in ancient Egypt to meet the evil twin of Tutankhamen"
-      story_idea = "Write a kid story about Sebowski the Egyptologist teleported in ancient Egypt to meet the evil twin of Tutankhamen"
+      # story_idea = "Write \"a kid story about Sebowski ' ' ci\"ao the Egyptologist teleported in ancient Egypt to meet the evil twin of Tutankhamen"
+      story_idea = 'Write a kid story about Sebowski the Egyptologist teleported in ancient Egypt to meet the evil twin of Tutankhamen'
       response, content = ai_curl_by_content(story_idea, PROJECT_ID, debug: true)
       puts "Content received: '''#{content}'''"
       # add_to_yaml_db(story_idea, content)
@@ -334,13 +334,11 @@ module Genai
 
     def sample_invokation_image
       puts 'Now I do a manual curl to download an image'
-      image_idea = "Siobhan is an Irish 5-year-old girl with red heair, freckles and green eyes"
-      #response, content = ai_curl_by_content(story_idea, PROJECT_ID, debug: true)
-      #puts "Content received: '''#{content}'''"
+      image_idea = 'Siobhan is an Irish 5-year-old girl with red heair, freckles and green eyes'
+      # response, content = ai_curl_by_content(story_idea, PROJECT_ID, debug: true)
+      # puts "Content received: '''#{content}'''"
       content
     end
-    
-
   end
 end
 

@@ -1,0 +1,12 @@
+{
+    "instances": [
+        {
+        "prompt": "A 5-year-old spy named Agent Y with curly red hair, with a tshirt with a big number two printed on it. Agent Y was the best spy in the world, and she was always on the lookout for new mysteries to solve. One day, Agent X was sent on a mission to investigate a mysterious cave at the bottom of a mountain."
+        }
+    ],
+    "parameters": {
+        "sampleCount": 8,
+        "aspectRatio": "1:1",
+        "negativePrompt": "blurry",
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "instances": [
+        {
+        "prompt": "A young spy named Agent G from cartoons.
+        Agent G was the best spy in the world, and she was
+        always on the lookout for new mysteries to solve. One day,
+        Agent G was sent on a mission to investigate a mysterious cave at
+        the bottom of a mountain."
+        }
+    ],
+    "parameters": {
+        "sampleCount": 8,
+        "aspectRatio": "9:16",
+        "negativePrompt": "blurry",
+    }
+}
