@@ -294,7 +294,7 @@ class Story < ApplicationRecord
 
     description = if genai_input =~ /Kids love hearing about the stories you invent/
                     # Story for kids..
-                    "Imagine #{kid.visual_description}. In the background, #{title}".gsub("\n", ' ')
+                    "Imagine #{kid.visual_description}. In the background, #{cleaned_up_title}".gsub("\n", ' ')
                   else
                     # TODO: add a field like "story for kids", "joke, or whatever..."
                     #                    "Imagine: #{title}.\nAdditional context: #{genai_output}" # .gsub("\n",' ')

@@ -127,4 +127,8 @@ class Kid < ApplicationRecord
     desc = "The cartoon version of #{visual_description}, in the style of Pixar"
     ret1 = genai_compute_single_image_by_decription(avatar, desc, _gcp_opts)
   end
+
+  def fix
+    genai_compute_images2! unless avatar.attached?
+  end
 end

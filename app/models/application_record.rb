@@ -14,6 +14,12 @@ class ApplicationRecord < ActiveRecord::Base
     find(ids.sample)
   end
 
+  def self.autofix # fix_all
+    all.each do |model|
+      model.fix
+    end
+  end
+
   def super_attached_stuff_info(field_name)
     ret = {
       header: "AR::attached_stuff_info(#{field_name}) v1.1",
