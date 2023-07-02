@@ -281,7 +281,7 @@ module Genai
       rescue StandardError
         0
       end
-      if prediction_size_minus_one == 0
+      if prediction_size_minus_one < 0
         puts "#{Story.emoji}.#{id} The system returned 200 but it failed to generate this: #{red content}. Failing gracefully. But let me show you the payload first"
         puts "response: #{response}"
         puts "json_body: #{red json_body}"

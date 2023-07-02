@@ -128,6 +128,20 @@ test-postgres:
 # attach random Story with GCS image
 # s.additional_images.attach(io: File.open(Rails.root.join('app/assets/images/kids/doll.jpg')), filename: 'doll.jpg')
 
+test-generate-mock-image:
+	# echo "extend Genai::AiplatformImageCurl ; \
+	#   ai_curl_images_by_content_v2('001', 'test v1. This string wont be used at all', :mock => true); \
+	#   ai_curl_images_by_content_v2('002', 'test v2. This string wont be used either', :mock => true); \
+	#   " | rails c
+	echo "extend Genai::AiplatformImageCurl ; \
+	  ai_curl_images_by_content_v2('002', 'test v2. This string wont be used either', :mock => true); \
+	  " | rails c
+test-generate-real-image-v1:
+	echo "extend Genai::AiplatformImageCurl ; ai_curl_images_by_content_v2('001', 'a dragon in the moat of an enchanted castle', :mock => false)" | rails c
+test-generate-real-image-v2:
+	echo "extend Genai::AiplatformImageCurl ; ai_curl_images_by_content_v2('002', 'a unicorn drinking a beer', :mock => false)" | rails c
+test-generate-real-image-both: test-generate-real-image-v1 test-generate-real-image-v2
+
 # requires private/sa.json
 genai-test-gcs: private/sa.json
 	echo 'Story.last.attach_test_image' | rails c
@@ -140,3 +154,5 @@ gsutil-images-list:
 lint:
 	rubocop --lint app/
 	rubocop --autocorrect app/ lib/ # app/models/story.rb
+clean:
+	rm tmp_* ._temp_00*

@@ -30,11 +30,19 @@ class GCauth
   def get_auth_token(_opts = {})
     opts_debug = _opts.fetch :debug, true
     return populate_and_return_token if @token_value.nil? or @updated_at.nil?
-    return populate_and_return_token if Time.now - @updated_at > EXPIRY_TIME_IN_SECONDS
+
+    if token_expired?
+      puts 'Token has expired! Reloading..' if opts_debug
+      return populate_and_return_token
+    end
 
     puts "Token obsolescence: #{Time.now - @updated_at}sec" if opts_debug
     # check if it needs refresh
     @token_value
+  end
+
+  def token_expired?
+    Time.now - @updated_at > EXPIRY_TIME_IN_SECONDS
   end
 
   alias token get_auth_token
