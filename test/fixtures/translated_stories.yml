@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  user: one
+  story: one
+  language: MyString
+  client_id: 1
+  paragraph_strategy: MyString
+  internal_notes: MyText
+  genai_model: MyString
+
+two:
+  name: MyString
+  user: two
+  story: two
+  language: MyString
+  client_id: 1
+  paragraph_strategy: MyString
+  internal_notes: MyText
+  genai_model: MyString

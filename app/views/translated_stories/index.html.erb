@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Translated stories</h1>
+
+<div id="translated_stories">
+  <% @translated_stories.each do |translated_story| %>
+    <%= render translated_story %>
+    <p>
+      <%= link_to "Show this translated story", translated_story %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New translated story", new_translated_story_path %>

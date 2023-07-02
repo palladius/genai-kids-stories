@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :translated_stories
   devise_for :users
   resources :story_templates
   resources :story_paragraphs

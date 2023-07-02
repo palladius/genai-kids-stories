@@ -1,0 +1,57 @@
+<%= form_with(model: translated_story) do |form| %>
+  <% if translated_story.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(translated_story.errors.count, "error") %> prohibited this translated_story from being saved:</h2>
+
+      <ul>
+        <% translated_story.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :user_id, style: "display: block" %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div>
+    <%= form.label :story_id, style: "display: block" %>
+    <%= form.text_field :story_id %>
+  </div>
+
+  <div>
+    <%= form.label :language, style: "display: block" %>
+    <%= form.text_field :language %>
+  </div>
+
+  <div>
+    <%= form.label :client_id, style: "display: block" %>
+    <%= form.number_field :client_id %>
+  </div>
+
+  <div>
+    <%= form.label :paragraph_strategy, style: "display: block" %>
+    <%= form.text_field :paragraph_strategy %>
+  </div>
+
+  <div>
+    <%= form.label :internal_notes, style: "display: block" %>
+    <%= form.text_area :internal_notes %>
+  </div>
+
+  <div>
+    <%= form.label :genai_model, style: "display: block" %>
+    <%= form.text_field :genai_model %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

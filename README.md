@@ -57,6 +57,18 @@ rails g scaffold --force StoryTemplate \
     internal_notes:text \
     user_id:integer
 
+rails g scaffold TranslatedStory \
+    name:string \
+    user:references \
+    story:references \
+    language:string \
+    client_id:integer:index \
+    paragraph_strategy:string \
+    internal_notes:text \
+    genai_model:string
+
+rails g migration addTranslatedStoryReferenceToStoryParagraph \
+    translated_story:references
 
 
 ```

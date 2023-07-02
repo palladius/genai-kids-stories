@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @translated_story %>
+
+<div>
+  <%= link_to "Edit this translated story", edit_translated_story_path(@translated_story) %> |
+  <%= link_to "Back to translated stories", translated_stories_path %>
+
+  <%= button_to "Destroy this translated story", @translated_story, method: :delete %>
+</div>
