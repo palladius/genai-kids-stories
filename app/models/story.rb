@@ -217,6 +217,7 @@ class Story < ApplicationRecord
   # @story.delay.genai_compute!(@device)
   def genai_magic(opts = {})
     delay = opts.fetch :delay, false
+    force = opts.fetch :force, false
     # This function has the arrogance of doing EVERYTHING which needs to be done. It will defer to sub-parts and
     # might take time, hence done with 'delayed_job'
     Rails.logger.info("genai_magic(delay=#{delay}): 2. actually executing GenAI Magic for Story.#{id}")
@@ -226,23 +227,23 @@ class Story < ApplicationRecord
       gcloud_access_token: GCLOUD_ACCESS_TOKEN
     }
 
-    if should_autogenerate_genai_input? # total autopilot :)
+    if force or should_autogenerate_genai_input? # total autopilot :)
       puts '🤖10🤖 I have no input -> computing the Guillaume story template (implemented)'
       ret10 = genai_autogenerate_input! # doesnt require GCP :)
     end
-    if should_compute_genai_output?
+    if force or should_compute_genai_output?
       puts '🤖20🤖 I have input but no output -> computing it with Generate API (implemented)'
       ret20 = genai_compute_output!(gcp_opts)
     end
-    if should_compute_genai_summary?
+    if force or should_compute_genai_summary?
       puts '🤖30🤖 I have output but no summary -> computing it with Summary API (implemented)'
       ret30 = genai_compute_summary!(gcp_opts)
     end
-    if should_compute_genai_images?
+    if force or should_compute_genai_images?
       puts "🤖40🤖 Exciting! [#{Story.emoji}.#{id}] Trying to compute images with Palm API (implemented)"
       ret40 = genai_compute_images!(gcp_opts)
     end
-    append_notes("genai_magic(delay=#{delay}) END. Results: #{ret10}/#{ret20}/#{ret30}/#{ret40}/")
+    append_notes("genai_magic(force=#{force},delay=#{delay}) END. Results: #{ret10}/#{ret20}/#{ret30}/#{ret40}")
     # self.save
   end
 
@@ -340,7 +341,7 @@ class Story < ApplicationRecord
     # puts 'generate_paragraphs END..'
   end
 
-  def fix_paragraphs(_now = true)
+  def fix_paragraphs_now(_now = true)
     StoryParagraph.where(story_id: id).each_with_index do |p, _ix|
       if _now
         p.after_creation_magic
@@ -351,8 +352,15 @@ class Story < ApplicationRecord
   end
 
   def fix
-    fix_paragraphs(true)
-    genai_magic
+    genai_magic(delay: false, force: false)
+    fix_paragraphs_now(false)
+  end
+
+  def fix!
+    genai_magic(delay: false, force: true)
+    fix_paragraphs_now(true)
+    # genai_compute_images2!
+    # genai_magic!
   end
 
   def self.fix_all
