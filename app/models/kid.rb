@@ -18,6 +18,8 @@ FIXTURE_DIR ||= "#{Rails.root}/db/fixtures/images/".freeze
 class Kid < ApplicationRecord
   include AiImageable
 
+  after_create :genai_magic # DEBUG
+
   # unique keys
   validates :nick, presence: true, uniqueness: { scope: :user_id }
   # has_one_attached :avatar, service: :local
@@ -130,5 +132,11 @@ class Kid < ApplicationRecord
 
   def fix
     genai_compute_images2! unless avatar.attached?
+  end
+
+  def genai_magic(_opts = {})
+    # Thsi is such a minor thing that we can afford to delay and play with the DELAYED jobs :)
+    # TODO only enqueue if NOT avatar attached?
+    delay(queue: 'kid__image_creation').fix
   end
 end
