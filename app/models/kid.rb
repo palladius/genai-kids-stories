@@ -134,6 +134,10 @@ class Kid < ApplicationRecord
     genai_compute_images2! unless avatar.attached?
   end
 
+  def fix!
+    genai_compute_images2!
+  end
+
   def genai_magic(_opts = {})
     # Thsi is such a minor thing that we can afford to delay and play with the DELAYED jobs :)
     # TODO only enqueue if NOT avatar attached?
