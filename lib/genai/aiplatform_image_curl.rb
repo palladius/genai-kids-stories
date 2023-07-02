@@ -5,10 +5,14 @@
 module Genai
   # Only allow authenticated admins access to precious resources.
   module AiplatformImageCurl
+    def correct_image_file_match(str)
+      str.match(/PNG image data|JPEG image data/)
+    end
+
     # This should be totally Enity independent and should return an IOStream imho... easy to attach.
     def decode_nth_base64_image_to_file(_model_version, filename, json_body, ix, _opts = {})
-      opts_cleanup_after_yourself = _opts.fetch :cleanup_after_yourself, true
-      filename = "#{ix}_#{filename}"
+      opts_cleanup_after_yourself = _opts.fetch :cleanup_after_yourself, false
+      # filename = "#{ix}_#{filename}"
       puts "[DEB] decode_nth_base64_image_to_file(filename=#{filename}, ix=#{ix})"
       # raise 'I need a Story !' unless story.is_a? Story
       raise 'I need an integer for ix!' unless ix.is_a? Integer
@@ -36,8 +40,8 @@ module Genai
                     end # Linux
 
       if opts_cleanup_after_yourself
-         puts 'Lets cleanup the b64enc now that the file has been decoded and created..'
-         File.delete("#{filename}.b64enc")
+        puts 'Lets cleanup the b64enc now that the file has been decoded and created..'
+        File.delete("#{filename}.b64enc")
       end
 
       # encode_file_on_mac_or_linux = todo
@@ -56,10 +60,10 @@ module Genai
       # StringIO.new(Base64.decode64(params[:base_64_image].split(',')[1])),
       # puts("Written file: #{filename}")
       file_mime_type = `file '#{filename}'`.chomp
-      puts("🖼️ Image[#{ix}]🖼️ EncSize: #{bytesBase64Encoded.size / 1024}KB #{file_mime_type}")  # filename AND mimetype
+      puts("🖼️ Image[#{ix}]🖼️ EncSize: #{bytesBase64Encoded.size / 1024}KB #{file_mime_type}") # filename AND mimetype
 
       # story.id=74.ix=0.png.b64enc.shellato: PNG image data, 1024 x 1024, 8-bit/color RGB, non-interlaced
-      my_one_file = filename if file_mime_type.match(/PNG image data|JPEG image data/)
+      my_one_file = filename if correct_image_file_match(file_mime_type) #
     end
 
     # This function returns an array with two objects
@@ -72,6 +76,8 @@ module Genai
       project_id = opts.fetch :project_id, PROJECT_ID
       region = opts.fetch :region, 'us-central1'
 
+      raise 'unsupported model' unless _model_version.match(/^(001|002)$/)
+
       json_body = nil
       ret_files = []
       ret_hash = {
@@ -82,11 +88,12 @@ module Genai
         # ret_message: response.nil? ? 'Empty response' : 'All good'
       }
 
+      puts "🌃ImageGeneration🌃(v#{_model_version}).content='#{yellow content}'"
+
       puts '''TODO ricc:
             3. Test the attach file as part of this, maybe as a callback or an opts object which is of type
          attachable
       '''
-      raise 'unsupported model' unless _model_version.match(/^(001|002)$/)
 
       if opts_mock
         #######################
@@ -192,15 +199,19 @@ module Genai
       end
       # puts 'prediction_size_minus_one: ', prediction_size_minus_one
       (0..prediction_size_minus_one).each do |ix|
-        filename = "tmp_#{_model_version}-#{content.gsub(/ /, '_')}.png"
+        # ret_hash["#{ix}_start"] = 'debug'
+        filename = "tmp_#{_model_version}-#{content.gsub(/ /, '_')}.ix=#{ix}.png"
 
         file = decode_nth_base64_image_to_file(_model_version, filename, json_body, ix, opts)
 
-        if File.exist?(filename) and `file '#{filename}'`.match(/PNG image data/)
+        if File.exist?(filename) and correct_image_file_match(`file '#{filename}'`.chomp) # .match(/PNG image data/)
           my_one_file = filename
           ret_files << filename
         end
         # puts "my_one_file[#{ix}] AFTER: #{my_one_file}"
+        ret_hash["#{ix}_my_one_file"] = my_one_file
+        # ret_hash["#{ix}_file_exist"] = File.exist?(filename)
+        # ret_hash["#{ix}_correct_image_file_match"] = correct_image_file_match(`file '#{filename}'`.chomp)
       end
 
       [0, ret_files, ret_hash] # redicted_content

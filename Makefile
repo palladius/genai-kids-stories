@@ -155,4 +155,4 @@ lint:
 	rubocop --lint app/
 	rubocop --autocorrect app/ lib/ # app/models/story.rb
 clean:
-	rm tmp_* ._temp_00*
+	rm tmp_* ?_tmp_00* .story*json

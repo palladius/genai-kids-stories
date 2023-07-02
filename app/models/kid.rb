@@ -54,7 +54,8 @@ class Kid < ApplicationRecord
 
   # Alessandro is a 5-year old kid, ...
   def about
-    "#{name} is a #{age}-year-old #{visual_description}"
+    #   "#{name} is a #{age}-year-old #{visual_description}"
+    "#{name} is a #{visual_description}"
   end
 
   def self.emoji
@@ -119,5 +120,11 @@ class Kid < ApplicationRecord
     return if acceptable_types.include?(avatar.content_type)
 
     errors.add(:avatar, 'must be a JPEG or PNG')
+  end
+
+  def genai_compute_images2!(_gcp_opts = {})
+    extend Genai::AiplatformTextCurl
+    desc = "The cartoon version of #{visual_description}, in the style of Pixar"
+    ret1 = genai_compute_single_image_by_decription(avatar, desc, _gcp_opts)
   end
 end

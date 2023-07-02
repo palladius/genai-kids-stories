@@ -42,3 +42,4 @@ private/
 .tmp*
 .story*json
 story-*HTTPBadRequest.json
+tmp_*
