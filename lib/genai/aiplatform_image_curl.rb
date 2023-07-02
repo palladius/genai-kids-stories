@@ -201,6 +201,8 @@ module Genai
       (0..prediction_size_minus_one).each do |ix|
         # ret_hash["#{ix}_start"] = 'debug'
         filename = "tmp_#{_model_version}-#{content.gsub(/ /, '_').gsub(/\*/, '')[0, 100]}.ix=#{ix}.png"
+        # cant be too long or you get File name too long @ rb_sysopen - tmp_002-Imagine_a_5-year-old_brown-eyed_boy_with_light_brown_hair._Beside_him,_**Act_1**
+        # filename = "tmp_#{_model_version}-#{content.gsub(/ /, '_')[0, 100]}.ix=#{ix}.png"
 
         file = decode_nth_base64_image_to_file(_model_version, filename, json_body, ix, opts)
 

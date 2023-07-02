@@ -62,7 +62,14 @@ class StoryParagraph < ApplicationRecord
     puts '2 [NOW] if picture text not available -> generate it determiniistically (now)'
     generate_genai_text_for_paragraph if genai_input_for_image.to_s.length < 10 # genai_input_for_image.nil?
     puts '3 [DELAYED] if video text available -> generate image '
-    generate_one_genai_image_from_image_description! if genai_input_for_image.to_s.length > 20
+    # generate_one_genai_image_from_image_description! if genai_input_for_image.to_s.length > 20
+    generate_ai_images! if genai_input_for_image.to_s.length > 20
+  end
+
+  def generate_ai_images!(gcp_opts = {})
+    puts 'TODO if multiple images then write MANY images :)'
+    # genai_input_for_image
+    single_image = genai_compute_single_image_by_decription(p_image1, genai_input_for_image, gcp_opts)
   end
 
   def flag
