@@ -315,8 +315,8 @@ class Story < ApplicationRecord
     lang = _opts.fetch(:lang, DEFAULT_LANGUAGE)
     key = _opts.fetch(:key, GOOGLE_TRANSLATE_KEY2)
 
-    puts 'generate_paragraphs START..'
-    puts "Size: #{paragraphs.size}"
+    # puts 'generate_paragraphs START..'
+    puts "Story.generate_paragraphs(). Size: #{paragraphs.size}"
     # return if StoryParagraph.find(story_id: id).count > 0
     paragraphs.each_with_index do |p, _ix|
       story_ix = _ix + 1 # start from 1.. Im pretty sure Im gonna regret this :)
@@ -337,7 +337,7 @@ class Story < ApplicationRecord
       # sp.after_creation_delayed_magic
       # s.save!
     end
-    puts 'generate_paragraphs END..'
+    # puts 'generate_paragraphs END..'
   end
 
   def fix_paragraphs(_now = true)

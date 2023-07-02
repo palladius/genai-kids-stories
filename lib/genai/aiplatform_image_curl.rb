@@ -21,7 +21,7 @@ module Genai
       unless json_body.keys.include? 'predictions'
         puts("Failing - but before let me show you the answer: #{json_body}")
         # ret_hash[:ret_message] = 'Empty body w/ no predictions'
-        return nil # [0, [], ret_hash]
+        return nil
       end
       mimeType = json_body['predictions'][ix]['mimeType']
       # puts("MIME[#{ix}]: #{mimeType}")    # shjould be PNG
@@ -200,7 +200,7 @@ module Genai
       # puts 'prediction_size_minus_one: ', prediction_size_minus_one
       (0..prediction_size_minus_one).each do |ix|
         # ret_hash["#{ix}_start"] = 'debug'
-        filename = "tmp_#{_model_version}-#{content.gsub(/ /, '_')}.ix=#{ix}.png"
+        filename = "tmp_#{_model_version}-#{content.gsub(/ /, '_').gsub(/\*/, '')[0, 100]}.ix=#{ix}.png"
 
         file = decode_nth_base64_image_to_file(_model_version, filename, json_body, ix, opts)
 

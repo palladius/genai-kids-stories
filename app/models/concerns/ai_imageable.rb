@@ -8,10 +8,17 @@ module AiImageable
     # t0d0
     #
     # This for SP
+    #
+    ## OBSOLETE
     def generate_one_genai_image_from_image_description!
-      return genai_compute_single_image!(p_image1) if is_a?(StoryParagraph)
-      return genai_compute_single_image!(:avatar) if is_a?(Kid)
-      return if is_a?(StoryParagraph)
+      #   return genai_compute_single_image!(p_image1) if is_a?(StoryParagraph)
+      #   return genai_compute_single_image!(:avatar) if is_a?(Kid)
+      #   return if is_a?(StoryParagraph)
+      if is_a?(StoryParagraph)
+        description = genai_input_for_image.gsub(/\n/, ' ') # usually long story with quotes and so on.
+        puts 'SP mayeb refactor when u find the caller...'
+        return genai_compute_single_image_by_decription(p_image1, description, gcp_opts = {})
+      end
 
       raise "generate_one_genai_image_from_image_description(): wrong class: #{self.class} "
     end
