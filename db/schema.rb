@@ -55,7 +55,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_02_145833) do
   end
 
 # Could not dump table "kids" because of following StandardError
-#   Unknown type 'attachment' for column 'avatar'
+#   Unknown type '' for column 'avatar'
 
   create_table "stories", force: :cascade do |t|
     t.string "title"
@@ -101,13 +101,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_02_145833) do
     t.integer "user_id", null: false
     t.integer "story_id", null: false
     t.string "language"
-    t.integer "client_id"
+    t.integer "kid_id"
     t.string "paragraph_strategy"
     t.text "internal_notes"
     t.string "genai_model"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["client_id"], name: "index_translated_stories_on_client_id"
+    t.index "\"client_id\"", name: "index_translated_stories_on_client_id"
     t.index ["story_id"], name: "index_translated_stories_on_story_id"
     t.index ["user_id"], name: "index_translated_stories_on_user_id"
   end

@@ -5,7 +5,7 @@ class CreateTranslatedStories < ActiveRecord::Migration[7.0]
       t.references :user, null: false, foreign_key: true
       t.references :story, null: false, foreign_key: true
       t.string :language
-      t.integer :client_id
+      t.integer :kid_id
       t.string :paragraph_strategy
       t.text :internal_notes
       t.string :genai_model
