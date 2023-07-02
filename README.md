@@ -57,18 +57,25 @@ rails g scaffold --force StoryTemplate \
     internal_notes:text \
     user_id:integer
 
-rails g scaffold TranslatedStory \
+rails g scaffold  --force TranslatedStory \
     name:string \
     user:references \
     story:references \
     language:string \
-    client_id:integer:index \
+    kid_id:integer:index \
     paragraph_strategy:string \
     internal_notes:text \
     genai_model:string
 
 rails g migration addTranslatedStoryReferenceToStoryParagraph \
     translated_story:references
+
+rails g migration addFavoriteLangugageToKid \
+    favorite_language:string
+
+Now fix once for all:
+$ StoryParagraph.all.map{|sp| sp.story_id}.uniq.each do
+    Create StoryParagraph  t.c. ...
 
 
 ```

@@ -15,6 +15,7 @@ GOOGLE_TRANSLATE_KEY = ENV.fetch('GOOGLE_TRANSLATE_KEY', nil)
 GOOGLE_TRANSLATE_KEY2 = Rails.application.credentials.dig(:gcp, :google_translate_key)
 OCCASIONAL_MESSAGE = ENV.fetch('OCCASIONAL_MESSAGE', nil)
 
+AVAIL_LANGUAGE_REGEX = /\A(it|es|fr|pt|de|en|ru|ja)\z/i
 # Note, we might need to refresh it from time to time :)
 GCLOUD_ACCESS_TOKEN = ENV.fetch(
   'GCLOUD_ACCESS_TOKEN',

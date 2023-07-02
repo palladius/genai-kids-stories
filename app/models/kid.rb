@@ -22,6 +22,9 @@ class Kid < ApplicationRecord
 
   # unique keys
   validates :nick, presence: true, uniqueness: { scope: :user_id }
+  validates :favorite_language, presence: true, format: { with: AVAIL_LANGUAGE_REGEX,
+                                                          message: 'We only support (2) Italian, Spanish, portuguese, german, english, Russian and Japanese now. Ok now also 🇫🇷 :)' }
+
   # has_one_attached :avatar, service: :local
 
   has_one_attached :avatar do |attachable|

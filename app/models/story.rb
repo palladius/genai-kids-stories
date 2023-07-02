@@ -368,4 +368,9 @@ class Story < ApplicationRecord
       story.fix
     end
   end
+
+  def self.default_paragraph_strategy
+    'simple-v0.1' # tokenization by slash N
+    # minsize-v0.1
+  end
 end

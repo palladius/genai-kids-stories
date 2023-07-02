@@ -5,6 +5,7 @@ module KidsHelper
       arr = [
         link_to("##{kid.id} #{kid.nick}", kid),
         kid.date_of_birth,
+        "<b>#{kid.favorite_language}</b>", # TODO: flag
         kid.visual_description,
         # kid.avatar.to_s.gsub('<', '&lt;').gsub('>', '&gt;'), # image_tag(kid.avatar.variant(:thumb)),
         avatar
@@ -14,6 +15,7 @@ module KidsHelper
       arr = %w[
         opts
         DOB
+        lang
         visual_description
         avatar
       ]

@@ -21,13 +21,17 @@
 # p_image4 (one)
 class StoryParagraph < ApplicationRecord
   include AiImageable
+  # OLD
   belongs_to :story
+  # NEW
+  belongs_to :translated_story
 
   validates :story_index, uniqueness: { scope: :story_id }
   validates :story_index, numericality: { in: 1..100 }
   validates :rating, numericality: { in: 1..5 }, allow_nil: true
   validates :language, presence: true,
-                       format: { with: /\A(it|es|fr|pt|de|en|ru|ja)\z/i, message: 'We only support ITalian, Spanish, portuguese, german, english, Russian and Japanese now. Ok now also 🇫🇷 :)' }
+                       format: { with: AVAIL_LANGUAGE_REGEX,
+                                 message: 'We only support ITalian, Spanish, portuguese, german, english, Russian and Japanese now. Ok now also 🇫🇷 :)' }
 
   # image attachments. Not sure whether to force 4 or ahev any. 4 would be easy for frontend (square with 4)
   has_many_attached :p_images # , service: :google

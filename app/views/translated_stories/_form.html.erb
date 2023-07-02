@@ -38,7 +38,8 @@
 
   <div>
     <%= form.label :paragraph_strategy, style: "display: block" %>
-    <%= form.text_field :paragraph_strategy %>
+    <%= form.text_field :paragraph_strategy, required: true, class: 'form-control', value:Story.default_paragraph_strategy %>
+
   </div>
 
   <div>
@@ -48,7 +49,9 @@
 
   <div>
     <%= form.label :genai_model, style: "display: block" %>
-    <%= form.text_field :genai_model %>
+    <%#= form.text_field :genai_model %>
+     <%= form.text_field :genai_model, required: true, class: 'form-control', value:TranslatedStory.default_genai_model  %>
+
   </div>
 
   <div>
