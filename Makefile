@@ -80,6 +80,7 @@ docker-run-bash-nobuild:
 
 # No such file or directory - gcloud
 docker-run-nobuild:
+	echo Docker running on http://localhost:30080/
 	bin/docker-run-locally.sh
 
 docker-run: docker-build docker-run-nobuild
