@@ -12,6 +12,6 @@ class CreateTranslatedStories < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
-    add_index :translated_stories, :client_id
+    add_index :translated_stories, :kid_id
   end
 end
