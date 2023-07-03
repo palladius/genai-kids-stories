@@ -51,8 +51,34 @@
     <%= translated_story.genai_model %>
   </p>
 
-<h3>Paragraphs</h3>
+<% if (not @story_paragraphs.nil?) and @story_paragraphs.count > 0 %>
+  <h3>🐠 Translated Story (<%= @story_paragraphs.count %> pars)</h3>
 
-TODO. Thsi is big - going to require to move and repurpose existing ones under this one :)
-But probably they're going to be these: <tt>Story.find(self.story_id).paragraphs</tt>
+  <%= @story_paragraphs.count %> @story_paragraphs
+
+  <table border="0" >
+    <% @story_paragraphs.each do |sp| %>
+      <%= render_working_story_paragraph(sp) %>
+    <% end %>
+  </table>
+<% else  %>
+
+  <h3>👁️ Paragraphs Preview</h3>
+
+ @story_paragraphs is either null or empty.  I like it - generate then <a href='TODO' >NOW</a>!
+
+    <% translated_story.polymorphic_paragraphs.each_with_index do |p, ix|  %>
+      <p>
+          🧠 <%= ix+1 %>🧠
+          <span class='story' ><%= p %></span>
+      </p>
+    <% end  %>
+
+  TODO generation link <br/>
+
+  TODO. Thsi is big - going to require to move and repurpose existing ones under this one :)
+  But probably they're going to be these: <tt>Story.find(self.story_id).paragraphs</tt>
+
+
+  <% end  %>
 </div>

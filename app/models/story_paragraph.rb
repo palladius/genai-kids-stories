@@ -26,7 +26,7 @@ class StoryParagraph < ApplicationRecord
   # NEW
   belongs_to :translated_story
 
-  validates :story_index, uniqueness: { scope: :story_id }
+  validates :story_index, uniqueness: { scope: %i[language story_id] }
   validates :story_index, numericality: { in: 1..100 }
   validates :rating, numericality: { in: 1..5 }, allow_nil: true
   validates :language, presence: true,

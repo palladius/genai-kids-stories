@@ -7,7 +7,10 @@ class TranslatedStoriesController < ApplicationController
   end
 
   # GET /translated_stories/1 or /translated_stories/1.json
-  def show; end
+  def show
+    #  hidden @translated_story
+    @story_paragraphs = StoryParagraph.where(translated_story_id: @translated_story.id)
+  end
 
   # GET /translated_stories/new
   def new

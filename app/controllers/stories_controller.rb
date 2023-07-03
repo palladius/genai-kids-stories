@@ -15,7 +15,7 @@ class StoriesController < ApplicationController
 
   def show_rebuilt
     @story = Story.find(params[:id])
-    @paragraphs = @story.story_paragraphs.sort
+    @story_paragraphs = @story.story_paragraphs.sort
     @translate_to = params[:translate_to] # or , nil)
     # if @translate_to do magic in controller?
   end

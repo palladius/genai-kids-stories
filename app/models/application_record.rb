@@ -9,10 +9,12 @@ class ApplicationRecord < ActiveRecord::Base
     _attachable_field.attach(io: File.open(File.expand_path(_filename)), filename: _filename)
   end
 
-  # OBSOLETE!
-  # def self.yellow(s)
-  #   "\033[1;33m#{s}\033[0m"
-  # end
+  # initially used for Story but useful for others as well..
+  def append_notes(str)
+    self.internal_notes ||= '🌍'
+    self.internal_notes += "::append:: AppVer=#{APP_VERSION} #{Time.now} #{str}\n"
+    # self.update_column(:internal_notes => self.internal_notes) rescue nil
+  end
 
   # woohoo https://stackoverflow.com/questions/49525843/rails-get-a-random-record-from-db
   def self.find_sample

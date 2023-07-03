@@ -31,6 +31,9 @@ class TranslatedStory < ApplicationRecord
                                  message: 'We only support ITalian, Spanish, portuguese, german, english, Russian and Japanese now. Ok now also 🇫🇷 :)' }
 
   validates :story_id, uniqueness: { scope: %i[language paragraph_strategy] }
+  validates :paragraph_strategy, presence: true,
+                                 format: { with: /\w+-v([\d.]+)/,
+                                           message: 'We only support simple-v0.1 and smart-v0.1 at the moment' }
   # , message: 'No spaces, just dash underscores and lower cases'
   #
   # DELETE IN CASCADE all of its
@@ -72,7 +75,8 @@ class TranslatedStory < ApplicationRecord
     puts 'fix_missing_attributes'
     self.kid_id ||= story.kid.id
     self.language ||= story.kid.favorite_language || DEFAULT_LANGUAGE # Italian :)
-    self.internal_notes += "TranslatedStory.fix_missing_attributes called on #{Time.now} ||\n"
+    self.paragraph_strategy ||= 'simple-v0.1'
+    append_notes('TranslatedStory.fix_missing_attributes called')
     # delay(queue: 'translated_story::set_translated_title').set_translated_title if translated_title.to_s == ''
     set_translated_title if translated_title.to_s == ''
     save
@@ -81,7 +85,11 @@ class TranslatedStory < ApplicationRecord
   # disabled rubocop as per https://stackoverflow.com/questions/62562455/visual-studio-code-disabling-error-warning-checks-in-for-specific-file-type
   def to_s
     # Damn rubocop! "#{self.emoji} #{name}"
-    "#{TranslatedStory.emoji} #{name} [TODO translated title '#{translated_title}']"
+    if translated_title.to_s.size > 1
+      "#{flag} #{translated_title}"
+    else
+      "#{flag} #{TranslatedStory.emoji} #{name}"
+    end
   end
 
   def flag
@@ -96,5 +104,58 @@ class TranslatedStory < ApplicationRecord
   def fix
     # TODO
     fix_missing_attributes
+  end
+
+  def simple_paragraphs(_algorithm_version)
+    story.simple_paragraphs
+  end
+
+  def smart_paragraphs(_algorithm_version)
+    story.smart_paragraphs
+  end
+
+  def polymorphic_paragraphs
+    paragraph_strategy_base, paragraph_strategy_version = begin
+      paragraph_strategy.split('-v')
+    rescue StandardError
+      [nil, nil]
+    end
+    case paragraph_strategy_base # paragraph_strategy: simple-v0.1
+    when 'simple'
+      simple_paragraphs(paragraph_strategy_version)
+    when 'smart'
+      smart_paragraphs(paragraph_strategy_version)
+    else
+      puts "Unknown typology '#{paragraph_strategy_base}'.."
+      []
+    end
+  end
+
+  def generate_polymorphic_paragraphs(_opts = {})
+    # lang = _opts.fetch(:lang, DEFAULT_LANGUAGE)
+    # lang = self.language
+    key = _opts.fetch(:key, GOOGLE_TRANSLATE_KEY2)
+
+    cached_pars = polymorphic_paragraphs
+
+    # find or create by story and lang :)
+
+    puts "Story.generate_paragraphs(). Size: #{cached_pars.size}"
+    # return if StoryParagraph.find(story_id: id).count > 0
+    cached_pars.each_with_index do |p, _ix|
+      story_ix = _ix + 1 # start from 1.. Im pretty sure Im gonna regret this :)
+      puts "⅞T0d0 #{StoryParagraph.emoji} [#{story_ix}] #{p}"
+      # StoryParagraph(story_index: integer, original_text: text, genai_input_for_image: text,
+      sp = StoryParagraph.create(
+        language: self.language,
+        story_index: story_ix,
+        story_id: story.id,
+        internal_notes: "Created via TranslatedStory.generate_polymorphic_paragraphs on #{Time.now}\n",
+        original_text: p,
+        translated_story_id: id
+      )
+      puts(sp)
+      puts "SP ERROR: #{sp.errors.full_messages}" unless sp.save
+    end
   end
 end

@@ -104,7 +104,7 @@ class Story < ApplicationRecord
     puts save_ok
   end
 
-  def paragraphs_old
+  def simple_paragraphs
     # needs to remove '**Act 1**'
     genai_output.split("\n").reject { |c| c.length < 12 }.map { |x| x.chomp }
   rescue StandardError
@@ -165,12 +165,6 @@ class Story < ApplicationRecord
   # In this example, the split_into_chunks method takes a string as input and returns an array of chunks. It splits the string into paragraphs using the "\n" delimiter and then loops through the paragraphs. It keeps adding paragraphs to the current_chunk variable as long as the length of the chunk (including the current paragraph) does not exceed 200 characters. Once the length limit is reached, the current chunk is added to the chunks array, and a new chunk is started with the current paragraph.
 
   # The resulting chunks are stored in the chunks array, and in this example, we print the array using inspect. You can modify the code to suit your specific needs, such as storing the chunks in a variable or performing further processing on them.
-
-  def append_notes(str)
-    self.internal_notes ||= '🌍'
-    self.internal_notes += "::append:: AppVer=#{APP_VERSION} #{Time.now} #{str}\n"
-    # self.update_column(:internal_notes => self.internal_notes) rescue nil
-  end
 
   def to_s
     "#{Story.emoji}.#{id} '#{title}'"
@@ -323,6 +317,7 @@ class Story < ApplicationRecord
     ret1
   end
 
+  # This is the OBSOLETE way of doing this
   def generate_paragraphs(_opts = {})
     lang = _opts.fetch(:lang, DEFAULT_LANGUAGE)
     key = _opts.fetch(:key, GOOGLE_TRANSLATE_KEY2)

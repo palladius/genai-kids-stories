@@ -3,12 +3,25 @@
 <h1>Translated stories</h1>
 
 <div id="translated_stories">
+    <table>
+      <th>Links
+      <th>Translated Story
+      <th>Original Story
   <% @translated_stories.each do |translated_story| %>
-    <%= render translated_story %>
-    <p>
-      <%= link_to "Show this translated story", translated_story %>
+    <%#= render translated_story %>
+    <tr>
+      <td>
+      <%= link_to "👁️", translated_story %>
+      <%= link_to "🔏", edit_translated_story_path(translated_story) %>
+    <td>
+      <%= link_to translated_story.kid,translated_story.kid %>
+    <td>
+      <%= link_to translated_story,translated_story %>
+    <td>
+      <%= link_to translated_story.story,translated_story.story %>
     </p>
   <% end %>
+  </table>
 </div>
 
 <%= link_to "New translated story", new_translated_story_path %>

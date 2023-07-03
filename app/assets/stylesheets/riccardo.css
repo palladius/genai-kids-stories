@@ -42,3 +42,7 @@ p.beautified-paragraph {
 .subhead::first-letter {
   initial-letter: 3;
 }
+
+.story {
+  font-size: large;
+}
