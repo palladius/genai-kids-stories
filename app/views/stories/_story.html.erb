@@ -26,6 +26,10 @@
   - <%= link_to "🚧 Translate to #{language}", "/story_rebuilt/#{@story.id}?translate_to=#{language}", method: :post %><br/>
 <% end if  story.story_paragraphs.size  == 0 %>
 
+<h3><%= TranslatedStory.emoji %> Translated Stories</h3>
+<% TranslatedStory.where(story_id: @story.id).each do |ts| %>
+  - <%= ts%>
+<% end %>
 
 <h3>📈 Story Stats</h3>
 

@@ -327,6 +327,26 @@ class Story < ApplicationRecord
     lang = _opts.fetch(:lang, DEFAULT_LANGUAGE)
     key = _opts.fetch(:key, GOOGLE_TRANSLATE_KEY2)
 
+    # find or create by story and lang :)
+    parent_ts = TranslatedStory.where(story_id: id, language: lang).first
+
+    unless parent_ts.instance_of?(::TranslatedStory)
+      # if u dont find it, create it
+      parent_ts = TranslatedStory.create(
+        name: "[auto generated from] #{self}",
+        user: begin
+          current_user
+        rescue StandardError
+          User.first
+        end,
+        language: lang,
+        story_id: id,
+        kid_id: kid.id,
+        internal_notes: 'Generated randomly before going to work as part of Story create paragraphs since otherwise createpagraphs is broken since now its a needed field :)'
+      )
+    end
+    puts "Errors for Parent TS: #{parent_ts.errors}"
+    # return 'tutto ok'
     # puts 'generate_paragraphs START..'
     puts "Story.generate_paragraphs(). Size: #{paragraphs.size}"
     # return if StoryParagraph.find(story_id: id).count > 0
@@ -341,7 +361,8 @@ class Story < ApplicationRecord
         # rating: nil,
         internal_notes: "Created via Story.generate_paragraphs on #{Time.now}\n",
         # translated_text: nil,
-        original_text: p
+        original_text: p,
+        translated_story_id: parent_ts.id
         # genai_input_for_image: nil
       )
       puts(sp)
