@@ -72,7 +72,9 @@ test:
 	rake test
 
 docker-build:
-	docker build -t "$(APP_NAME)":v`bin/version.sh` .
+# Thsi should fix the Mac issue.
+# https://stackoverflow.com/questions/73398714/docker-fails-when-building-on-m1-macs-exec-usr-local-bin-docker-entrypoint-sh/73400257#73400257
+	docker build --platform=linux/amd64 -t "$(APP_NAME)":v`bin/version.sh` .
 
 
 docker-run-bash-nobuild:
