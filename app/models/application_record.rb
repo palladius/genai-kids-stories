@@ -5,6 +5,11 @@ class ApplicationRecord < ActiveRecord::Base
   # DEFLT for everyone: https://github.com/mislav/will_paginate
   WillPaginate.per_page = 10
 
+  def attach_file_to_attachable_field(_attachable_field, _filename)
+    _attachable_field.attach(io: File.open(File.expand_path(_filename)), filename: _filename)
+  end
+
+  # OBSOLETE!
   def self.yellow(s)
     "\033[1;33m#{s}\033[0m"
   end

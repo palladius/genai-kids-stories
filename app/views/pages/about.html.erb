@@ -23,5 +23,8 @@ To use credentials, do this <tt>EDITOR="your_editor_name --wait" bin/rails crede
 
 * #Kids: <b><%= Kid.all.count %></b><br/>
 * #Stories: <b><%= Story.all.count %></b><br/>
+* #TranslatedStories: <b><%= TranslatedStory.all.count %></b><br/>
+* #SParagraphs: <b><%= StoryParagraph.all.count %></b> (unique paragraphized stories: <%= StoryParagraph.all.map{|x| x.story_id}.uniq.sort %>)<br/>
+* #Users: <b><%= User.all.count %></b><br/>
 * #Attachments: <b><%= :TODOs %></b><br/>
 

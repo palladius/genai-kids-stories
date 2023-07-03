@@ -7,4 +7,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   validates :email, uniqueness: true, presence: true
+
+  # TODO: user permit :avatar in controller..
+  has_one_attached :avatar
 end

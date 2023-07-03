@@ -1,5 +1,16 @@
 # frozen_string_literal: true
 
+#   create_table "stories", force: :cascade do |t|
+# t.string "title"
+# t.text "genai_input"
+# t.text "genai_output"
+# t.text "genai_summary"
+# t.text "internal_notes"
+# t.integer "user_id"
+# t.bigint "kid_id", null: false
+# t.index ["kid_id"], name: "index_stories_on_kid_id"
+# end
+
 class Story < ApplicationRecord
   include AiImageable
 

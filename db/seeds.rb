@@ -6,21 +6,37 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
+RAKE_DB_SEED_VERSION = '1.1'
+
 CREATE_STORY_TEMPLATES = false
 CREATE_USERS = true
 ALL_THE_REST = false # Sorry this idea came a bit late :)
 
+def dbseed_cheap_attachable(_filename)
+  {
+    io: File.open(File.expand_path(_filename)),
+    filename: _filename,
+    metadata: { function: "db_seed_v#{RAKE_DB_SEED_VERSION}" }
+    # TODO: metadata with RAKE_DB_SEED_VERSION
+  }
+end
+
 puts 'Creating a couple of test kids, completely randomic...'
 if CREATE_USERS
-  User.create(
+  admin = User.create(
     email: 'admin@example.com',
     name: 'Admin',
-    password: 'S0b3nm3!'
+    password: 'S0b3nm3!',
+    # avatar: 'app/assets/images/users/rails.png'
+    avatar: dbseed_cheap_attachable('app/assets/images/users/rails.png')
   )
+  #  admin.avatar.attach('app/assets/images/users/rails.png')
+  # .attach(io: File.open("../../Downloads/me.jpg"), filename: "something")
   User.create(
     email: "#{Rails.env}@example.com",
     name: Rails.env,
-    password: 'Rails Environment are cool1!1'
+    password: 'Rails Environment are cool1!1',
+    avatar: dbseed_cheap_attachable('app/assets/images/users/rails.png')
   )
 end
 if CREATE_STORY_TEMPLATES

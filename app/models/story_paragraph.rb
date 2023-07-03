@@ -53,7 +53,8 @@ class StoryParagraph < ApplicationRecord
   end
 
   def attach!(_filename)
-    p_image1.attach(io: File.open(File.expand_path(_filename)), filename: _filename)
+    # p_image1.attach(io: File.open(File.expand_path(_filename)), filename: _filename)
+    attach_file_to_attachable_field(p_image1, _filename)
   end
 
   def after_creation_delayed_magic
