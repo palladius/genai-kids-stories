@@ -90,10 +90,10 @@ module Genai
 
       puts "🌃ImageGeneration🌃(v#{_model_version}).content='#{yellow content}'"
 
-      puts '''TODO ricc:
-            3. Test the attach file as part of this, maybe as a callback or an opts object which is of type
-         attachable
-      '''
+      # puts '''TODO ricc:
+      #       3. Test the attach file as part of this, maybe as a callback or an opts object which is of type
+      #    attachable
+      # '''
 
       if opts_mock
         #######################

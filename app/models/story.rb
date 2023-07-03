@@ -430,7 +430,7 @@ class Story < ApplicationRecord
       name: 'one-off migration clean me afterwards'
       # translated_story_id: 42
     )
-    puts("ret=#{ret.valid?}")
+    puts("Model.generate_migration_translated_story TS.valid=#{ret.valid?}")
     puts(ret.errors.full_messages) unless ret # oK!
     ret
   end
