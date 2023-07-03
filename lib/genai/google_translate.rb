@@ -25,7 +25,9 @@ def google_translate(_body, _language = 'it', _gtranslate_key = nil)
   # translation_response.text #=> "Salve mundi!"
 
   # Removing the 's and "s
-  translation_response.text.gsub('&#39;', "'").gsub('&quot;', '"')
+  translated_string = translation_response.text.gsub('&#39;', "'").gsub('&quot;', '"')
+  puts("DEB Translate returned: #{yellow translated_string}")
+  translated_string
 end
 
 # translate('yesterday i fell off a cliff and broke a knee. Today im fine')

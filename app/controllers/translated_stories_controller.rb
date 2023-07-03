@@ -11,7 +11,17 @@ class TranslatedStoriesController < ApplicationController
 
   # GET /translated_stories/new
   def new
-    @translated_story = TranslatedStory.new
+    # @translated_story = if params['language']
+    #                       TranslatedStory.new(language: params['language'])
+    #                     else
+    #                       TranslatedStory.new
+    #                     end
+    @translated_story = TranslatedStory.new(
+      language: params['language'],
+      story_id: params['story_id'],
+      # story_id: params['story'],
+      internal_notes: params['internal_notes']
+    )
   end
 
   # GET /translated_stories/1/edit
@@ -68,7 +78,7 @@ class TranslatedStoriesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def translated_story_params
-    params.require(:translated_story).permit(:name, :user_id, :story_id, :language, :kid_id, :paragraph_strategy, :translated_story,
-                                             :internal_notes, :genai_model)
+    params.require(:translated_story).permit(:name, :user_id, :story_id, :language, :kid_id, :paragraph_strategy, :translated_title,
+                                             :translated_story, :internal_notes, :genai_model)
   end
 end

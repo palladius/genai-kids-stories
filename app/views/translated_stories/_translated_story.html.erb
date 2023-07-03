@@ -3,12 +3,18 @@
     <strong>Name:</strong>
     <%= translated_story.name %>
   </p>
+  <p>
+    <strong>translated_title (<%= waving_flag translated_story.language %>):</strong>
+    <%= translated_story.translated_title %>
+  </p>
+
+
 
   <p>
     <strong>User:</strong>
     <%= translated_story.user_id %>
     <%= translated_story.name %>
-    <%= image_tag translated_story.user.avatar.variant(resize_to_limit: [50, 50]) %>
+    <%= image_tag translated_story.user.avatar.variant(resize_to_limit: [50, 50]) if translated_story.user.avatar.attached? %>
     <%#= image_tag translated_story.user.avatar.preview(resize_to_limit: [100, 100]) if translated_story.user.avatar.attached? %>
 
   </p>

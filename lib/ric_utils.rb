@@ -1,3 +1,6 @@
+AVAIL_LANGUAGES = %w[it de es fr ja pt ru].sort.freeze
+
+# colors
 def yellow(s)
   "\033[1;33m#{s}\033[0m"
 end
@@ -9,6 +12,8 @@ end
 def blue(s)
   "\033[1;33m#{s}\033[0m"
 end
+
+# TODO: MOdule Language START
 
 def waving_flag(language)
   case language

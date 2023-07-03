@@ -25,8 +25,11 @@
 
   <div>
     <%= form.label :story_id, style: "display: block" %>
-    <%#= form.text_field :story_id %>
-    <%= form.select :story_id, options_for_select(Story.all.collect{ |story| [story.title, story.id] }), {}, {} %>
+    <%#= form.select :story_id, options_for_select(Story.all.collect{ |story| [story.title, story.id] }), :selected => params['story_id'], {} %>
+    <%= form.select :story_id, options_for_select(
+                                                  Story.all.collect{ |story| [story.title, story.id] },
+                                                  params['story_id']), {}, {}
+    %>
 
   </div>
 

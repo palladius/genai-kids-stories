@@ -61,8 +61,10 @@ class TranslatedStory < ApplicationRecord
   end
 
   def set_translated_title
-    sleep(10)
-    translated_title = "TODO (simulate a google translate from story title =#{story.title})"
+    # sleep(10)
+    self.translated_title = google_translate(story.title, language)
+    save
+    # translated_title = "TODO (simulate a google translate from story title =#{story.title})"
   end
 
   # after create, only once
@@ -71,7 +73,8 @@ class TranslatedStory < ApplicationRecord
     self.kid_id ||= story.kid.id
     self.language ||= story.kid.favorite_language || DEFAULT_LANGUAGE # Italian :)
     self.internal_notes += "TranslatedStory.fix_missing_attributes called on #{Time.now} ||\n"
-    delay(queue: 'translated_story::set_translated_title').set_translated_title if translated_title.to_s == ''
+    # delay(queue: 'translated_story::set_translated_title').set_translated_title if translated_title.to_s == ''
+    set_translated_title if translated_title.to_s == ''
     save
   end
 
@@ -88,5 +91,10 @@ class TranslatedStory < ApplicationRecord
   def self.emoji
     # 🈳👅 # cant choose between the 2..'
     '🈳' # cant choose between the 2..'
+  end
+
+  def fix
+    # TODO
+    fix_missing_attributes
   end
 end

@@ -100,7 +100,8 @@ class StoryParagraph < ApplicationRecord
   end
 
   def self.available_lanugages
-    %w[it de es fr ja pt ru].sort
+    # %w[it de es fr ja pt ru].sort
+    AVAIL_LANGUAGES
   end
 
   def self.emoji
