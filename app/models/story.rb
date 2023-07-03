@@ -17,6 +17,7 @@ class Story < ApplicationRecord
   belongs_to :kid
   #  has_one_attached :cover_image
   has_many :story_paragraphs
+  has_many :translated_stories
 
   has_one_attached :cover_image, service: :google do |attachable|
     attachable.variant :thumb, resize_to_limit: [200, 200]
@@ -399,5 +400,38 @@ class Story < ApplicationRecord
   def self.default_paragraph_strategy
     'simple-v0.1' # tokenization by slash N
     # minsize-v0.1
+  end
+
+  def generate_migration_translated_story
+    # there can be only one PRE migration. Good news!
+    translated_story_id = begin
+      translated_story_ids.first
+    rescue StandardError
+      nil
+    end
+    unless translated_story_id.nil?
+      puts 'No need to generate_migration_translated_story: translated_story_id finally exists! Yuppie!! Returning proper object'
+      return TranslatedStory.find(translated_story_id)
+    end
+
+    # infer_language = 'it' # TODO: check children
+    languages = StoryParagraph.where(story: self).map { |x| x.language }.uniq
+    raise "A mix of different languages here. I refuse to continue: #{languages}" unless languages.size == 1
+
+    # infer_language = languages[0]
+
+    ret = TranslatedStory.create(
+      paragraph_strategy: Story.default_paragraph_strategy,
+      internal_notes: "Created via Story.generate_migration_translated_story appver=#{APP_VERSION}",
+      language: languages[0],
+      story_id: id,
+      kid_id: kid.id,
+      user_id: kid.user_id,
+      name: 'one-off migration clean me afterwards'
+      # translated_story_id: 42
+    )
+    puts("ret=#{ret.valid?}")
+    puts(ret.errors.full_messages) unless ret # oK!
+    ret
   end
 end
