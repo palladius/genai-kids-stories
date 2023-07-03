@@ -6,15 +6,30 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-CREATE_STORY_TEMPLATES = true
+CREATE_STORY_TEMPLATES = false
+CREATE_USERS = true
+ALL_THE_REST = false # Sorry this idea came a bit late :)
 
 puts 'Creating a couple of test kids, completely randomic...'
-
+if CREATE_USERS
+  User.create(
+    email: 'admin@example.com',
+    name: 'Admin',
+    password: 'S0b3nm3!'
+  )
+  User.create(
+    email: "#{Rails.env}@example.com",
+    name: Rails.env,
+    password: 'Rails Environment are cool1!1'
+  )
+end
 if CREATE_STORY_TEMPLATES
   # StoryTemplate.create('blah')
   puts 'TODO from fixtures YAML'
   # raise 'TODO implement me ricc :) i half baked one in the YAML'
 end
+return unless ALL_THE_REST
+
 create_kids = Kid.find_by_nick('AJ').nil?
 
 puts '1. Creating fake child...'

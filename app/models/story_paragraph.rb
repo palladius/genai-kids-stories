@@ -57,7 +57,7 @@ class StoryParagraph < ApplicationRecord
   end
 
   def after_creation_delayed_magic
-    delay(queue: 'storyparagrah__after_creation_magic').after_creation_magic
+    delay(queue: 'story_paragrah::after_creation_magic').after_creation_magic
   end
 
   def after_creation_magic

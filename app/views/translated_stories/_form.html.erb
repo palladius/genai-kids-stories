@@ -18,12 +18,16 @@
 
   <div>
     <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
+    <%#= form.text_field :user_id %>
+    <%= form.select :user_id, options_for_select(User.all.collect{ |user| [user.name, user.id] }), {}, {} %>
+
   </div>
 
   <div>
     <%= form.label :story_id, style: "display: block" %>
-    <%= form.text_field :story_id %>
+    <%#= form.text_field :story_id %>
+    <%= form.select :story_id, options_for_select(Story.all.collect{ |story| [story.title, story.id] }), {}, {} %>
+
   </div>
 
   <div>
@@ -31,11 +35,12 @@
     <%= form.text_field :language %>
   </div>
 
+<!-- this is a hidden dependency, should be set after story :) or nothing at all :)
   <div>
     <%= form.label :kid_id, style: "display: block" %>
     <%= form.number_field :kid_id %>
   </div>
-
+-->
   <div>
     <%= form.label :paragraph_strategy, style: "display: block" %>
     <%= form.text_field :paragraph_strategy, required: true, class: 'form-control', value:Story.default_paragraph_strategy %>

@@ -144,6 +144,6 @@ class Kid < ApplicationRecord
   def genai_magic(_opts = {})
     # Thsi is such a minor thing that we can afford to delay and play with the DELAYED jobs :)
     # TODO only enqueue if NOT avatar attached?
-    delay(queue: 'kid__image_creation').fix
+    delay(queue: 'kid::image_creation').fix
   end
 end

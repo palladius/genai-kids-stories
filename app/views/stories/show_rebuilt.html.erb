@@ -13,7 +13,7 @@
     <%  @story.generate_paragraphs(lang: @translate_to) %>
   <%  else %>
     Delayed execution... use  (<%= link_to('now=true', "#{request.fullpath.to_s}&now=true") %> ) to make it immediate
-  <%  @story.delay.generate_paragraphs(lang: @translate_to) %>
+  <%  @story.delay(queue: 'story::view_generate_paragraphs').generate_paragraphs(lang: @translate_to) %>
   <%  end %>
   ... and since Im a crappy FE developer, please hit reload in a while :P</p>
 <% end %>

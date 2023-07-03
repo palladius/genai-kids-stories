@@ -73,6 +73,9 @@ rails g migration addTranslatedStoryReferenceToStoryParagraph \
 rails g migration addFavoriteLangugageToKid \
     favorite_language:string
 
+rails g migration addNameToUser \
+    name:string # and added internal notes too.
+
 Now fix once for all:
 $ StoryParagraph.all.map{|sp| sp.story_id}.uniq.each do
     Create StoryParagraph  t.c. ...
