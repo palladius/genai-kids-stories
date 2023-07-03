@@ -5,7 +5,7 @@ one:
   user: one
   story: one
   language: MyString
-  client_id: 1
+  kid_id: 1
   paragraph_strategy: MyString
   internal_notes: MyText
   genai_model: MyString
@@ -15,7 +15,7 @@ two:
   user: two
   story: two
   language: MyString
-  client_id: 1
+  kid_id: 1
   paragraph_strategy: MyString
   internal_notes: MyText
   genai_model: MyString
