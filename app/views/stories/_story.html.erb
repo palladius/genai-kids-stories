@@ -28,7 +28,7 @@
 
 <h3><%= TranslatedStory.emoji %> Translated Stories</h3>
 <% TranslatedStory.where(story_id: @story.id).each do |ts| %>
-  - <%= ts%>
+  - <%= ts.flag %> <%= link_to( ts, ts )%> <br/>
 <% end %>
 
 <h3>📈 Story Stats</h3>

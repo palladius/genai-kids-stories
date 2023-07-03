@@ -78,6 +78,7 @@ class StoryParagraph < ApplicationRecord
   end
 
   def flag
+    # semi deprecated see lib/ ..
     case language
     when 'it'
       '🇮🇹'

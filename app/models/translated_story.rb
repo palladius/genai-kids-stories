@@ -3,7 +3,12 @@
 class TranslatedStory < ApplicationRecord
   belongs_to :user # Oops its done in the DB, optional: true
   belongs_to :story
-  belongs_to :kid
+  belongs_to :kid, optional: true
+
+  # validates :language, presence: true # A TS needs a Story and a Language, STRONGLY.
+  validates :language, presence: true,
+                       format: { with: AVAIL_LANGUAGE_REGEX,
+                                 message: 'We only support ITalian, Spanish, portuguese, german, english, Russian and Japanese now. Ok now also 🇫🇷 :)' }
 
   validates :story_id, uniqueness: { scope: %i[language paragraph_strategy] }
   # , message: 'No spaces, just dash underscores and lower cases'
@@ -46,8 +51,12 @@ class TranslatedStory < ApplicationRecord
 
   # disabled rubocop as per https://stackoverflow.com/questions/62562455/visual-studio-code-disabling-error-warning-checks-in-for-specific-file-type
   def to_s
-    #    "#{self.emoji} #{name}"
-    "#{emoji} #{name}"
+    # Damn rubocop! "#{self.emoji} #{name}"
+    "#{TranslatedStory.emoji} #{name}"
+  end
+
+  def flag
+    waving_flag(self.language)
   end
 
   def self.emoji
