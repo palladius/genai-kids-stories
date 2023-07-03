@@ -168,7 +168,7 @@ class Story < ApplicationRecord
 
   def append_notes(str)
     self.internal_notes ||= '🌍'
-    self.internal_notes += "::append:: #{Time.now} #{str}\n"
+    self.internal_notes += "::append:: AppVer=#{APP_VERSION} #{Time.now} #{str}\n"
     # self.update_column(:internal_notes => self.internal_notes) rescue nil
   end
 

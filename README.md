@@ -80,6 +80,8 @@ Now fix once for all:
 $ StoryParagraph.all.map{|sp| sp.story_id}.uniq.each do
     Create StoryParagraph  t.c. ...
 
+rails g migration addTranslatedTitleToTranslatedStory
+    translated_title:string
 
 ```
 

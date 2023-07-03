@@ -1,4 +1,24 @@
 #
+#   create_table "translated_stories", force: :cascade do |t|
+# t.string "name" #  TODO translated title :)
+# t.bigint "user_id", null: false
+# t.bigint "story_id", null: false
+# t.string "language"
+# t.integer "kid_id"
+# t.string "paragraph_strategy"
+# t.text "internal_notes"
+# t.string "genai_model"
+# #
+# # ADDED translated_title
+##
+# t.index ["kid_id"], name: "index_translated_stories_on_kid_id"
+# t.index ["story_id"], name: "index_translated_stories_on_story_id"
+# t.index ["user_id"], name: "index_translated_stories_on_user_id"
+# end
+
+#
+#
+#
 # This is something I should have created A LONG TIME AGO :)
 class TranslatedStory < ApplicationRecord
   belongs_to :user # Oops its done in the DB, optional: true
@@ -40,19 +60,25 @@ class TranslatedStory < ApplicationRecord
     # self.language ||= story.kid.favorite_language
   end
 
+  def set_translated_title
+    sleep(10)
+    translated_title = "TODO (simulate a google translate from story title =#{story.title})"
+  end
+
   # after create, only once
   def fix_missing_attributes
     puts 'fix_missing_attributes'
     self.kid_id ||= story.kid.id
     self.language ||= story.kid.favorite_language || DEFAULT_LANGUAGE # Italian :)
     self.internal_notes += "TranslatedStory.fix_missing_attributes called on #{Time.now} ||\n"
+    delay(queue: 'translated_story::set_translated_title').set_translated_title if translated_title.to_s == ''
     save
   end
 
   # disabled rubocop as per https://stackoverflow.com/questions/62562455/visual-studio-code-disabling-error-warning-checks-in-for-specific-file-type
   def to_s
     # Damn rubocop! "#{self.emoji} #{name}"
-    "#{TranslatedStory.emoji} #{name}"
+    "#{TranslatedStory.emoji} #{name} [TODO translated title '#{translated_title}']"
   end
 
   def flag

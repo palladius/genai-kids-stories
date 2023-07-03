@@ -68,7 +68,7 @@ class TranslatedStoriesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def translated_story_params
-    params.require(:translated_story).permit(:name, :user_id, :story_id, :language, :kid_id, :paragraph_strategy,
+    params.require(:translated_story).permit(:name, :user_id, :story_id, :language, :kid_id, :paragraph_strategy, :translated_story,
                                              :internal_notes, :genai_model)
   end
 end
