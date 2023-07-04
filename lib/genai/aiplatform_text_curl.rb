@@ -51,6 +51,7 @@ module Genai
       'in a small village on a quiet island',
       'in a busy train station of a futuristic city full of high skyscrapers',
       'in a deserted beach, on a far away island in the middle of the ocean',
+      'in a futuristic Rome with a flying Colosseum',
       'in a mysterious cave at the bottom of a mountain'
     ]
     PLOTS = [

@@ -10,6 +10,7 @@ class TranslatedStoriesController < ApplicationController
   def show
     #  hidden @translated_story
     @story_paragraphs = StoryParagraph.where(translated_story_id: @translated_story.id)
+    @execute_now = params[:execute_now] == 'true'
   end
 
   # GET /translated_stories/new

@@ -8,15 +8,11 @@
     <%= translated_story.translated_title %>
   </p>
 
-
-
   <p>
     <strong>User:</strong>
     <%= translated_story.user_id %>
     <%= translated_story.name %>
     <%= image_tag translated_story.user.avatar.variant(resize_to_limit: [50, 50]) if translated_story.user.avatar.attached? %>
-    <%#= image_tag translated_story.user.avatar.preview(resize_to_limit: [100, 100]) if translated_story.user.avatar.attached? %>
-
   </p>
 
   <p>
@@ -54,7 +50,7 @@
 <% if (not @story_paragraphs.nil?) and @story_paragraphs.count > 0 %>
   <h3>🐠 Translated Story (<%= @story_paragraphs.count %> pars)</h3>
 
-  <%= @story_paragraphs.count %> @story_paragraphs
+  <%= @story_paragraphs.count %>
 
   <table border="0" >
     <% @story_paragraphs.each do |sp| %>
@@ -65,7 +61,17 @@
 
   <h3>👁️ Paragraphs Preview</h3>
 
- @story_paragraphs is either null or empty.  I like it - generate then <a href='TODO' >NOW</a>!
+ 😥 @story_paragraphs is either null or empty. Let's generate them!<br/>
+ @execute_now=<%=@execute_now %>
+
+  <% if params[:execute_now] == 'true' %>
+    💻 NOW: IMMEDIATE execution... generating kids of this story in the <b> <%= translated_story.paragraph_strategy %></b> strategy, with language=<%= translated_story.language %>.
+    <% @translated_story.generate_polymorphic_paragraphs %>
+  <%  else %>
+    💻😴 Enqueued a Delayed execution to 'translated_story::generate_polymorphic_paragraphs' queue... use  (<%= link_to('execute_now!', "#{request.fullpath.to_s}?execute_now=true") %> ) to generate immediately!
+    <% @translated_story.delay(queue: 'translated_story::generate_polymorphic_paragraphs').generate_polymorphic_paragraphs %>
+    TODO(ricc): make sure you only enqueue this ONCE based on a key (in this case, @translated_story.id should suffice)
+  <%  end %>
 
     <% translated_story.polymorphic_paragraphs.each_with_index do |p, ix|  %>
       <p>
@@ -74,7 +80,6 @@
       </p>
     <% end  %>
 
-  TODO generation link <br/>
 
   TODO. Thsi is big - going to require to move and repurpose existing ones under this one :)
   But probably they're going to be these: <tt>Story.find(self.story_id).paragraphs</tt>

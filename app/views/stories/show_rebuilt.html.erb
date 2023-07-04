@@ -3,9 +3,9 @@
       <%= image_tag(@story.cover_image,  style: "float:right;height:200px;") if @story.cover_image.attached? %>
    See <%= link_to '📚 Normal story', "/stories/#{@story.id}" %>
 
-<% if @translate_to &&  @paragraphs.size == 0 %>
+<% if @translate_to &&  @story_paragraphs.size == 0 %>
   <h2> @translate_to activated! for ''<%= @translate_to %>''  </h2>
-  <p>@paragraphs.size = <%= @paragraphs.size %></p>
+  <p>@story_paragraphs.size = <%= @story_paragraphs.size %></p>
   <p>Please wait a minute while I conjure the powers of AI...
 
   <% if params[:now] == 'true' %>

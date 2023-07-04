@@ -122,11 +122,9 @@ class StoryParagraph < ApplicationRecord
     puts "Proposed genai_input_for_image for SP.#{id}: #{yellow genai_input_for_image}"
     ret = save
     if ret
-      puts 'SAVE OK!'
+      puts 'generate_genai_text_for_paragraph() SAVE OK!'
     else
-      puts "SAVE ERROR: #{errors.full_messages}"
+      puts "generate_genai_text_for_paragraph() SAVE ERROR: #{errors.full_messages}"
     end
   end
-
-  # rails c >  StoryParagraph.first.generate_genai_image_from_image_description
 end
