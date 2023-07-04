@@ -68,6 +68,9 @@ steps:
   - '--platform'
   -   'managed'
   - '--allow-unauthenticated'
+  env:
+  - 'PROJECT_ID=${PROJECT_ID}'
+
 
 - name: 'gcr.io/cloud-builders/gcloud'
   id: Now I do smart things which need to unleash the power of BASH # yes slightly ironic
