@@ -19,5 +19,5 @@ DASHED_VERSION="${VERSION//./-}"
 # docker tag \
 # europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories \
 # europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:v0-10-07
-docker tag "$ARTIFACT_REPO_ALL" "$ARTIFACT_REPO_ALL:v$DASHED_VERSION"
+docker tag "$ARTIFACT_REPO_ALL:cb-latest" "$ARTIFACT_REPO_ALL:v$DASHED_VERSION"
 docker push "$ARTIFACT_REPO_ALL:v$DASHED_VERSION"
