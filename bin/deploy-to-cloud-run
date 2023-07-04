@@ -133,6 +133,6 @@ function _gcloud_run_deploy_name_and_args() {
       --allow-unauthenticated
 }
 #1. gcloud normal app Rails Server in prod
-_gcloud_run_deploy_name_and_args "genai-kids-stories-gcloud"
+_gcloud_run_deploy_name_and_args "genai-kids-stories-gcloud-test"
 #2. RoR runner
 #_gcloud_run_deploy_name_and_args "genai-kids-stories-jobrunner --args bin/delayed_job,run"
