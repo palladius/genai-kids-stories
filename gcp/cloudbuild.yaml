@@ -52,6 +52,16 @@ steps:
 #    id: 3 Ruby rake test ok if it fails
 #    args: ['rake || echo ok anyway']
 
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Now I do smart things which need to unleash the power of BASH # yes slightly ironic
+  entrypoint: 'bash'
+  args:
+    - '-eEuo'
+    - 'pipefail'
+    - '-c'
+    - 'bin/cloud-build-smart-stuff.sh'
+  dir: .
+
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
   args:
@@ -70,17 +80,6 @@ steps:
   - '--allow-unauthenticated'
   env:
   - 'PROJECT_ID=${PROJECT_ID}'
-
-
-- name: 'gcr.io/cloud-builders/gcloud'
-  id: Now I do smart things which need to unleash the power of BASH # yes slightly ironic
-  entrypoint: 'bash'
-  args:
-    - '-eEuo'
-    - 'pipefail'
-    - '-c'
-    - 'bin/cloud-build-smart-stuff.sh'
-  dir: .
 
 
 - name: 'gcr.io/cloud-builders/gcloud'
