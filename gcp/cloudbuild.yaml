@@ -91,6 +91,8 @@ steps:
   env:
   - 'REGION=${_REGION}'
   - 'ARTIFACT_REPO=${_ARTIFACT_REPO}'
+  # ERRROR: /rails/bin/docker-entrypoint: line 23: PROJECT_ID: unbound variable
+  - 'PROJECT_ID=${PROJECT_ID}'
   secretEnv:
   - 'DANGEROUS_SA_JSON_VALUE'
 
