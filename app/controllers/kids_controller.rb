@@ -7,7 +7,9 @@ class KidsController < ApplicationController
   end
 
   # GET /kids/1 or /kids/1.json
-  def show; end
+  def show
+    @kid_translated_stories = TranslatedStory.where(kid: @kid)
+  end
 
   # GET /kids/new
   def new
