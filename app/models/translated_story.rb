@@ -21,6 +21,7 @@ class TranslatedStory < ApplicationRecord
   belongs_to :user # Oops its done in the DB, optional: true
   belongs_to :story
   belongs_to :kid, optional: true
+  has_many :story_paragraphs
 
   # validates :language, presence: true # A TS needs a Story and a Language, STRONGLY.
   validates :language, presence: true,
@@ -98,9 +99,19 @@ class TranslatedStory < ApplicationRecord
     '🈳' # cant choose between the 2..'
   end
 
+  def paragraphs_with_no_images
+    story_paragraphs.map { |x| [x.id, x.attached?] }.select { |a| a[1] == false }.map { |a| a[0] }
+  end
+
   def fix
     # TODO
     fix_missing_attributes
+    # Check children translated_stories for missing images
+    # =>  [[204, false]]
+    paragraphs_with_no_images.each do |id|
+      puts "Missing image for #{id}"
+      StoryParagraph.find(id).generate_ai_images!
+    end
   end
 
   def simple_paragraphs(_algorithm_version)

@@ -57,6 +57,10 @@ class StoryParagraph < ApplicationRecord
     attach_file_to_attachable_field(p_image1, _filename)
   end
 
+  def attached?
+    p_image1.attached?
+  end
+
   def after_creation_delayed_magic
     delay(queue: 'story_paragrah::after_creation_magic').after_creation_magic
   end
@@ -81,8 +85,8 @@ class StoryParagraph < ApplicationRecord
     waving_flag(language)
   end
 
+  # TODO: fix typo
   def self.available_lanugages
-    # %w[it de es fr ja pt ru].sort
     AVAIL_LANGUAGES
   end
 

@@ -47,6 +47,14 @@
     <%= translated_story.genai_model %>
   </p>
 
+  <p>
+    <strong>paragraphs_with_no_images:</strong>
+    <b><%= translated_story.paragraphs_with_no_images.size %></b> (<%= translated_story.paragraphs_with_no_images %>)
+    Call <tt class='debug' >TranslatedStory.find(<%=translated_story.id%>).fix</tt> to fix
+  </p>
+
+
+
 <% if (not @story_paragraphs.nil?) and @story_paragraphs.count > 0 %>
   <h3>🐠 Translated Story (<%= @story_paragraphs.count %> pars)</h3>
 
