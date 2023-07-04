@@ -2,44 +2,14 @@
 # Hi Riccardo, here's where Im invoked: https://console.cloud.google.com/cloud-build/triggers/edit/3ea0601e-3544-4385-ab5a-f4c7f7aceb4c?hl=IT&project=ror-goldie
 # See CloudBuild samples: https://github.com/GoogleCloudPlatform/cloud-build-samples/blob/main/run-example-builddeploy/cloudbuild.yaml
 ###########################################
+# 20min for RoR :/
 timeout: 1200s
 options:
   machineType: 'N1_HIGHCPU_8'
-
-
-steps:
-
-# - name: 'ruby:3.2.0'
-#   id: Ruby rake test
-#   args: ['bundle', 'exec', 'rake', 'test']
-
-
-  #### DOCKER BUILD
-
- - name: 'gcr.io/cloud-builders/docker'
-   id: 2 Docker Build - to LATEST
-   #args: ['build', '-t', "gcr.io/$PROJECT_ID/genai-kids-stories", '.']
-   args: ['build', '-t', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest", '.']
-   dir: .
-
- - name: 'gcr.io/cloud-builders/docker'
-   id: 3 Tag latest to vVERSION
-   args:
-    - 'tag'
-    - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest"
-    - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"
-   dir: .
-
-  #### DOCKER PUSH
-
- - name: 'gcr.io/cloud-builders/docker'
-   id: Docker push CB LATEST
-   args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest"]
-
- - name: 'gcr.io/cloud-builders/docker'
-   id: Docker push vSHA
-   args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"]
-
+# options:
+#   # This allows for missing ENV variables.
+#   substitution_option: 'ALLOW_LOOSE'
+tags: ['rails', 'genai', 'gh' , 'devrel' ]
 images:
 #1. These are ricc-genai
 #  - "gcr.io/$PROJECT_ID/genai-kids-stories"
@@ -50,39 +20,54 @@ images:
   - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest" # Artifact Repo!
   - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"
 
-#docker tag "$MYAPP_DOCKER_IMAGE_WITH_VERSION" "$SKAFFOLD_DEFAULT_REPO/$MYAPP_DOCKER_IMAGE_WITH_VERSION"
-#docker tag "$MYAPP_DOCKER_IMAGE_WITH_VERSION" "$SKAFFOLD_DEFAULT_REPO/$MYAPP_DOCKER_IMAGE_NAME"
-# and push with version
-#docker push "$SKAFFOLD_DEFAULT_REPO/$MYAPP_DOCKER_IMAGE_WITH_VERSION"
-# Now also push the latest.
-#docker push "$SKAFFOLD_DEFAULT_REPO/$MYAPP_DOCKER_IMAGE_NAME"
+steps:
+
+# - name: 'ruby:3.2.0'
+#   id: Ruby rake test
+#   args: ['bundle', 'exec', 'rake', 'test']
+
+  #### DOCKER BUILD
+
+-  name: 'gcr.io/cloud-builders/docker'
+   id: 2 Docker Build - to LATEST
+   #args: ['build', '-t', "gcr.io/$PROJECT_ID/genai-kids-stories", '.']
+   args: ['build', '-t', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest", '.']
+   dir: .
+
+-  name: 'gcr.io/cloud-builders/docker'
+   id: 3 Tag latest to vVERSION
+   args:
+    - 'tag'
+    - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest"
+    - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"
+   dir: .
+
+  #### DOCKER PUSH
+  # I think its useless
+#  - name: 'gcr.io/cloud-builders/docker'
+#    id: Docker push CB LATEST
+#    args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest"]
+
+#  - name: 'gcr.io/cloud-builders/docker'
+#    id: Docker push vSHA
+#    args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"]
 
 
 #  - name: 'ruby:3.2.0'
 #    id: 3 Ruby rake test ok if it fails
 #    args: ['rake || echo ok anyway']
 
-#  - name: 'gcr.io/cloud-builders/gcloud'
-#    entrypoint: 'bash'
-#    args:
-#    - '-eEuo'
-#    - 'pipefail'
-#    - '-c'
-#    - 'bin/cloud-build-simple.sh'
-#    dir: . # rails/ror7-scubatracker/
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+    - '-eEuo'
+    - 'pipefail'
+    - '-c'
+    - 'bin/deploy-to-cloud-run'
+  dir: .
 
 #  - name: 'bash'
 #    id: 3 Prova Bash del menga da togliere per vedere Articoli in DEV
 #    args: ['echo', 'Article.all.count', '|', 'rails', 'c']
 #    dir: .
 
-tags: ['rails', 'genai', 'gh' , 'devrel' ]
-#images:
-#- 'gcr.io/[PRODUCT_ID]/[CONTAINER_IMAGE]'
-# 15min for RoR :/
-timeout: 900s
-
-
-# options:
-#   # This allows for missing ENV variables.
-#   substitution_option: 'ALLOW_LOOSE'
