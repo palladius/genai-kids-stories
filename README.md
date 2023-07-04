@@ -105,3 +105,19 @@ Then update your Docker file’s “FROM” statement using this syntax:
 `FROM --platform=linux/amd64 <base_image>:<version>`
 
 Not sure its that easy but.. happy to try someday.
+
+## Ruby docs
+
+Ruby (and Rails):
+
+* [Net HTTP](https://docs.ruby-lang.org/en/2.0.0/Net/HTTP.html)
+* [ActiveStorage](https://guides.rubyonrails.org/active_storage_overview.html#attaching-file-io-objects)
+* [Ruby Singleton](https://refactoring.guru/design-patterns/singleton/ruby/example)
+
+Google
+
+* [Google OAuth Playground](https://developers.google.com/oauthplayground/)
+
+This app
+
+* [PROD App](https://genai-kids-stories-gcloud-cdlu26pd4q-uc.a.run.app/)

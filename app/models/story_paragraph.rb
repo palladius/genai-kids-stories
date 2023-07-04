@@ -81,6 +81,11 @@ class StoryParagraph < ApplicationRecord
     single_image = genai_compute_single_image_by_decription(p_image1, genai_input_for_image, gcp_opts)
   end
 
+  # Alias :)
+  def fix
+    generate_ai_images!
+  end
+
   def flag
     waving_flag(language)
   end
