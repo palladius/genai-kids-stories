@@ -83,7 +83,8 @@ class StoryParagraph < ApplicationRecord
 
   # Alias :)
   def fix
-    generate_ai_images!
+    after_creation_magic
+    # not generate_ai_images!
   end
 
   def flag
