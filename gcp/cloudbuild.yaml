@@ -107,11 +107,11 @@ steps:
   args: ['echo', 'User.count', '|', 'rails', 'c']
   dir: .
 
-availableSecrets:
-  secretManager:
-  # https://console.cloud.google.com/security/secret-manager?referrer=search&e=-13802955&project=ror-goldie
-  - versionName: projects/ror-goldie/secrets/genai-service-account/versions/latest
-    env: 'DANGEROUS_SA_JSON_VALUE'
+# availableSecrets:
+#   secretManager:
+#   # https://console.cloud.google.com/security/secret-manager?referrer=search&e=-13802955&project=ror-goldie
+#   - versionName: projects/ror-goldie/secrets/genai-service-account/versions/latest
+#     env: 'DANGEROUS_SA_JSON_VALUE'
 
 
 
