@@ -20,9 +20,6 @@ substitutions:
   _ARTIFACT_REPO: "europe-north1-docker.pkg.dev/ror-goldie/genai"
 steps:
 
-# - name: 'ruby:3.2.0'
-#   id: Ruby rake test ideally before anything else..
-#   args: ['bundle', 'exec', 'rake', 'test']
 
   #### DOCKER BUILD
 -  name: 'gcr.io/cloud-builders/docker'
@@ -52,17 +49,17 @@ steps:
 #    id: 3 Ruby rake test ok if it fails
 #    args: ['rake || echo ok anyway']
 
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: Now I do smart things which need to unleash the power of BASH # yes slightly ironic
-  entrypoint: 'bash'
-  args:
-    - '-eEuo'
-    - 'pipefail'
-    - '-c'
-    - 'bin/cloud-build-smart-stuff.sh'
-  dir: .
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   id: Now I do smart things which need to unleash the power of BASH # yes slightly ironic
+#   entrypoint: 'bash'
+#   args:
+#     - '-eEuo'
+#     - 'pipefail'
+#     - '-c'
+#     - 'bin/cloud-build-smart-stuff.sh'
+#   dir: .
 
-# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk' #  or: google-cloud-cli 	gcr.io
+#- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk' #  or: google-cloud-cli 	gcr.io
 #   entrypoint: gcloud
 #   args:
 #   - 'run'
@@ -82,23 +79,23 @@ steps:
 #   - 'PROJECT_ID=${PROJECT_ID}'
 
 
-# Wow has both gcloud and docker :)
-# And direnv is one step away apt-get install direnv
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'bash'
-  args:
-    - '-eEuo'
-    - 'pipefail'
-    - '-c'
-    - 'bin/deploy-to-cloud-run'
-  dir: .
-  env:
-  - 'REGION=${_REGION}'
-  - 'ARTIFACT_REPO=${_ARTIFACT_REPO}'
-  # ERRROR: /rails/bin/docker-entrypoint: line 23: PROJECT_ID: unbound variable
-  - 'PROJECT_ID=${PROJECT_ID}'
-  secretEnv:
-  - 'DANGEROUS_SA_JSON_VALUE'
+# # Wow has both gcloud and docker :)
+# # And direnv is one step away apt-get install direnv
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   entrypoint: 'bash'
+#   args:
+#     - '-eEuo'
+#     - 'pipefail'
+#     - '-c'
+#     - 'bin/deploy-to-cloud-run'
+#   dir: .
+#   env:
+#   - 'REGION=${_REGION}'
+#   - 'ARTIFACT_REPO=${_ARTIFACT_REPO}'
+#   # ERRROR: /rails/bin/docker-entrypoint: line 23: PROJECT_ID: unbound variable
+#   - 'PROJECT_ID=${PROJECT_ID}'
+#   secretEnv:
+#   - 'DANGEROUS_SA_JSON_VALUE'
 
   # DANGEROUS_SA_JSON_VALUE
   # secretEnv:
@@ -115,3 +112,11 @@ availableSecrets:
   # https://console.cloud.google.com/security/secret-manager?referrer=search&e=-13802955&project=ror-goldie
   - versionName: projects/ror-goldie/secrets/genai-service-account/versions/latest
     env: 'DANGEROUS_SA_JSON_VALUE'
+
+
+
+
+
+# - name: 'ruby:3.2.0'
+#   id: Ruby rake test ideally before anything else..
+#   args: ['bundle', 'exec', 'rake', 'test']
