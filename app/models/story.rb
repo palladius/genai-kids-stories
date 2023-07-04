@@ -230,7 +230,7 @@ class Story < ApplicationRecord
 
     gcp_opts = {
       project_id: PROJECT_ID,
-      gcloud_access_token: GCLOUD_ACCESS_TOKEN
+      gcloud_access_token: GCauth.instance.token # GCLOUD_ACCESS_TOKEN
     }
 
     if force or should_autogenerate_genai_input? # total autopilot :)

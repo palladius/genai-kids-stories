@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export APP_NAME=genai-kids-stories
+export APP_NAME='genai-kids-stories'
 export APP_VERSION=$(cat ./VERSION 2>/dev/null)
 
 # default REGION - you can override it.

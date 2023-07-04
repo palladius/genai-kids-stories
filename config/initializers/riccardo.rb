@@ -8,23 +8,25 @@ require "#{Rails.root}/lib/genai/google_translate"
 # END
 
 # ENV parsing
-PROJECT_ID = ENV.fetch('PROJECT_ID') # , '_PROJECT_NON_DATUR_')
+DEFAULT_PROJECT_ID = 'ricc-genai'
+PROJECT_ID = ENV.fetch('PROJECT_ID', DEFAULT_PROJECT_ID) # CloudBuild is hard, yup..
 DEFAULT_LANGUAGE = ENV.fetch('DEFAULT_LANGUAGE', 'it')
-raise('I need a project id under PROJECT_ID ENV var!!!') if PROJECT_ID.nil?
+# raise('I need a project id under PROJECT_ID ENV var!!!') if PROJECT_ID.nil?
 
 GOOGLE_TRANSLATE_KEY = ENV.fetch('GOOGLE_TRANSLATE_KEY', nil)
 GOOGLE_TRANSLATE_KEY2 = Rails.application.credentials.dig(:gcp, :google_translate_key)
 OCCASIONAL_MESSAGE = ENV.fetch('OCCASIONAL_MESSAGE', nil)
 
 DEFAULT_PARAGRAPH_STRATEGY = 'smart-v0.1'
+
 # Note, we might need to refresh it from time to time :)
-GCLOUD_ACCESS_TOKEN = ENV.fetch(
-  'GCLOUD_ACCESS_TOKEN',
-  `gcloud --project '#{PROJECT_ID}' auth print-access-token`.strip
-)
-if Rails.env == 'dev-on-gcp' && GCLOUD_ACCESS_TOKEN.nil?
-  raise('I need to be able to compute a GCLOUD_ACCESS_TOKEN in GCP mode...!!!')
-end
+# GCLOUD_ACCESS_TOKEN = ENV.fetch(
+#   'GCLOUD_ACCESS_TOKEN',
+#   `gcloud --project '#{PROJECT_ID}' auth print-access-token`.strip
+# )
+# if Rails.env == 'dev-on-gcp' && GCLOUD_ACCESS_TOKEN.nil?
+#   raise('I need to be able to compute a GCLOUD_ACCESS_TOKEN in GCP mode...!!!')
+# end
 
 STORIES_FIXTURE_IMAGES_DIR ||= "#{Rails.root}/db/fixtures/stories/"
 
@@ -32,18 +34,11 @@ STORIES_FIXTURE_IMAGES_DIR ||= "#{Rails.root}/db/fixtures/stories/"
 APP_NAME = '🤖GenAI 👶🏾Kids 📔Stories'
 APP_VERSION = File.read(File.expand_path("#{Rails.root}/VERSION")).chomp
 
-# Active storage
-# ACTIVE_STORAGE_DEV = :local
-# ACTIVE_STORAGE_DEV_ON_GCP = :google
-
 # DB is defined under config/database.yml
 # Storage for dev vs dev-on-gcp is defined under config/storage.yml
 
 arzigogolo = '⬢⬡⬢⬡⬢⬡'
 database =   Rails.configuration.database_configuration[Rails.env]['adapter']
-# rescue StandardError
-#  '?'
-# end
 
 puts("#{arzigogolo} Welcome to #{APP_NAME} by Riccardo💛Carlesso #{arzigogolo}")
 puts("⬢ Thanks for providing GCP Project: '#{PROJECT_ID}'")

@@ -109,7 +109,7 @@ module Genai
         ########################
 
         # puts "Riccardo copia quel che c'e' dopo"
-        gcloud_access_token = GCauth.instance.token # opts.fetch :gcloud_access_token, GCLOUD_ACCESS_TOKEN
+        gcloud_access_token = GCauth.instance.token
         ai_url = "https://us-central1-aiplatform.googleapis.com/v1/projects/#{project_id}/locations/us-central1/publishers/google/models/imagegeneration@#{_model_version}:predict"
         # puts("ai_url: #{ai_url}") if opts_debug
         uri = URI(ai_url)

@@ -164,7 +164,7 @@ module Genai
 
       # filling empty values
       project_id = opts.fetch :project_id, PROJECT_ID
-      gcloud_access_token = opts.fetch :gcloud_access_token, GCLOUD_ACCESS_TOKEN
+      gcloud_access_token = opts.fetch(:gcloud_access_token, GCauth.instance.token) #  GCLOUD_ACCESS_TOKEN)
       model_id = opts.fetch :model_id, MODEL_ID
 
       ai_url = "https://us-central1-aiplatform.googleapis.com/v1/projects/#{project_id}/locations/us-central1/publishers/google/models/#{model_id}:predict"
@@ -214,7 +214,7 @@ module Genai
 
       # filling empty values
       project_id = opts.fetch :project_id, PROJECT_ID
-      gcloud_access_token = opts.fetch :gcloud_access_token, GCLOUD_ACCESS_TOKEN
+      gcloud_access_token = opts.fetch :gcloud_access_token, GCauth.instance.token # GCLOUD_ACCESS_TOKEN
       model_id = opts.fetch :model_id, MODEL_ID
       region = opts.fetch :region, 'us-central1'
 
