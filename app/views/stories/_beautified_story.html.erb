@@ -2,25 +2,13 @@
 
 [This needs a mutation in story DB Schema]
 
-<h3>TODO Translated Title (<%= @paragraphs.first.flag rescue "💔" %>)</h3>
+<h3>Obsolete StoryRebuild - Beautified(<%= @story_paragraphs.first.flag rescue "💔" %>)</h3>
 
-<!-- Note to self:
-https://www.inmotionhosting.com/support/website/website-design/align-float-images-css/
-<img style="float: left; margin: 0px 15px 15px 0px;" src="image/your-image.png" width="100" />
-<br style="clear:both" />
+<%= render 'stories/obsolete_pointer' %>
 
-<div class="wrapper">
-  <p class="demo-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut odio temporibus voluptas error distinctio hic quae corrupti vero doloribus optio! Inventore ex quaerat modi blanditiis soluta maiores illum, ab velit.</p>
-</div>
-
-<div class="wrapper">
-  <p class="demo-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut odio temporibus voluptas error distinctio hic quae corrupti vero doloribus optio! Inventore ex quaerat modi blanditiis soluta maiores illum, ab velit.</p>
-</div>
-
--->
 
 <div class='beautified_story' >
-  <% @paragraphs.each_with_index do |p, ix|
+  <% @story_paragraphs.each_with_index do |p, ix|
     left_style = "float: left; margin: 0px 15px 15px 0px;"
     right_style = "float: right; margin: 0px 15px 15px 0px;"
     alternative_style = "float: #{ix %2 == 0 ? :left : :right}; margin: 0px 15px 15px 0px;"
@@ -35,5 +23,5 @@ https://www.inmotionhosting.com/support/website/website-design/align-float-image
         <br style="clear:both" />
 
     </div>
-  <% end %>
+  <% end if @story_paragraphs %>
 </div>

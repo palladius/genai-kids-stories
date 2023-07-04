@@ -78,25 +78,7 @@ class StoryParagraph < ApplicationRecord
   end
 
   def flag
-    # semi deprecated see lib/ ..
-    case language
-    when 'it'
-      '🇮🇹'
-    when 'fr'
-      '🇫🇷'
-    when 'ja'
-      '🇯🇵'
-    when 'de'
-      '🇩🇪'
-    when 'es'
-      '🇦🇷'
-    when 'pt'
-      '🇧🇷'
-    when 'ru'
-      '🇷🇺'
-    else
-      "You gave me #{language} -- I have no idea what to do with that."
-    end
+    waving_flag(language)
   end
 
   def self.available_lanugages

@@ -1,0 +1,17 @@
+
+<p class='debug' >
+This page is OBSOLETE. You should look at TranslatedStory instead..
+, # story_id => 2013
+
+@story = Story.find(params[:id]) <br/>
+- Story: <%= @story %> <br/>
+- id: <%= params[:id] %> <br/>
+</p>
+
+<h3>[New 🌍]</h3>
+
+<p class='debug' >
+    <% TranslatedStory.where(story_id: params[:id]).each do |ts| %>
+    🌍 <%= link_to ts,ts %> <br/>
+    <% end %>
+</p>

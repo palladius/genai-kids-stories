@@ -15,15 +15,10 @@ class TranslatedStoriesController < ApplicationController
 
   # GET /translated_stories/new
   def new
-    # @translated_story = if params['language']
-    #                       TranslatedStory.new(language: params['language'])
-    #                     else
-    #                       TranslatedStory.new
-    #                     end
     @translated_story = TranslatedStory.new(
       language: params['language'],
       story_id: params['story_id'],
-      # story_id: params['story'],
+      name: params['name'],
       internal_notes: params['internal_notes']
     )
   end

@@ -16,8 +16,6 @@
 # t.index ["user_id"], name: "index_translated_stories_on_user_id"
 # end
 
-DEFAULT_PARAGRAPH_STRATEGY ||= 'smart-v0.1'
-
 # This is something I should have created A LONG TIME AGO :)
 class TranslatedStory < ApplicationRecord
   belongs_to :user # Oops its done in the DB, optional: true
