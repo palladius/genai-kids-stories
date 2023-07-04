@@ -2,7 +2,7 @@
   <h2>Stories for <%= kid.name %></h2>
   <% @kid_translated_stories.each do |translated_story| %>
     🔷 <%= link_to translated_story,translated_story %><br/>
-  <% end %>
+  <% end if @kid_translated_stories %>
 </div>
 <div id="<%= dom_id kid %>">
   <p>

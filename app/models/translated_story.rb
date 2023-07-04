@@ -9,16 +9,15 @@
 # t.text "internal_notes"
 # t.string "genai_model"
 # #
-# # ADDED translated_title
+# # ADDED 'translated_title' recently
 ##
 # t.index ["kid_id"], name: "index_translated_stories_on_kid_id"
 # t.index ["story_id"], name: "index_translated_stories_on_story_id"
 # t.index ["user_id"], name: "index_translated_stories_on_user_id"
 # end
 
-#
-#
-#
+DEFAULT_PARAGRAPH_STRATEGY ||= 'smart-v0.1'
+
 # This is something I should have created A LONG TIME AGO :)
 class TranslatedStory < ApplicationRecord
   belongs_to :user # Oops its done in the DB, optional: true
@@ -75,7 +74,7 @@ class TranslatedStory < ApplicationRecord
     puts 'fix_missing_attributes'
     self.kid_id ||= story.kid.id
     self.language ||= story.kid.favorite_language || DEFAULT_LANGUAGE # Italian :)
-    self.paragraph_strategy ||= 'simple-v0.1'
+    self.paragraph_strategy ||= DEFAULT_PARAGRAPH_STRATEGY # 'smart-v0.1' # TODO export as
     append_notes('TranslatedStory.fix_missing_attributes called')
     # delay(queue: 'translated_story::set_translated_title').set_translated_title if translated_title.to_s == ''
     set_translated_title if translated_title.to_s == ''
