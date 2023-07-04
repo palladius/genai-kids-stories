@@ -52,7 +52,8 @@ steps:
 #    id: 3 Ruby rake test ok if it fails
 #    args: ['rake || echo ok anyway']
 
-- name: 'gcr.io/cloud-builders/gcloud'
+#- name: 'gcr.io/cloud-builders/gcloud'
+- name: 'gcr.io/cloud-builders/cloud-sdk'
   id: Now I do smart things which need to unleash the power of BASH # yes slightly ironic
   entrypoint: 'bash'
   args:
@@ -82,7 +83,7 @@ steps:
   - 'PROJECT_ID=${PROJECT_ID}'
 
 
-- name: 'gcr.io/cloud-builders/gcloud'
+- name: 'gcr.io/cloud-builders/cloud-sdk'
   entrypoint: 'bash'
   args:
     - '-eEuo'
