@@ -5,3 +5,8 @@ export APP_VERSION=$(cat ./VERSION 2>/dev/null)
 
 # default REGION - you can override it.
 export REGION="us-central1"
+
+
+export PROJECT_ID='change-me'
+export CLOUDRUN_PROJECT_ID="change-me"
+export CLOUDBUILD_PROJECT_ID="change-me"

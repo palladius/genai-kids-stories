@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
-# create_table "kids", force: :cascade do |t|
-#   t.string "name"
-#   t.string "surname"
-#   t.string "nick"
-#   t.string "visual_description"
-#   t.boolean "is_male"
-#   t.date "date_of_birth"
-#   t.text "internal_info"
-#   t.integer "user_id"
+#  ##Kid
+# id: integer
+# name: string
+# surname: string
+# nick: string
+# visual_description: string
+# is_male: boolean
+# date_of_birth: date
+# internal_info: text
+# user_id: integer,
+# favorite_language: string)
+
 # end
 # Storage:
 # * `avatar` (with thumnb)
@@ -52,9 +55,25 @@ class Kid < ApplicationRecord
     (DateTime.tomorrow - date_of_birth).to_i / 365
   end
 
-  def to_s
+  def flag
+    waving_flag(favorite_language.to_s)
+  end
+
+  # alias
+  def language
+    favorite_language
+  end
+
+  # 3 years -> 🕯️🕯️🕯️
+  def candles
+    ('🕯️' * age)
+  end
+
+  def to_s(verbose = false)
     #    "Kiddo.#{id}: #{nick}, #{age}y: '#{visual_description}'"
-    "#{Kid.emoji} #{nick}, #{age}y"
+    return "#{Kid.emoji} #{nick}, (#{candles})" if verbose
+
+    "#{flag} #{nick} (#{age}y)"
   end
 
   # Alessandro is a 5-year old kid, ...

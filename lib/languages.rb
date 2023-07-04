@@ -24,6 +24,6 @@ def waving_flag(language)
   when 'zh' # Simplified chinese: https://cloud.google.com/translate/docs/languages
     '🇨🇳' # chinese flag '🇨🇳'
   else
-    "You gave me lang='#{language}' -- I have no idea what to do with that."
+    "Unknown flag4lang='#{language}'"
   end
 end

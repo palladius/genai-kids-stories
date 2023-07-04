@@ -5,6 +5,7 @@
 <div id="translated_stories">
     <table>
       <th>Links
+      <th>Kiddo
       <th>Translated Story
       <th>Original Story
   <% @translated_stories.each do |translated_story| %>
@@ -13,6 +14,8 @@
       <td>
       <%= link_to "👁️", translated_story %>
       <%= link_to "🔏", edit_translated_story_path(translated_story) %>
+      <%= button_to "💣", translated_story, method: :delete %>
+
     <td>
       <%= link_to translated_story.kid,translated_story.kid %>
     <td>
