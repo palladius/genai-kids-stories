@@ -76,9 +76,11 @@ gcloud --project "$CLOUDRUN_PROJECT_ID" beta run deploy "genai-kids-stories-gclo
 	--set-env-vars="APP_DB_USER=$APP_DB_USER" \
 	--set-env-vars="APP_DB_PASS=$APP_DB_PASS" \
 	--set-env-vars="APP_DB_HOST=$APP_DB_HOST" \
-	--set-env-vars="GOOGLE_TRANSLATE_KEY=$GOOGLE_TRANSLATE_KEY" \
     \
     --update-secrets=DANGEROUS_SA_JSON_VALUE=genai-service-account:latest \
+    --update-secrets=RAILS_MASTER_KEY=GENAI_RAILS_MASTER_KEY:latest \
+    --update-secrets=APPLICATION_DEFAULT_CREDENTIALS=GENAI_APPLICATION_DEFAULT_CREDENTIALS:latest \
+    --update-secrets=GOOGLE_TRANSLATE_KEY=GENAI_GOOGLE_TRANSLATE_KEY:latest \
     \
    --labels="env=prod" \
    --labels="ver=${VERSION//[.]/-}" \

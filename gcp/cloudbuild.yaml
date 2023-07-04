@@ -62,24 +62,24 @@ steps:
     - 'bin/cloud-build-smart-stuff.sh'
   dir: .
 
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk' #  or: google-cloud-cli 	gcr.io
-  entrypoint: gcloud
-  args:
-  - 'run'
-  -   'deploy'
-  -      'genai-kid-stories-cb-latest'
-  # better SHA than latest. now its the same, but tomorrow might make a difference..
-  # I mean, we push at every build but you never know..
-  - '--image'
-  -   "${_ARTIFACT_REPO_ALL}:cb-latest"
-#  -   "${_ARTIFACT_REPO_ALL}:sha-$SHORT_SHA"
-  - '--region'
-  -   "${_REGION}"
-  - '--platform'
-  -   'managed'
-  - '--allow-unauthenticated'
-  env:
-  - 'PROJECT_ID=${PROJECT_ID}'
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk' #  or: google-cloud-cli 	gcr.io
+#   entrypoint: gcloud
+#   args:
+#   - 'run'
+#   -   'deploy'
+#   -      'genai-kid-stories-cb-latest'
+#   # better SHA than latest. now its the same, but tomorrow might make a difference..
+#   # I mean, we push at every build but you never know..
+#   - '--image'
+#   -   "${_ARTIFACT_REPO_ALL}:cb-latest"
+# #  -   "${_ARTIFACT_REPO_ALL}:sha-$SHORT_SHA"
+#   - '--region'
+#   -   "${_REGION}"
+#   - '--platform'
+#   -   'managed'
+#   - '--allow-unauthenticated'
+#   env:
+#   - 'PROJECT_ID=${PROJECT_ID}'
 
 
 # Wow has both gcloud and docker :)
