@@ -39,13 +39,13 @@ steps:
 
   #### DOCKER PUSH
   # I think its useless
-#  - name: 'gcr.io/cloud-builders/docker'
-#    id: Docker push CB LATEST
-#    args: ['push', "${_ARTIFACT_REPO_ALL}:cb-latest"]
+- name: 'gcr.io/cloud-builders/docker'
+  id: Docker push CB LATEST
+  args: ['push', "${_ARTIFACT_REPO_ALL}:cb-latest"]
 
-#  - name: 'gcr.io/cloud-builders/docker'
-#    id: Docker push vSHA
-#    args: ['push', "${_ARTIFACT_REPO_ALL}:sha-$SHORT_SHA"]
+- name: 'gcr.io/cloud-builders/docker'
+  id: Docker push vSHA
+  args: ['push', "${_ARTIFACT_REPO_ALL}:sha-$SHORT_SHA"]
 
 
 #  - name: 'ruby:3.2.0'
@@ -61,7 +61,8 @@ steps:
   # better SHA than latest. now its the same, but tomorrow might make a difference..
   # I mean, we push at every build but you never know..
   - '--image'
-  -   "${_ARTIFACT_REPO_ALL}:sha-$SHORT_SHA"
+  -   "${_ARTIFACT_REPO_ALL}:cb-latest"
+#  -   "${_ARTIFACT_REPO_ALL}:sha-$SHORT_SHA"
   - '--region'
   -   "${_REGION}"
   - '--platform'
@@ -94,11 +95,6 @@ steps:
 
 availableSecrets:
   secretManager:
-
   # https://console.cloud.google.com/security/secret-manager?referrer=search&e=-13802955&project=ror-goldie
   - versionName: projects/ror-goldie/secrets/genai-service-account/versions/latest
     env: 'DANGEROUS_SA_JSON_VALUE'
-#  - versionName: projects/PROJECT_ID/secrets/DOCKER_PASSWORD_SECRET_NAME/versions/DOCKER_PASSWORD_SECRET_VERSION
-#    env: 'PASSWORD'
-#  - versionName: projects/PROJECT_ID/secrets/DOCKER_USERNAME_SECRET_NAME/versions/DOCKER_USERNAME_SECRET_VERSION
-#    env: 'USERNAME'
