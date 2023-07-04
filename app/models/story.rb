@@ -9,10 +9,16 @@
 # t.integer "user_id"
 # t.bigint "kid_id", null: false
 # t.index ["kid_id"], name: "index_stories_on_kid_id"
+# #
+#       , :active
 # end
 
 class Story < ApplicationRecord
   include AiImageable
+
+  # For Story and Kid, maybe I should raise a Concern?? :)
+  scope :active, -> { where('active = TRUE') }
+  scope :inactive, -> { where('active = FALSE') }
 
   belongs_to :kid
   #  has_one_attached :cover_image

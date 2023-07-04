@@ -41,6 +41,11 @@
     <%= form.check_box :is_male %>
   </div>
 
+    <div>
+    <%= form.label :active, style: "display: block" %>
+    <%= form.check_box :active %>
+  </div>
+
   <div>
     <%= form.label :date_of_birth, style: "display: block" %>
     <%= form.date_field :date_of_birth %>

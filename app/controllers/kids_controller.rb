@@ -3,7 +3,7 @@ class KidsController < ApplicationController
 
   # GET /kids or /kids.json
   def index
-    @kids = Kid.all
+    @kids = Kid.all.active
   end
 
   # GET /kids/1 or /kids/1.json
@@ -67,6 +67,6 @@ class KidsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def kid_params
     params.require(:kid).permit(:name, :surname, :nick, :visual_description, :is_male, :date_of_birth,
-                                :internal_info, :user_id, :avatar, :favorite_language)
+                                :internal_info, :user_id, :avatar, :favorite_language, :active)
   end
 end

@@ -11,6 +11,8 @@
 # internal_info: text
 # user_id: integer,
 # favorite_language: string)
+#
+# , :active
 
 # end
 # Storage:
@@ -20,6 +22,10 @@ FIXTURE_DIR ||= "#{Rails.root}/db/fixtures/images/".freeze
 
 class Kid < ApplicationRecord
   include AiImageable
+
+  # For Story and Kid, maybe I should raise a Concern?? :)
+  scope :active, -> { where('active = TRUE') }
+  scope :inactive, -> { where('active = FALSE') }
 
   after_create :genai_magic # DEBUG
 
