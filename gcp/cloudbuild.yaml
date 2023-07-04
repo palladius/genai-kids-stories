@@ -6,51 +6,45 @@
 timeout: 1200s
 options:
   machineType: 'N1_HIGHCPU_8'
-# options:
-#   # This allows for missing ENV variables.
-#   substitution_option: 'ALLOW_LOOSE'
-tags: ['rails', 'genai', 'gh' , 'devrel' ]
+  # This allows for missing ENV variables.
+  substitution_option: 'ALLOW_LOOSE'
+tags: ['rails', 'genai', 'gh' , 'devrel', 'ruby' ]
 images:
-#1. These are ricc-genai
-#  - "gcr.io/$PROJECT_ID/genai-kids-stories"
-#  - "europe-north1-docker.pkg.dev/$PROJECT_ID/genai"
-#2. But build is on ror-goldie, so trying this instead since CB weorks on steps 1/2!
-#   Yet it manages to fail finally :(
-  #- "gcr.io/ror-goldie/genai-kids-stories"
-  - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest" # Artifact Repo!
-  - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"
-
+  #2. But build is on ror-goldie, so trying this instead since CB works on steps 1/2!
+  - "${_ARTIFACT_REPO_ALL}:cb-latest" # Artifact Repo!
+  - "${_ARTIFACT_REPO_ALL}:sha-$SHORT_SHA"
+substitutions:
+  _REGION: europe-west1
+  _ARTIFACT_REPO_ALL: "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories"
+  _ARTIFACT_REPO: "europe-north1-docker.pkg.dev/ror-goldie/genai"
 steps:
 
 # - name: 'ruby:3.2.0'
-#   id: Ruby rake test
+#   id: Ruby rake test ideally before anything else..
 #   args: ['bundle', 'exec', 'rake', 'test']
 
   #### DOCKER BUILD
-
 -  name: 'gcr.io/cloud-builders/docker'
    id: 2 Docker Build - to LATEST
-   #args: ['build', '-t', "gcr.io/$PROJECT_ID/genai-kids-stories", '.']
-   args: ['build', '-t', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest", '.']
+   args: ['build', '-t', "${_ARTIFACT_REPO_ALL}:cb-latest", '.']
    dir: .
-
 -  name: 'gcr.io/cloud-builders/docker'
    id: 3 Tag latest to vVERSION
    args:
     - 'tag'
-    - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest"
-    - "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"
+    - "${_ARTIFACT_REPO_ALL}:cb-latest"
+    - "${_ARTIFACT_REPO_ALL}:sha-$SHORT_SHA"
    dir: .
 
   #### DOCKER PUSH
   # I think its useless
 #  - name: 'gcr.io/cloud-builders/docker'
 #    id: Docker push CB LATEST
-#    args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:cb-latest"]
+#    args: ['push', "${_ARTIFACT_REPO_ALL}:cb-latest"]
 
 #  - name: 'gcr.io/cloud-builders/docker'
 #    id: Docker push vSHA
-#    args: ['push', "europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:sha-$SHORT_SHA"]
+#    args: ['push', "${_ARTIFACT_REPO_ALL}:sha-$SHORT_SHA"]
 
 
 #  - name: 'ruby:3.2.0'
@@ -65,9 +59,15 @@ steps:
     - '-c'
     - 'bin/deploy-to-cloud-run'
   dir: .
+  env:
+  - REGION=$_REGION
+  - ARTIFACT_REPO=$_ARTIFACT_REPO
+  # secretEnv:
+  #   - null
+  # ARTIFACT_REPO:
 
-#  - name: 'bash'
-#    id: 3 Prova Bash del menga da togliere per vedere Articoli in DEV
-#    args: ['echo', 'Article.all.count', '|', 'rails', 'c']
-#    dir: .
+- name: 'bash'
+  id: 3 Prova Bash del menga da togliere per vedere Articoli in DEV
+  args: ['echo', 'User.count', '|', 'rails', 'c']
+  dir: .
 
