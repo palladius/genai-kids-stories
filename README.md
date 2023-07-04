@@ -83,6 +83,7 @@ $ StoryParagraph.all.map{|sp| sp.story_id}.uniq.each do
 rails g migration addTranslatedTitleToTranslatedStory
     translated_title:string
 
+rails g migration addActiveToStory active:boolean
 ```
 
 ## Build on Google

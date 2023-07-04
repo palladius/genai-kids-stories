@@ -1,2 +1,18 @@
 <h1>Help</h1>
-<p>Welcome to `APPNAME`, an app which is insdpired by my colleague and friend Guillaume (the inventor of Groovy)</p>
+<p>Welcome to <b><%= APP_NAME %></b>, an app which is inspired by my colleague and friend Guillaume (the inventor of Groovy)</p>
+
+<h2>About this app</h2>
+
+<% markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true) %>
+<%#= markdown.render("This is *bongos*, indeed.").html_safe %>
+
+<div id='genai_content' ><%=
+ extend Genai::AiplatformTextCurl ;
+ genai_markdown = ai_curl_by_content(
+    'You are a salesman who wants to pitch Ruby for Generative AI. Please describe this GenAI application written on Ruby on Rails, as a majestic breakthrough in GenAI and how Ruby is going to become the most loved language.'
+)[1] rescue 'Some Error in generation'
+
+ markdown.render(genai_markdown).html_safe
+%></div>
+
+-- <i>(Yours, Vertex AI Palm API)</i>

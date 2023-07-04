@@ -22,7 +22,7 @@ gem 'google-cloud-translate' # ATTENTZIONE!!!
 # * googleauth (1.6.0) -> becomes   googleauth (0.17.1)
 # * faraday (2.7.7) -> becomes  faraday (1.2.0)
 gem 'ruby-vips' # needed to makje ActiveStorage work well
-
+gem 'redcarpet' # to parse markdown, returned by GenAI
 gem 'will_paginate', '~> 4.0' # to paginate too many pages...
 # /Riccardo
 ############
