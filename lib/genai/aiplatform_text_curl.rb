@@ -6,6 +6,10 @@
 # * login is via curl and gcloud :/
 # * TOKEN should be at very least cached for 10min or so.
 
+# extend Genai::AiplatformTextCurl
+# ai_curl_by_content('blah blah blah poo')
+# sample_invokation_text()
+
 module Genai
   # Only allow authenticated admins access to precious resources.
   module AiplatformTextCurl
@@ -341,7 +345,3 @@ module Genai
     end
   end
 end
-
-# extend Genai::AiplatformTextCurl
-# ai_curl_by_content('blah blah blah poo')
-# sample_invokation_text()
