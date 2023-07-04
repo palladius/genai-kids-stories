@@ -63,7 +63,7 @@ steps:
     - 'bin/cloud-build-smart-stuff.sh'
   dir: .
 
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk' #  or: google-cloud-cli 	gcr.io
   entrypoint: gcloud
   args:
   - 'run'
@@ -83,7 +83,9 @@ steps:
   - 'PROJECT_ID=${PROJECT_ID}'
 
 
-- name: 'gcr.io/cloud-builders/cloud-sdk'
+# Wow has both gcloud and docker :)
+# And direnv is one step away apt-get install direnv
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'bash'
   args:
     - '-eEuo'

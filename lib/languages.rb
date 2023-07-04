@@ -1,5 +1,5 @@
 AVAIL_LANGUAGES = %w[it de es fr ko ja pt ru zh].sort.freeze
-AVAIL_LANGUAGE_REGEX = /\A(it|es|fr|pt|de|en|ru|ja|zh)\z/i
+AVAIL_LANGUAGE_REGEX = /\A(de|es|fr|it|ja|ko|pt|ru|zh)\z/i
 
 # TODO: MOdule Language START
 

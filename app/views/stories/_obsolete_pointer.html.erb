@@ -8,7 +8,7 @@ This page is OBSOLETE. You should look at TranslatedStory instead..
 - id: <%= params[:id] %> <br/>
 </p>
 
-<h3>[New 🌍]</h3>
+<h4>[New 🌍] TranslatedStories for story # <%=params[:id] %></h4>
 
 <p class='debug' >
     <% TranslatedStory.where(story_id: params[:id]).each do |ts| %>
