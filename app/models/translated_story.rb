@@ -105,20 +105,22 @@ class TranslatedStory < ApplicationRecord
 
   def copy_images_from_primogenito!
     return nil if primogenito?
+
     rets = []
-    ts1  = self.primogenito # different from me
+    ts1  = primogenito # different from me
     ts1.story_paragraphs.each do |sp1|
-      ret = sp1.copy_images_from_primogenito_sp()
+      ret = sp1.copy_images_from_primogenito_sp
       rets << ret
     end
-    return rets
+    rets
   end
 
   def fix
+    # `dimmiora`
     # TODO
     fix_missing_attributes
     # Check children translated_stories for missing images
-      # =>  [[204, false]]
+    # =>  [[204, false]]
     if primogenito?
       puts "TS.fix(): PRIMOGENITO: I'm generating missing images"
       paragraphs_with_no_images.each do |id|
@@ -127,9 +129,9 @@ class TranslatedStory < ApplicationRecord
       end
     else
       puts "TS.fix(): SECONDOGENITO: I'm copying existing images from priomogenito.. and maybe fix him later"
-      # TODO fix primogenito first..
+      # TODO: fix primogenito first..
       copy_images_from_primogenito!
-  end
+    end
   end
 
   def simple_paragraphs(_algorithm_version)
@@ -214,5 +216,4 @@ class TranslatedStory < ApplicationRecord
     end
     ret + ']'
   end
-
 end

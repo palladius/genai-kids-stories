@@ -1,5 +1,16 @@
 Rails.application.routes.draw do
-  resources :translated_stories
+  # get ':fix', to: 'translated_stories#fix', as: :translated_story
+
+  resources :translated_stories do
+    # collection do
+    #   # get :fix_translated_story
+    #   post :fix_translated_story
+    # end
+    member do
+      # from 2.10.1 https://guides.rubyonrails.org/routing.html#creating-paths-and-urls-from-objects
+      get 'fix'
+    end
+  end
   devise_for :users
   resources :story_templates
   resources :story_paragraphs
@@ -15,6 +26,9 @@ Rails.application.routes.draw do
   get '/story_rebuilt/:id', to: 'stories#show_rebuilt', as: 'story_rebuilt'
 
   match '/delayed_job' => DelayedJobWeb, :anchor => false, :via => %i[get post]
+
+  # fix_translated_story_path
+  # get '/fix_translated_story', 'translated_story#fix_translated_story', as: :fix_translated_story
 
   # Defines the root path route ("/")
   root 'stories#index'

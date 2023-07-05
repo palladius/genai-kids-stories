@@ -66,9 +66,17 @@
 
   </p>
 
+<!-- HTML !-->
+<button class="button-34" role="button" onclick="window.location.href='/translated_stories/<%= translated_story.id %>/fix';" >Fix TStory: fix()</button>
+<%#= button_to 'Fix TStory2: fix()', class: "button-34 debug" , role: "button", action: "fix_translated_story" %>
+
+<%#= link_to "Fix", fix_translated_story_path, remote: true, class: "button-34" %>
+<%#= button_to "fix TS.#{translated_story.id}", fix_translated_story_path(translated_story.id), id: translated_story.id %>
+
+
 
 <% if (not @story_paragraphs.nil?) and @story_paragraphs.count > 0 %>
-  <h3>🐠 Translated Story (<%= @story_paragraphs.count %> pars)</h3>
+  <h3>🐠 Translated Story (<%= @story_paragraphs.count %> paragraphs)</h3>
 
   <%= @story_paragraphs.count %>
 
@@ -78,7 +86,7 @@
     <% end %>
   </table>
 <% else  %>
-
+  <!-- PAR PREVIEW -->
   <h3>👁️ Paragraphs Preview</h3>
 
  😥 @story_paragraphs is either null or empty. Let's generate them!<br/>
@@ -101,8 +109,9 @@
     <% end  %>
 
 
-  TODO. Thsi is big - going to require to move and repurpose existing ones under this one :)
+  <p class='debug' >TODO. This is big - going to require to move and repurpose existing ones under this one :)
   But probably they're going to be these: <tt>Story.find(self.story_id).paragraphs</tt>
+  </p>
 
 
   <% end  %>

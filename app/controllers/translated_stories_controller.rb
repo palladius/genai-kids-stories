@@ -23,6 +23,20 @@ class TranslatedStoriesController < ApplicationController
     )
   end
 
+  # GET /translated_stories/1/fix
+  def fix # _translated_story
+    @translated_story = begin
+      TranslatedStory.find(params[:id])
+    rescue StandardError
+      nil
+    end
+    @ret = begin
+      @translated_story.fix
+    rescue StandardError
+      nil
+    end
+  end
+
   # GET /translated_stories/1/edit
   def edit; end
 
