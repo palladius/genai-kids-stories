@@ -103,15 +103,33 @@ class TranslatedStory < ApplicationRecord
     story_paragraphs.map { |x| [x.id, x.attached?] }.select { |a| a[1] == false }.map { |a| a[0] }
   end
 
+  def copy_images_from_primogenito!
+    return nil if primogenito?
+    rets = []
+    ts1  = self.primogenito # different from me
+    ts1.story_paragraphs.each do |sp1|
+      ret = sp1.copy_images_from_primogenito_sp()
+      rets << ret
+    end
+    return rets
+  end
+
   def fix
     # TODO
     fix_missing_attributes
     # Check children translated_stories for missing images
-    # =>  [[204, false]]
-    paragraphs_with_no_images.each do |id|
-      puts "Missing image for #{id}"
-      StoryParagraph.find(id).generate_ai_images!
-    end
+      # =>  [[204, false]]
+    if primogenito?
+      puts "TS.fix(): PRIMOGENITO: I'm generating missing images"
+      paragraphs_with_no_images.each do |id|
+        puts "Missing image for #{id}"
+        StoryParagraph.find(id).generate_ai_images!
+      end
+    else
+      puts "TS.fix(): SECONDOGENITO: I'm copying existing images from priomogenito.. and maybe fix him later"
+      # TODO fix primogenito first..
+      copy_images_from_primogenito!
+  end
   end
 
   def simple_paragraphs(_algorithm_version)
@@ -166,4 +184,35 @@ class TranslatedStory < ApplicationRecord
       puts "SP ERROR: #{sp.errors.full_messages}" unless sp.save
     end
   end
+
+  # calculate if its first born
+  def first_born
+    story.first_translated_story
+  end
+
+  def first_born?
+    story.first_translated_story.id == id
+  end
+
+  # TODO: make them aliases :)
+  def primogenito?
+    first_born?
+  end
+
+  def primogenito
+    first_born
+  end
+
+  def big_brother
+    first_born
+  end
+
+  def story_paragraphs_images_succint
+    ret = 'images['
+    story_paragraphs.each do |sp|
+      ret += sp.attached? ? '✅' : '❌' # 🔷👍😥
+    end
+    ret + ']'
+  end
+
 end

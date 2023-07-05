@@ -53,6 +53,18 @@
     Call <tt class='debug' >TranslatedStory.find(<%=translated_story.id%>).fix</tt> to fix
   </p>
 
+  <p>
+    <strong>first_born?:</strong>
+    <%= translated_story.first_born? %>
+    <% unless translated_story.first_born? %>
+      (big brother: <%= link_to translated_story.big_brother, translated_story.big_brother %>)
+    <% end %>
+  </p>
+  <p>
+    <strong>story_paragraphs_images_succint:</strong>
+    <%= translated_story.story_paragraphs_images_succint %>
+
+  </p>
 
 
 <% if (not @story_paragraphs.nil?) and @story_paragraphs.count > 0 %>

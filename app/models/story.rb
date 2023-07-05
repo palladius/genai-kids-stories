@@ -454,4 +454,13 @@ class Story < ApplicationRecord
     puts(ret.errors.full_messages) unless ret # oK!
     ret
   end
+
+  # Since i have multiple translated stories, I wanna make sure only the 'primogenito' has images.
+  # The other attach images from primogenito. This is because Im too lazy to do the
+  # correct thing and create yet another thing.
+  def first_translated_story
+    translated_stories.sort { |x, y| x.created_at <=> y.created_at }.first
+  rescue StandardError
+    nil
+  end
 end

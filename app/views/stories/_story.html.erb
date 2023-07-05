@@ -20,36 +20,26 @@
 <h3>StoryParagraph</h3>
 
   <%= render 'stories/obsolete_pointer' %>
-  <!--
 
-  # story_paragraphs: <b><%= story.story_paragraphs.size  %></b>
-
-  See them here: <%= link_to "story_paragraphs for Story.#{story.id}",  "/story_rebuilt/#{story.id}" %><br/>
-
-  <% StoryParagraph.available_lanugages.each do |language| %>
-    - <%= link_to "🚧 OBSOLETE 🚧 Translate to #{language}", "/story_rebuilt/#{@story.id}?translate_to=#{language}", method: :post %><br/>
-  <% end if  story.story_paragraphs.size  == 0 %>
-  -->
 <h3><%= TranslatedStory.emoji %> Translated Stories</h3>
 
 <% already_translated = []
    TranslatedStory.where(story_id: @story.id).each do |ts|
      already_translated <<ts.language
 %>
-  ✅  Already translated <%= ts.flag %> <%= link_to( ts, ts )%> <br/>
+  ✅  Already translated <%= ts.flag %> <%= link_to( ts, ts )%>
+      <span class='debug'>DELETEME[
+      <%= ts.story_paragraphs_images_succint %>
+    ]</span>
+
+  <br/>
 <% end %>
 <% StoryParagraph.available_lanugages.each do |language|
-unless already_translated.include?(language)
+    unless already_translated.include?(language)
 # https://stackoverflow.com/questions/2695538/add-querystring-parameters-to-link-to
 %>
-  <%#= link_to "TranslateS to #{waving_flag language}", "/translated_stories/new?story_id=#{@story.id}&translate_to=#{language}&language=#{language}&name=autocreated&internal_notes=autocreated", method: :post %><br/>
-  ❌ Missing: <%= link_to "Translate to #{waving_flag language}",
-# https://stackoverflow.com/questions/15410895/rails-ruby-prepopulate-form-with-data-passed-from-another-page
-    new_translated_story_path(
-      { #:id => 42,
-      #"translated_story[language]".to_sym => 'bohg',
-      #"translated_story[internal_notes]".to_sym => 'mahahahahah',
-      #"translated_story[internal_notes]" => 'mahahahahah no sym',
+  ❌ Missing: <%= link_to "Translate to #{waving_flag language}", # https://stackoverflow.com/questions/15410895/rails-ruby-prepopulate-form-with-data-passed-from-another-page
+    new_translated_story_path({
       :story_id => @story.id,
       :story => @story,
       :language => language,
@@ -61,6 +51,7 @@ unless already_translated.include?(language)
       #:class => "debug btn btn-primary"
     )#, method: :post
     %>
+
 <% end
 end  %>
 

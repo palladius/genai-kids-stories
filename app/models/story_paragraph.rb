@@ -57,6 +57,10 @@ class StoryParagraph < ApplicationRecord
     attach_file_to_attachable_field(p_image1, _filename)
   end
 
+  # def attached_image
+  #   p_image1
+  # end
+
   def attached?
     p_image1.attached?
   end
@@ -72,17 +76,39 @@ class StoryParagraph < ApplicationRecord
     generate_genai_text_for_paragraph if genai_input_for_image.to_s.length < 10 # genai_input_for_image.nil?
     puts '3 [DELAYED] if video text available -> generate image '
     # generate_one_genai_image_from_image_description! if genai_input_for_image.to_s.length > 20
-    generate_ai_images! if genai_input_for_image.to_s.length > 20
+    generate_ai_images! if genai_input_for_image.to_s.length > 20 # && translated_story.primogenito?
   end
 
   def generate_ai_images!(gcp_opts = {})
     puts 'TODO if multiple images then write MANY images :)'
     # genai_input_for_image
+    if translated_story.primogenito?
+      puts 'TODO copy instead'
+      return 1040 # TODO: in carlessian numeric
+    end
     single_image = genai_compute_single_image_by_decription(p_image1, genai_input_for_image, gcp_opts)
+  end
+
+  def copy_images_from_primogenito_sp
+    ts1 = translated_story.primogenito
+    return :already if p_image1.attached?
+
+    # bigbro has image, lets copy by story_index
+    # story_ix1 = sp1.story_index
+    # only ONE element. The TAKE transforms the relation in first elemnt:
+    # https://stackoverflow.com/questions/12135745/what-is-the-fastest-way-to-find-the-first-record-in-rails-activerecord
+    sp1 = StoryParagraph.where(story_index:, story_id: story.id).take
+    return :sp_not_found unless sp1.is_a?(StoryParagraph)
+
+    # copy paro paro - https://stackoverflow.com/questions/54203886/how-to-copy-one-object-from-one-model-to-another-model-with-rails-activestorage
+    puts("Saving image from primogenito SP.#{sp1.id} --> to this SP.#{id}")
+    p_image1.attach(sp1.p_image1.blob) # attached_image === p_image1
+    save
   end
 
   # Alias :)
   def fix
+    copy_images_from_primogenito_sp unless translated_story.primogenito?
     after_creation_magic
     # not generate_ai_images!
   end
