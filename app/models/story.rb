@@ -307,18 +307,31 @@ class Story < ApplicationRecord
 
     description = if genai_input =~ /Kids love hearing about the stories you invent/
                     # Story for kids..
-                    "Imagine #{kid.visual_description}. In the background, #{cleaned_up_title}".gsub("\n", ' ')
+                    #                    "Imagine #{kid.visual_description}. In the background, #{cleaned_up_title}".gsub("\n", ' ')
+                    #                    "Imagine #{kid.visual_description}. In the background, #{genai_summary}".gsub("\n", ' ')
+                    "#{kid.visual_description}. #{genai_summary}".gsub("\n", ' ')
                   else
                     # TODO: add a field like "story for kids", "joke, or whatever..."
                     #                    "Imagine: #{title}.\nAdditional context: #{genai_output}" # .gsub("\n",' ')
-                    "Imagine: #{kid.visual_description}.\nAdditional context: #{genai_output}" # .gsub("\n",' ')
+                    "Imagine: #{kid.visual_description}.Additional context: #{genai_output}" # .gsub("\n",' ')
                   end
 
+    description = description.gsub('*', '').gsub("'", '')
     ret1 = genai_compute_single_image_by_decription(cover_image, description, _gcp_opts)
+    # puts("ret1: #{yellow(ret1)}")
     # if Google doesnt pass this we can try this instead
-    unless ret1
+    if ret1 === false
       puts 'Some errors maybe due to kids. Let me try again without the Kid part.'
-      genai_compute_single_image_by_decription(cover_image, title, _gcp_opts)
+      #      genai_compute_single_image_by_decription(cover_image, title, _gcp_opts)
+      ret1 = genai_compute_single_image_by_decription(cover_image, genai_summary, _gcp_opts)
+    end
+    if ret1 === false
+      puts 'Some errors maybe due to kids. Let me try again without the Kid part. Try 2'
+      ret1 = genai_compute_single_image_by_decription(cover_image, genai_summary, _gcp_opts)
+    end
+    if ret1 === false
+      puts 'Some errors maybe due to kids. Let me try again without the Kid part. Try 3'
+      ret1 = genai_compute_single_image_by_decription(cover_image, genai_summary, _gcp_opts)
     end
     # puts "some errors" unless ret
     ret1

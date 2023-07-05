@@ -46,7 +46,8 @@ module AiImageable
       # this is called in different places i want to make sure i call it right :)
       ai_ret = ai_curl_images_by_content_v2(opts_model_version, description, gcp_opts) # .merge(mock: true))
       _, images, ret_hash = ai_ret
-      puts "AAAB.genai_compute_single_image_by_decription ret_hash: #{ret_hash}"
+
+      # puts "AAAB.genai_compute_single_image_by_decription ret_hash: #{ret_hash}"
 
       return false if images.nil?
       return false if images == []
@@ -65,14 +66,7 @@ module AiImageable
           return false
         end
         if File.exist?(tmp_image)
-          # from SO:
-          # image: {
-          #  io: StringIO.new(Base64.decode64(params[:base_64_image].split(',')[1])),
-          #  content_type: 'image/jpeg',
-          #  filename: 'image.jpeg'
-          # }
-          puts "WOWOWOW about to save this image: #{tmp_image}"
-          puts `file "#{tmp_image}"`
+          puts "🍉 WOWOWOW about to save this image: #{tmp_image}. " + `file "#{tmp_image}"`
 
           # TODO: self.update_columns(:model_attached_single_image => attach.?!? )
           model_attached_single_image.attach(

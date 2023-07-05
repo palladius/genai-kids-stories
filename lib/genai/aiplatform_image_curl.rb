@@ -118,7 +118,7 @@ module Genai
         body = {
           "instances": [
             {
-              "prompt": content
+              "prompt": content # there might be a BUG if there's a single apostrophe in the generated content..
             }
           ],
           "parameters": {
