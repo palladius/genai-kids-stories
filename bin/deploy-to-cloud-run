@@ -22,6 +22,7 @@ echo "++++++++++++++++++++++++++++++++++++++++++"
 echo "REGION: $REGION"
 echo "UPLOADED_IMAGE: $UPLOADED_IMAGE"
 echo "PROJECT_ID: $PROJECT_ID"
+echo "AI_PROJECT_ID: $AI_PROJECT_ID"
 echo "RAILS_ENV: $RAILS_ENV"
 echo "CLOUDRUN_PROJECT_ID: $CLOUDRUN_PROJECT_ID"
 echo "DANGEROUS_SA_JSON_VALUE: $DANGEROUS_SA_JSON_VALUE"
@@ -118,6 +119,7 @@ function _gcloud_run_deploy_name_and_args() {
       --set-env-vars="RAILS_ENV=production" \
       --set-env-vars='ACTIVATE_OMEGA13=true' \
       --set-env-vars="GCS_BUCKET=$GCS_BUCKET" \
+      --set-env-vars='AI_PROJECT_ID=$AI_PROJECT_ID' \
       --set-env-vars="APPLICATION_DEFAULT_CREDENTIALS=/sa.json" \
       \
       --update-secrets=DANGEROUS_SA_JSON_VALUE=genai-service-account:latest \
