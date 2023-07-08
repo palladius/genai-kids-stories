@@ -1,9 +1,8 @@
 <%
   kid = translated_story.story.kid
-
 %>
 <div id="<%= dom_id translated_story %>">
-<h1><%= waving_flag translated_story.language %>
+<h1> 🅱️  <%= waving_flag translated_story.language %>
   <%= translated_story.translated_title %>
   </h1>
 
@@ -11,9 +10,8 @@
 
 <div class="container">
   <div class="row justify-content-end">
-    <!--
       <div class="col-9">
-        < ! --  HEADER PART - - >
+        <!--  HEADER PART -->
         <p> <strong>Language:</strong> <%= translated_story.language %> </p>
         <p>
           <strong>User:</strong>
@@ -58,26 +56,34 @@
               <%= translated_story.story_paragraphs_images_succint %>
 
             </p>
-      < ! -- END header :) - - >
+      <!-- END header :) -->
       </div>
-      -->
-      <div class="col-3 justify-content-end">
-          <%#= render partial: 'kids/floating_card', locals: {kid: kid }  %>
+      <div class="col-3 justify-content-end clearfix">
+             <%= render partial: 'kids/floating_card', locals: {kid: kid }  %>
       </div>
   </div>
   <div class="row justify-content-start">
-    <% @story_paragraphs.each_with_index do |sp, ix| %>
-       <div class="col-6">
-        <%= sp.translated_text or
-        "<pre>StoryParagraph.find(#{p.id}).after_creation_magic</pre>" %>
+    <% @story_paragraphs.each_with_index do |sp, ix|
+        is_even = (ix % 2) == 0 rescue true
+    %>
+    <% if is_even %>
+       <div class="col-8">
+        <%= sp.cleaned_up_translated_text %>
        </div>
-        <div class="col-3">
+        <div class="col-4">
           <%= render_image_if_attached(sp.p_image1, verbose: false) %>
         </div>
+    <% else %>
+        <div class="col-4">
+          <%= render_image_if_attached(sp.p_image1, verbose: false) %>
+        </div>
+        <div class="col-8">
+        <%= sp.cleaned_up_translated_text %>
+        </div>
+
+    <% end %>
       <% if ix == 0 %>
-          <div class="col-3 justify-content-end clearfix">
-             <%= render partial: 'kids/floating_card', locals: {kid: kid }  %>
-          </div>
+
       <% end %>
      <% end %>
   </div>

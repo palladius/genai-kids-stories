@@ -33,3 +33,5 @@ gcloud --project "$PROJECT_ID" beta run deploy "genai-kids-stories-gcloud-local"
     --labels="env=test" \
     --region   "$REGION" \
     --allow-unauthenticated
+
+echo "App v$APP_VERSION succesfully deployed to Cloud run."

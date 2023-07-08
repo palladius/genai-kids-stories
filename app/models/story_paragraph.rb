@@ -145,4 +145,9 @@ class StoryParagraph < ApplicationRecord
       puts "generate_genai_text_for_paragraph() SAVE ERROR: #{errors.full_messages}"
     end
   end
+
+  def cleaned_up_translated_text
+    translated_text.gsub(/\*\*(A[a-z]+ [12345])\*\*/, '<b class="story_act opacity-75" ><u>\1</b></u>').gsub('**',
+                                                                                                             '').html_safe
+  end
 end
