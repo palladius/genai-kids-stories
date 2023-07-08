@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><%= APP_NAME%></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">🏠</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/kids" >👶 Kids</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/stories" >📚 Stories</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/story_paragraphs" >📜 Story Paragraphs</a></li>
+            <li><a class="dropdown-item" href="/story_templates" >📮 Story Templates</a></li>
+            <li><a class="dropdown-item" href="/translated_stories" >🈳 Translated Stories</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/pages/help" >ℹ️ Whats this?</a></li>
+            <li><a class="dropdown-item" href="/pages/index" >👢 bs</a></li>
+          </ul>
+        </li>
+        <!--
+        <li class="nav-item">
+          <a class="nav-link disabled">disabled</a>
+        </li>
+        -->
+        <li class="nav-item">
+          <a class="nav-link" href="/pages/about" >🤞🏾 About</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="🚫 Not implemented" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">🔎</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+    <div class="header"><center>
+      <% if OCCASIONAL_MESSAGE and OCCASIONAL_MESSAGE.to_s.length > 3 %>
+        OCCASIONAL_MESSAGE: <tt class="debug" style="box-shadow: 5px 5px 5px #000;" ><%= OCCASIONAL_MESSAGE %></tt>
+        <br/>
+        <br/>
+      <% end %>
+
+
+
+    </center>
+    </div>
