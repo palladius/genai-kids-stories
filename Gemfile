@@ -102,3 +102,7 @@ end
 gem "devise", "~> 4.9"
 
 gem "actionpack", ">= 7.0.5.1"
+
+gem "cssbundling-rails", "~> 1.2"
+
+gem "jsbundling-rails", "~> 1.1"
