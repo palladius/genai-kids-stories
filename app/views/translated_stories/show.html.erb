@@ -1,10 +1,9 @@
 <p style="color: green"><%= notice %></p>
 
+<%= render @translated_story %>
+
 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
   <%= link_to "Back", translated_stories_path, class: 'btn btn-success' %>
   <%= link_to "🔏 Edit", edit_translated_story_path(@translated_story), class: 'btn btn-warning' %> |
   <%= button_to "Destroy", @translated_story, method: :delete, class: "btn btn-danger" %>
 </div>
-
-<%= render @translated_story %>
-

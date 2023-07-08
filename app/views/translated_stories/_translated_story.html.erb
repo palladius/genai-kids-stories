@@ -6,10 +6,11 @@
   <%= render partial: 'translated_stories/translated_story-old', locals: {translated_story: translated_story }  %>
 <% elsif params[:style] == 'carousel' %>
   <!-- carousel (new!) -->
+  <%= render partial: 'translated_stories/translated_story-carousel', locals: {translated_story: translated_story }  %>
+
   <%= link_to 'For old 👴🏾 style, click here', "/translated_stories/#{translated_story.id}?style=old" %>
   <%= link_to 'For NEW 🅱️ style, click here', "/translated_stories/#{translated_story.id}" %>
 
-  <%= render partial: 'translated_stories/translated_story-carousel', locals: {translated_story: translated_story }  %>
 
 <% else  %>
   <!-- normal, good, bootstrap list -->
