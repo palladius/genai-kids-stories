@@ -8,6 +8,8 @@
     '(no img)'
   input_size = story.genai_input.size rescue 0
   output_size =  story.genai_output.size rescue 0
+  my_translated_stories= story.translated_stories
+  num_translated_stories = my_translated_stories.size
 
 %>
 <div class="card" style="width: 15rem;">
@@ -19,7 +21,18 @@
             <i><%= distance_of_time_in_words(story.updated_at, Time.now) %> ago</i>
         </p>
         <p class='small' ><%= story.genai_output_excerpt %></p>
-    <%= link_to '💄 Beauty', "/story_rebuilt/#{story.id}?beautfied=true", class: "btn btn-primary" %>
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+    <% if num_translated_stories == 0 %>
+      <!-- no translation! -->
+      <%= link_to "❌ Translate to #{story.kid.flag}" , "/stories/#{story.id}?translate_to=#{story.kid.language}", class: "btn btn-primary" %>
+    <% else  %>
+      <!-- some translations available! -->
+      <% story.translated_stories.each do |ts| %>
+        <%= link_to ts.flag, ts, :class => "btn  btn-outline-primary" %>
+      <% end %>
+    <% end %>
+
+    </div>
     </div>
     <div class="card-footer">
         id=#<%= story.id %>
