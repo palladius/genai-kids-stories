@@ -1,102 +1,30 @@
+
 <div id="<%= dom_id story %>">
   <h2>
-      <%= link_to "📝", edit_story_path(story) %>
     <strong><%= link_to render_story_title(story), story %></strong>
   </h2>
 
-      <%#= image_tag(story.cover_image.variant(:thumb)) if story.cover_image.attached? %>
       <%= image_tag(story.cover_image,  style: "float:right;height:200px;") if story.cover_image.attached? %>
 
       <%#= link_to story.cover_image.filename, story.cover_image if story.cover_image.attached? %>
 
     <i><%= story.genai_summary %></i>
 
-    <% story.paragraphs.each_with_index do |p, ix|  %>
+
   <p>
-    🔸 <%= ix+1 %> <%= p %>
-  </p>
-    <% end  %>
 
-<h3>StoryParagraph</h3>
-
-  <%= render 'stories/obsolete_pointer' %>
-
-<h3><%= TranslatedStory.emoji %> Translated Stories</h3>
-
-<% already_translated = []
-   TranslatedStory.where(story_id: @story.id).each do |ts|
-     already_translated <<ts.language
-%>
-  ✅  Already translated <%= ts.flag %> <%= link_to( ts, ts )%>
-      <span class='debug'>DELETEME[
-        primogenito?<%= ts.primogenito? %>
-      <b><%= ts.story_paragraphs.count %></b>:
-      <%= ts.story_paragraphs_images_succint %>
-    ]</span>
-
-  <br/>
-<% end %>
-<% StoryParagraph.available_lanugages.each do |language|
-    unless already_translated.include?(language)
-# https://stackoverflow.com/questions/2695538/add-querystring-parameters-to-link-to
-%>
-  ❌ Missing: <%= link_to "Translate to #{waving_flag language}", # https://stackoverflow.com/questions/15410895/rails-ruby-prepopulate-form-with-data-passed-from-another-page
-    new_translated_story_path({
-      :story_id => @story.id,
-      :story => @story,
-      :language => language,
-      :internal_notes => "#{@story.title} -- Created from _story.html AppVersion=#{APP_VERSION}",
-      :name => "#{waving_flag(language)} Translation of: #{@story.title}",
-      'translated_story[name]' => 'nome 1',
-      'translated_story[name]'.to_sym => 'nome2',
-      },
-      #:class => "debug btn btn-primary"
-    )#, method: :post
-    %>
-
-<% end
-end  %>
-
-
-<h3>📈 Story Stats</h3>
-
-<% %w{genai_summary genai_input genai_output internal_notes }.each do |xxx| %>
- -📈 Size:  :<b><%=story.send(xxx).size rescue '?' %></b>B <%= xxx %> <br/>
-<% end %>
--📈 cover_image Attached:  :<b><%=story.cover_image.attached? %></b>
-<% if story.cover_image.attached? and story.cover_image.analyzed? %>
-<!-- (file: <%= story.cover_image %>) -->
-(metadata: <%= link_to 'todo', 'https://stackoverflow.com/questions/60130926/activestorage-get-image-dimensions-after-upload' %>
-) <% end %>
-<br/>
--📈 additional_images Attached:  :<b><%=story.additional_images.attached? %></b><br/>
-
-
-
-<br/>
-
-<h3>Debug info</h3>
-  <h4>genai_input</h4>
-  <pre><%= story.genai_input %></pre>
-
-  <h4>internal_notes</h4>
-  <pre><%= story.internal_notes %></pre>
-
-  <h4>Image debug info</h4>
-
-  <p class='debug'>
-    <strong>CoverImage info:</strong>
-    <pre><%= JSON.pretty_generate story.attached_stuff_info %></pre>
   </p>
 
-<hr/>
 
-<h3>👶 About Kiddo</h3>
-  <p>
-    <%= image_tag(story.kid.avatar, style: "float:left;height:100px;") if story.kid.avatar.attached? %>
 
-    <strong>
-     <%= link_to story.kid,story.kid %>
-    </strong>
-  </p>
+<ul class="list-group">
+   <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+    The current link item
+  </a>
+  <% story.paragraphs.each_with_index do |p, ix|  %>
+  <li class="list-group-item" aria-current="<%= (ix==1).to_s %>" > 🔸 <%= ix+1 %> <%= p %> </li>
+  <% end  %>
+
+</ul>
+
 </div>

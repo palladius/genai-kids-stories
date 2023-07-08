@@ -17,10 +17,18 @@ RUN ls -la /sa.json
 
 # Install libvips for Active Storage preview support
 # TODO ricc: test `google-cloud-cli` https://cloud.google.com/sdk/docs/install?hl=it#deb
-RUN apt-get update -qq && \
-    apt-get install -y build-essential libvips direnv postgresql-client libvips-tools && \
+
+# Added node.js and yarn on 8jul23 https://github.com/nickjj/docker-rails-example/blob/main/Dockerfile
+RUN bash -c "set -o pipefail && apt-get update \
+  && apt-get update -qq  \
+  && apt-get install -y build-essential libvips direnv postgresql-client libvips-tools curl libpq-dev && \
+  curl -sSL https://deb.nodesource.com/setup_18.x | bash - \
+  && curl -sSL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+  && echo 'deb https://dl.yarnpkg.com/debian/ stable main' | tee /etc/apt/sources.list.d/yarn.list \
+  && apt-get update && apt-get install -y --no-install-recommends nodejs yarn \
+    && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man
+    rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man"
 
 # Rails app lives here
 #WORKDIR /app
@@ -36,6 +44,9 @@ ENV RAILS_LOG_TO_STDOUT="1" \
 # Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
+
+COPY package.json *yarn* ./
+RUN yarn install
 
 # Copy application code
 COPY . .
