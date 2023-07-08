@@ -12,7 +12,7 @@
   num_translated_stories = my_translated_stories.size
 
 %>
-<div class="card" style="width: 15rem;">
+<div class="card" style="width: 18rem;">
     <%= image %>
     <div class="card-body">
         <h5 class="card-title"><%= link_to(title, story) %></h5>
@@ -34,13 +34,15 @@
 
     </div>
     </div>
-    <div class="card-footer">
+    <div class="card-footer small">
         id=#<%= story.id %>
         <%= link_to("✅ Show", story) %>
         <%= link_to('📝 Edit', edit_story_path(story))%>
 
         <!-- No 💣 -->
+        <!-- No IO either, too confusing
         I/O: <%=   "#{input_size} / #{output_size}" %>
+        -->
     </div>
 </div>
 <% else %>

@@ -89,16 +89,6 @@
   </div>
 </div>
 
- "<tr>
-      <td>#{link_to p.story_index, p}🔷
-      <td width='45%' class='story' >#{p.original_text}
-
-      <td width='45%' class='story' >
-        #{p.translated_text or "<pre>StoryParagraph.find(#{p.id}).after_creation_magic</pre>".html_safe}
-      <td>
-          #{link_to p.id, p}
-          #{link_to '✍🏿', edit_story_paragraph_path(p)}
-         ".html_safe
 
 <!-- HTML !-->
 <button class="button-34" role="button" onclick="window.location.href='/translated_stories/<%= translated_story.id %>/fix';" >Fix TStory: fix()</button>
@@ -110,15 +100,7 @@
 
 
 <% if (not @story_paragraphs.nil?) and @story_paragraphs.count > 0 %>
-  <h3>🐠 Translated Story (<%= @story_paragraphs.count %> paragraphs)</h3>
-
-  <%= @story_paragraphs.count %>
-
-  <table border="0" >
-    <% @story_paragraphs.each do |sp| %>
-      <%= render_working_story_paragraph(sp) %>
-    <% end %>
-  </table>
+  <!-- story exists -->
 <% else  %>
   <!-- PAR PREVIEW -->
   <h3>👁️ Paragraphs Preview</h3>
@@ -132,7 +114,25 @@
   <%  else %>
     💻😴 Enqueued a Delayed execution to 'translated_story::generate_polymorphic_paragraphs' queue... use  (<%= link_to('execute_now!', "#{request.fullpath.to_s}?execute_now=true") %> ) to generate immediately!
     <% @translated_story.delay(queue: 'translated_story::generate_polymorphic_paragraphs').generate_polymorphic_paragraphs %>
-    TODO(ricc): make sure you only enqueue this ONCE based on a key (in this case, @translated_story.id should suffice)
+
+    <%= link_to('execute_now!', "#{request.fullpath.to_s}?execute_now=true", class: "btn btn-primary" ) %>
+
+<!-- toast: https://getbootstrap.com/docs/5.0/components/toasts/ -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+      <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="..." class="rounded me-2" alt="...">
+          <strong class="me-auto">Bootstrap</strong>
+          <small>11 mins ago</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          Hello, world! This is a toast message.
+          Translated story in progress... be patient
+        </div>
+      </div>
+    </div>
+
   <%  end %>
 
     <% translated_story.polymorphic_paragraphs.each_with_index do |p, ix|  %>
