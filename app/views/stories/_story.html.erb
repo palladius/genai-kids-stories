@@ -10,7 +10,13 @@
 <!--  <p>See also in   <small class="text-muted">With faded secondary text</small>  </p>
 -->
 
-
+See story translated in:
+<ul class="list-group">
+  <% story.translated_stories.each do |ts| %>
+    <li class="list-group-item small">aaa
+      <small class="text-muted"><%= link_to ts.excerpt, ts %></small></li>
+  <% end %>
+</ul>
 
 <ul class="list-group">
   <% story.paragraphs.each_with_index do |p, ix|  %>
@@ -18,7 +24,7 @@
     <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
       🔸 Paragraph #<%= ix+1 %>
       <% story.story_paragraphs.where(story_index: ix+1).each do |sp| %>
-            <%= sp.language %>
+          <%= sp.language %>
       <% end %>
 
   </a>

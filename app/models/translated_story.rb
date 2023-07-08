@@ -115,6 +115,10 @@ class TranslatedStory < ApplicationRecord
     rets
   end
 
+  def excerpt(max_size = 35)
+    flag + ' ' + translated_title.gsub('Translation of:', '').first(max_size) + '..'
+  end
+
   def fix
     # `dimmiora`
     # TODO
