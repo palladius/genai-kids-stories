@@ -1,5 +1,5 @@
 # [ricc] copied from https://fly.io/ruby-dispatch/rails-on-docker/
-
+# [rocc] Added from https://github.com/nickjj/docker-rails-example/blob/main/Dockerfile once IO installed bootstrap
 # Make sure it matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.2.0
 FROM --platform=linux/amd64 ruby:$RUBY_VERSION

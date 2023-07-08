@@ -1,28 +1,28 @@
 
 <div id="<%= dom_id story %>">
   <h2>
-    <strong><%= link_to render_story_title(story), story %></strong>
+ <%= render_story_title(story) %>
   </h2>
 
-      <%= image_tag(story.cover_image,  style: "float:right;height:200px;") if story.cover_image.attached? %>
+  <%= image_tag(story.cover_image,  style: "float:right;height:150px;") if story.cover_image.attached? %>
+  <i><%= story.genai_summary %></i>
 
-      <%#= link_to story.cover_image.filename, story.cover_image if story.cover_image.attached? %>
-
-    <i><%= story.genai_summary %></i>
-
-
-  <p>
-
-  </p>
+<!--  <p>See also in   <small class="text-muted">With faded secondary text</small>  </p>
+-->
 
 
 
 <ul class="list-group">
-   <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-    The current link item
-  </a>
   <% story.paragraphs.each_with_index do |p, ix|  %>
-  <li class="list-group-item" aria-current="<%= (ix==1).to_s %>" > 🔸 <%= ix+1 %> <%= p %> </li>
+    <li class="list-group-item" aria-current="<%= (ix==1).to_s %>" >
+    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+      🔸 Paragraph #<%= ix+1 %>
+      <% story.story_paragraphs.where(story_index: ix+1).each do |sp| %>
+            <%= sp.language %>
+      <% end %>
+
+  </a>
+    <%= p %> </li>
   <% end  %>
 
 </ul>
