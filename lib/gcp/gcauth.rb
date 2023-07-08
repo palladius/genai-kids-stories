@@ -18,7 +18,7 @@ class GCauth
     @token_value = nil
     @updated_at = nil
     @project_id = begin
-      PROJECT_ID
+      AI_PROJECT_ID
     rescue StandardError
       DEFAULT_PROJECT_ID # 'ricc-genai'
     end #  from ENV

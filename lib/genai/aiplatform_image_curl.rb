@@ -73,7 +73,7 @@ module Genai
       # options
       opts_debug = opts.fetch :debug, false
       opts_mock = opts.fetch :mock, false
-      project_id = opts.fetch :project_id, PROJECT_ID
+      project_id = opts.fetch :project_id, AI_PROJECT_ID
       region = opts.fetch :region, 'us-central1'
 
       raise 'unsupported model' unless _model_version.match(/^(001|002)$/)

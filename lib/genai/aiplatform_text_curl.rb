@@ -163,7 +163,7 @@ module Genai
       opts_debug = opts.fetch 'DEBUG', false
 
       # filling empty values
-      project_id = opts.fetch :project_id, PROJECT_ID
+      project_id = opts.fetch :project_id, AI_PROJECT_ID
       gcloud_access_token = opts.fetch(:gcloud_access_token, GCauth.instance.token) #  GCLOUD_ACCESS_TOKEN)
       model_id = opts.fetch :model_id, MODEL_ID
 
@@ -213,7 +213,7 @@ module Genai
       opts_debug = opts.fetch 'DEBUG', false
 
       # filling empty values
-      project_id = opts.fetch :project_id, PROJECT_ID
+      project_id = opts.fetch :project_id, AI_PROJECT_ID
       gcloud_access_token = opts.fetch :gcloud_access_token, GCauth.instance.token # GCLOUD_ACCESS_TOKEN
       model_id = opts.fetch :model_id, MODEL_ID
       region = opts.fetch :region, 'us-central1'
@@ -330,7 +330,7 @@ module Genai
       puts 'Now I doi a manual curl'
       # story_idea = "Write \"a kid story about Sebowski ' ' ci\"ao the Egyptologist teleported in ancient Egypt to meet the evil twin of Tutankhamen"
       story_idea = 'Write a kid story about Sebowski the Egyptologist teleported in ancient Egypt to meet the evil twin of Tutankhamen'
-      response, content = ai_curl_by_content(story_idea, PROJECT_ID, debug: true)
+      response, content = ai_curl_by_content(story_idea, AI_PROJECT_ID, debug: true)
       puts "Content received: '''#{content}'''"
       # add_to_yaml_db(story_idea, content)
       puts '👍 Everything is ok. But Riccardo you should think about 🌍rewriting it in Terraform🌍'
@@ -340,8 +340,6 @@ module Genai
     def sample_invokation_image
       puts 'Now I do a manual curl to download an image'
       image_idea = 'Siobhan is an Irish 5-year-old girl with red heair, freckles and green eyes'
-      # response, content = ai_curl_by_content(story_idea, PROJECT_ID, debug: true)
-      # puts "Content received: '''#{content}'''"
       content
     end
   end

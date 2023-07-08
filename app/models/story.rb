@@ -235,7 +235,7 @@ class Story < ApplicationRecord
     Rails.logger.info("genai_magic(delay=#{delay}): 2. actually executing GenAI Magic for Story.#{id}")
 
     gcp_opts = {
-      project_id: PROJECT_ID,
+      project_id: AI_PROJECT_ID,
       gcloud_access_token: GCauth.instance.token # GCLOUD_ACCESS_TOKEN
     }
 

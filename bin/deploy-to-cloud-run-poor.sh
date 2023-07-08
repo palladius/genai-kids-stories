@@ -8,7 +8,7 @@ echo 'Hi Im a brand new script which needs to be called from Cloud Build and nee
 echo 'Ill start with all being manual and then move to variables one piece at a time'
 
 # this is NOT the build project..
-export PROJECT_ID=ricc-genai
+export AI_PROJECT_ID=ricc-genai
 export ARTIFACT_REPO='europe-north1-docker.pkg.dev/ror-goldie/genai'
 UPLOADED_IMAGE="$ARTIFACT_REPO/genai-kids-stories"
 UPLOADED_IMAGE_WITH_VER="$UPLOADED_IMAGE:cb-latest"
@@ -16,9 +16,11 @@ export REGION="${REGION:-us-central1}"
 export GCS_BUCKET='genai-kids-stories-assets'
 APP_VERSION="$(bin/version.sh)"
 
+# I usually build/deploy to project1 and then use AI_PROJECT_ID for AI stuff..
 gcloud --project "$PROJECT_ID" beta run deploy "genai-kids-stories-gcloud-local" \
     --image    "$UPLOADED_IMAGE_WITH_VER" \
-    --set-env-vars="PROJECT_ID=$PROJECT_ID" \
+    --set-env-vars="PROJECT_ID=$AI_PROJECT_ID" \
+    --set-env-vars="AI_PROJECT_ID=$AI_PROJECT_ID" \
     --set-env-vars="RAILS_ENV=production" \
       --set-env-vars='ACTIVATE_OMEGA13=true' \
       --set-env-vars="GCS_BUCKET=$GCS_BUCKET" \
