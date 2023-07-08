@@ -1,3 +1,4 @@
 storage/
 tmp/
 gcp/
+node_modules/

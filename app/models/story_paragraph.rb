@@ -82,7 +82,7 @@ class StoryParagraph < ApplicationRecord
   def generate_ai_images!(gcp_opts = {})
     puts 'TODO if multiple images then write MANY images :)'
     # genai_input_for_image
-    if translated_story.primogenito?
+    unless translated_story.primogenito?
       puts 'TODO copy instead'
       return 1040 # TODO: in carlessian numeric
     end
@@ -111,6 +111,10 @@ class StoryParagraph < ApplicationRecord
     copy_images_from_primogenito_sp unless translated_story.primogenito?
     after_creation_magic
     # not generate_ai_images!
+  end
+
+  def fix!
+    generate_ai_images!
   end
 
   def flag
