@@ -59,7 +59,8 @@ steps:
 #     - 'bin/cloud-build-smart-stuff.sh'
 #   dir: .
 
-#- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk' #  or: google-cloud-cli 	gcr.io
+#- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#  or: google-cloud-cli 	gcr.io
 #   entrypoint: gcloud
 #   args:
 #   - 'run'
@@ -102,10 +103,26 @@ steps:
   #   - null
   # ARTIFACT_REPO:
 
-- name: 'bash'
-  id: 3 Prova Bash del menga da togliere per vedere Articoli in DEV
-  args: ['echo', 'User.count', '|', 'rails', 'c']
+# - name: 'bash'
+#   id: 3 Prova Bash del menga da togliere per vedere Articoli in DEV
+#   args: ['echo User.count | rails c']
+#   dir: .
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'bash'
+  args:
+    - '-eEuo'
+    - 'pipefail'
+    - '-c'
+    - 'bin/deploy-to-cloud-run-poor.sh'
   dir: .
+  env:
+  - 'REGION=${_REGION}'
+  - 'ARTIFACT_REPO=${_ARTIFACT_REPO}'
+  # ERRROR: /rails/bin/docker-entrypoint: line 23: PROJECT_ID: unbound variable
+  - 'PROJECT_ID=${PROJECT_ID}'
+  # secretEnv:
+  # - 'DANGEROUS_SA_JSON_VALUE'
 
 # availableSecrets:
 #   secretManager:
