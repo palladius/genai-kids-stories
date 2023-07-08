@@ -11,8 +11,6 @@ https://stackoverflow.com/questions/2156712/how-to-float-3-divs-side-by-side-usi
       <%= link_to 'more..',story %>
       [  <%= link_to '💄 Beauty', "/story_rebuilt/#{story.id}?beautfied=true" %>]
       </p>
-<!--             distance_of_time_in_words(from_time, to_time)-->
-
       <div class="part2">
         <%= image_tag(story.cover_image, alt: "avatar", style: "width:100%") if story.cover_image.attached? %>
         <h4> <%= story.cleaned_up_title %></h4>

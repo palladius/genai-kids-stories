@@ -32,13 +32,12 @@ module StoriesHelper
         three_buttons.html_safe,
         link_to(story.kid.nick, story.kid),
         link_to(title, story),
-        # story.avatar.to_s.gsub('<', '&lt;').gsub('>', '&gt;'), # image_tag(story.avatar.variant(:thumb)),
         begin
           image_tag(story.cover_image, height: 100)
         rescue StandardError
           ''
-        end,
-        "#{input_size} / #{output_size}"
+        end
+
       ]
       ret = arr.map { |el| "<td>#{el}</td>" }.join("\n")
     else

@@ -49,3 +49,4 @@ output/
 !/app/assets/builds/.keep
 
 /node_modules
+app/views/stories/index.html.erb.originale

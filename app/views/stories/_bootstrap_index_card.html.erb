@@ -1,0 +1,64 @@
+<%#= story %>
+<%#= index %>
+<% if  story.is_a? Story %>
+<%
+  title = render_story_title(story)
+  image = story.cover_image.attached? ?
+    image_tag(story.cover_image, class: "card-img-top" ) :
+    '(no img)'
+  input_size = story.genai_input.size rescue 0
+  output_size =  story.genai_output.size rescue 0
+
+%>
+<div class="card" style="width: 15rem;">
+    <%= image %>
+    <div class="card-body">
+        <h5 class="card-title"><%= link_to(title, story) %></h5>
+        <p class="card-text">
+            <%= link_to(story.kid.nick, story.kid) %>,
+            <i><%= distance_of_time_in_words(story.updated_at, Time.now) %> ago</i>
+        </p>
+        <p class='small' ><%= story.genai_output_excerpt %></p>
+    <%= link_to '💄 Beauty', "/story_rebuilt/#{story.id}?beautfied=true", class: "btn btn-primary" %>
+    </div>
+    <div class="card-footer">
+        id=#<%= story.id %>
+        <%= link_to("✅ Show", story) %>
+        <%= link_to('📝 Edit', edit_story_path(story))%>
+
+        <!-- No 💣 -->
+        I/O: <%=   "#{input_size} / #{output_size}" %>
+    </div>
+</div>
+<% else %>
+    not a story :/
+<% end %>
+
+
+
+<!--
+
+
+        ,
+        begin
+          image_tag(story.cover_image, height: 100)
+        rescue StandardError
+          ''
+        end,
+        "#{input_size} / #{output_size}"
+      ]
+      ret = arr.map { |el| "<td>#{el}</td>" }.join("\n")
+    else
+      arr = [
+        'opts',
+        'Kid',
+        'Title',
+        'cover_image',
+        'I/O size'
+      ]
+      ret = arr.map { |el| "<th>#{el}</th>" }.join("\n")
+    end
+
+    ret.html_safe
+  end
+  -->

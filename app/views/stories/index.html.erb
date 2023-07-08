@@ -1,41 +1,14 @@
-<p style="color: green"><%= notice %></p>
-
 <h1><%= Story.emoji %> Stories </h1>
 
 <%= link_to "New #{Story.emoji} story", new_story_path %>
 
-
-<% if params.fetch( :viewtype, 'card') == 'card' %>
-
-  <!-- CARD stories -->
-  This is card view. For Card view click here: <%= link_to 'to Tabular', '/stories?viewtype=tabular' %>
-
-  <div style="width: 100%">
-    <% @stories.each_with_index do |x, ix| %>
-          <%= render 'stories/story_card', story: x, index: ix %>
-      <% if ((ix % 3) == (3-1))   %>
-        <!-- one every 3 -->
-        <br style="clear: left;" />
-      <% end %>
+<div class="container text-center">
+  <div class="row">
+    <%@stories.each_with_index do |x, ix| %>
+    <div class="col">
+      <%#= render(partial: "kids/bootstrap_show", locals: {kid: kid}) rescue "Erore #{$!}" %>
+      <%= render 'stories/bootstrap_index_card', story: x, index: ix %>
+    </div>
     <% end %>
   </div>
-  <!-- one at the end in case its not dividable by 3 -->
-  <br style="clear: left;" />
-
-<% else %>
-  <!-- TABULAR stories -->
-  This is tabular view. For Card view click here: <%= link_to 'to Card', '/stories?viewtype=card' %>
-
-
-  <table border='0' class='stories' >
-    <%= render_story(nil) %>
-    <% @stories.each do |x| %>
-        <tr>
-          <%= render_story(x) %>
-        </tr>
-    <% end %>
-  </table>
-
-<% end %>
-
-<%= will_paginate @stories %>
+</div>

@@ -8,28 +8,8 @@
     <div class="col">
       <%= render(partial: "kids/bootstrap_show", locals: {kid: kid}) rescue "Erore #{$!}" %>
     </div>
-<% end %>
+    <% end %>
   </div>
 </div>
 
-<%# <table border='0' >
-  < % = render_kid(nil) % >
- < % @kids.each do |kid| % >
-    <tr>
-    <%= render_kid(kid) % >
-    </tr>
-    </p>
-< % end % ></table>
-%>
-
-<!--
-<div id="kids">
-  <% @kids.each do |kid| %>
-    <%= render kid %>
-    <p>
-      <%= link_to "Show this kid", kid %>
-    </p>
-  <% end %>
-</div>
--->
 <%= link_to "#{Kid.emoji} New kid", new_kid_path %>

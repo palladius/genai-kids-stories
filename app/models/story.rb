@@ -463,4 +463,8 @@ class Story < ApplicationRecord
   rescue StandardError
     nil
   end
+
+  def genai_output_excerpt(max_size = 250)
+    genai_output.first(max_size).gsub('*', '').gsub(/Act [12345]/, '') + '..'
+  end
 end
