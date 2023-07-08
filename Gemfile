@@ -24,6 +24,7 @@ gem 'google-cloud-translate' # ATTENTZIONE!!!
 gem 'ruby-vips' # needed to makje ActiveStorage work well
 gem 'redcarpet' # to parse markdown, returned by GenAI
 gem 'will_paginate', '~> 4.0' # to paginate too many pages...
+# Added bootstrap 5.3.0
 # /Riccardo
 ############
 

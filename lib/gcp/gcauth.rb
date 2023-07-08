@@ -20,7 +20,7 @@ class GCauth
     @project_id = begin
       PROJECT_ID
     rescue StandardError
-      'ricc-genai'
+      DEFAULT_PROJECT_ID # 'ricc-genai'
     end #  from ENV
   end
 

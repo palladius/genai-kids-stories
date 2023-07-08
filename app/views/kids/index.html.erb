@@ -2,14 +2,25 @@
 
 <h1><%= @kids.count %> Kids</h1>
 
-<table border='0' >
-  <%= render_kid(nil) %>
-<% @kids.each do |kid| %>
+<div class="container text-center">
+  <div class="row">
+    <% @kids.each do |kid| %>
+    <div class="col">
+      <%= render(partial: "kids/bootstrap_show", locals: {kid: kid}) rescue "Erore #{$!}" %>
+    </div>
+<% end %>
+  </div>
+</div>
+
+<%# <table border='0' >
+  < % = render_kid(nil) % >
+ < % @kids.each do |kid| % >
     <tr>
-    <%= render_kid(kid) %>
+    <%= render_kid(kid) % >
     </tr>
     </p>
-<% end %></table>
+< % end % ></table>
+%>
 
 <!--
 <div id="kids">

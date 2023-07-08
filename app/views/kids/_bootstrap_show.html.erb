@@ -1,0 +1,29 @@
+<% if @kid.is_a?(Kid) %>
+        Wrong class (no kid)
+        kid class =<% @kid.class %>
+<% else %>
+<%
+    avatar = kid.avatar.attached? ?
+       # style: 'height:100%;width:auto;'
+      image_tag(kid.avatar,  class: "card-img-top"  ) :
+      '-'
+    # <img src="..." class=\"card-img-top\" alt=\"...\">
+
+    title = link_to(kid.nick, kid)
+    subtitle = "##{kid.id} #{kid.flag} #{time_ago_in_words(kid.date_of_birth)}"
+    description = kid.visual_description
+    #destroy_button_too_dangerous = button_to('💣', kid, class: 'btn btn-secondary', method: :delete)
+%>
+<div class="card" style="width: 18rem;">
+    <%= avatar rescue :avatar %>
+    <div class="card-body">
+      <h5 class="card-title"><%= title %></h5>
+      <h6 class="card-subtitle mb-2 text-body-secondary"><%= subtitle %></h6>
+      <p class="card-text"><%= description %></p>
+    </div>
+    <div class="card-footer">
+      <%= link_to('show', kid, class: 'btn btn-primary') %>
+      <%= link_to('edit', edit_kid_path(kid), class: 'btn btn-secondary') %>
+    </div>
+  </div>
+<% end %>
