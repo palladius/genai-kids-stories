@@ -9,7 +9,9 @@ require "#{Rails.root}/lib/genai/google_translate"
 
 # ENV parsing
 DEFAULT_PROJECT_ID = 'ricc-genai'
+
 PROJECT_ID = ENV.fetch('PROJECT_ID', DEFAULT_PROJECT_ID) # CloudBuild is hard, yup..
+AI_PROJECT_ID = ENV.fetch('AI_PROJECT_ID', DEFAULT_PROJECT_ID) # CloudBuild is hard, yup..
 DEFAULT_LANGUAGE = ENV.fetch('DEFAULT_LANGUAGE', 'it')
 # raise('I need a project id under PROJECT_ID ENV var!!!') if PROJECT_ID.nil?
 

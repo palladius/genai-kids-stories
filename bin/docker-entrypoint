@@ -5,7 +5,7 @@
 # Also inspired by:
 # - https://github.com/gilcierweb/rails-docker/blob/master/entrypoint.sh
 
-set -euo pipefail
+set -eo pipefail
 
 # Setting smart defaults
 # This is what Cloud Run wants
@@ -16,11 +16,22 @@ export ACTIVATE_OMEGA13="${ACTIVATE_OMEGA13:-false}"
 #export RAILS_ENV="${RAILS_ENV:-dev-on-gcp}"
 export RAILS_ENV="${RAILS_ENV:-production}"
 
+export RAILS_LOG_TO_STDOUT='1'
+export RAILS_SERVE_STATIC_FILES="true"
+#export BUNDLE_WITHOUT="development"
+
+# Since we are in prod...
+APP_DB_HOST=${APP_DB_HOST:=$PROD_DB_HOST}
+APP_DB_USER=${APP_DB_USER:=$PROD_DB_USER}
+APP_DB_PASS=${APP_DB_PASS:=$PROD_DB_PASS}
+APP_DB_NAME=${APP_DB_NAME:=$PROD_DB_NAME}
+
 echo '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍'
 echo "👍👍👍👍👍👍👍👍👍👍 genai-kids-stories docker entrypoint 👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍"
 echo '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍'
 echo "👍 PORT:                               '$PORT'"
 echo "👍 PROJECT_ID:                         '$PROJECT_ID'"
+echo "👍 AI_PROJECT_ID:                      '$AI_PROJECT_ID'"
 echo "👍 APP_VERSION:                        '$APP_VERSION'"
 echo "👍 RAILS_ENV:                          '$RAILS_ENV'"
 echo "👍 GOOGLE_TRANSLATE_KEY (redacted):    '${GOOGLE_TRANSLATE_KEY:1:20}..'"
@@ -32,6 +43,7 @@ if [ "${*}" == "./bin/rails server" ]; then
   ./bin/rails db:prepare
   # Then continue...
 fi
+
 
 
 ##########################################################
@@ -46,13 +58,12 @@ if [ "${*}" == "" -o "${*}" == "echo activate omega13" -o "true" == "$ACTIVATE_O
   echo '🌌🌌🌌🌌🌌🌌🌌🌌🌌🌌🌌'
 
   echo '01. [Ω13] You were too lazy to give me any var. No probs, sit back and relax, Ricc will do it for you'
-  #echo ./bin/rails db:prepare
 
   # Great ideas from https://github.com/gilcierweb/rails-docker/blob/master/entrypoint.sh
   # Checking PostgreS is ready:
   echo "02. Checking that postgreS is ready.."
   while ! pg_isready -q -h $APP_DB_HOST -U $APP_DB_USER ; do
-    echo "$(date) 🔋 waiting for PG DB ($APP_DB_HOST) to start.."
+    echo "$(date) 🔋 waiting for PG DB (host='$APP_DB_HOST') to start.."
     sleep 2
   done
   echo '👍 PostgreS works!'
@@ -69,18 +80,20 @@ if [ "${*}" == "" -o "${*}" == "echo activate omega13" -o "true" == "$ACTIVATE_O
   echo "06. Setting up gcloud (TODO remove)"
   #echo TODO gcloud config set account  TODOricc
 #  if [ ! -f /sa.json ] ; then
-  ls -al /sa.json
-  if [ ! -s /sa.json ] ; then # file not empty
-   echo "$DANGEROUS_SA_JSON_VALUE" > /sa.json
-   echo "👍 File /sa.json just created."
-  else
-    echo Pointless. File /sa.json already present
-  fi
+
+  # ls -al /sa.json
+  # if [ ! -s /sa.json ] ; then # file not empty
+  #  echo "$DANGEROUS_SA_JSON_VALUE" > /sa.json
+  #  echo "👍 File /sa.json just created."
+  # else
+  #   echo Pointless. File /sa.json already present.
+  # fi
   # if [ -d /rails/private/ ]; then
   #   # Dockerized version...
   #    echo "$DANGEROUS_SA_JSON_VALUE" > /rails/private/sa.json
   # fi
-  gcloud auth activate-service-account --key-file  /sa.json
+  gcloud auth activate-service-account --key-file  /sa.json ||
+    echo Maybe you dont need this
   gcloud config configurations list
   gcloud auth print-access-token >/dev/null
   echo '👍 gcloud auth print-access-token succesful!!!'
