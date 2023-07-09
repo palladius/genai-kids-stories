@@ -45,17 +45,33 @@ steps:
 
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: Tag to vVERSION via BASH v4
   entrypoint: 'bash'
   args:
     - '-eEuo'
     - 'pipefail'
     - '-c'
-    - |-
-        echo 'Lets get started. I cant read anything  on CB console' &&
-        set -x &&
-        docker tag "${_ARTIFACT_REPO_ALL}:cb-latest" "${_ARTIFACT_REPO_ALL}":v$(bin/version.sh) &&
-        docker push "${_ARTIFACT_REPO_ALL}":v$(bin/version.sh) &&
+    - 'bin/deploy-to-cloud-run-poor.sh'
+  dir: .
+  env:
+  - 'REGION=${_REGION}'
+  - 'ARTIFACT_REPO=${_ARTIFACT_REPO}'
+  # ERRROR: /rails/bin/docker-entrypoint: line 23: PROJECT_ID: unbound variable
+  - 'PROJECT_ID=${PROJECT_ID}'
+  # secretEnv:
+  # - 'DANGEROUS_SA_JSON_VALUE'
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  id: Tag to vVERSION via BASH v5
+  entrypoint: 'bash'
+  args:
+    - '-eEuo'
+    - 'pipefail'
+    - '-c'
+    - |
+        echo 'Lets get started. I cant read anything  on CB console' && \
+        set -x && \
+        docker tag "${_ARTIFACT_REPO_ALL}:cb-latest" "${_ARTIFACT_REPO_ALL}":v$(bin/version.sh) && \
+        docker push "${_ARTIFACT_REPO_ALL}":v$(bin/version.sh) && \
         echo "✅ Done. Pushed hopefully this: "${_ARTIFACT_REPO_ALL}":v$(bin/version.sh)
   dir: .
 
@@ -73,70 +89,11 @@ steps:
 #     - 'bin/cloud-build-smart-stuff.sh'
 #   dir: .
 
-#- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-#  or: google-cloud-cli 	gcr.io
-#   entrypoint: gcloud
-#   args:
-#   - 'run'
-#   -   'deploy'
-#   -      'genai-kid-stories-cb-latest'
-#   # better SHA than latest. now its the same, but tomorrow might make a difference..
-#   # I mean, we push at every build but you never know..
-#   - '--image'
-#   -   "${_ARTIFACT_REPO_ALL}:cb-latest"
-# #  -   "${_ARTIFACT_REPO_ALL}:sha-$SHORT_SHA"
-#   - '--region'
-#   -   "${_REGION}"
-#   - '--platform'
-#   -   'managed'
-#   - '--allow-unauthenticated'
-#   env:
-#   - 'PROJECT_ID=${PROJECT_ID}'
-
-
-# # Wow has both gcloud and docker :)
-# # And direnv is one step away apt-get install direnv
-# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-#   entrypoint: 'bash'
-#   args:
-#     - '-eEuo'
-#     - 'pipefail'
-#     - '-c'
-#     - 'bin/deploy-to-cloud-run'
-#   dir: .
-#   env:
-#   - 'REGION=${_REGION}'
-#   - 'ARTIFACT_REPO=${_ARTIFACT_REPO}'
-#   # ERRROR: /rails/bin/docker-entrypoint: line 23: PROJECT_ID: unbound variable
-#   - 'PROJECT_ID=${PROJECT_ID}'
-#   secretEnv:
-#   - 'DANGEROUS_SA_JSON_VALUE'
-
-  # DANGEROUS_SA_JSON_VALUE
-  # secretEnv:
-  #   - null
-  # ARTIFACT_REPO:
-
 # - name: 'bash'
 #   id: 3 Prova Bash del menga da togliere per vedere Articoli in DEV
 #   args: ['echo User.count | rails c']
 #   dir: .
 
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'bash'
-  args:
-    - '-eEuo'
-    - 'pipefail'
-    - '-c'
-    - 'bin/deploy-to-cloud-run-poor.sh'
-  dir: .
-  env:
-  - 'REGION=${_REGION}'
-  - 'ARTIFACT_REPO=${_ARTIFACT_REPO}'
-  # ERRROR: /rails/bin/docker-entrypoint: line 23: PROJECT_ID: unbound variable
-  - 'PROJECT_ID=${PROJECT_ID}'
-  # secretEnv:
-  # - 'DANGEROUS_SA_JSON_VALUE'
 
 # availableSecrets:
 #   secretManager:
