@@ -17,16 +17,17 @@ export GCS_BUCKET='genai-kids-stories-assets'
 APP_VERSION="$(bin/version.sh)"
 
 # I usually build/deploy to project1 and then use AI_PROJECT_ID for AI stuff..
-gcloud --project "$PROJECT_ID" beta run deploy "genai-kids-stories-gcloud-local" \
+gcloud --project "$PROJECT_ID" beta run deploy "genai-kids-stories-gcloud-poor" \
     --image    "$UPLOADED_IMAGE_WITH_VER" \
     --set-env-vars="PROJECT_ID=$AI_PROJECT_ID" \
     --set-env-vars="AI_PROJECT_ID=$AI_PROJECT_ID" \
     --set-env-vars="RAILS_ENV=production" \
       --set-env-vars='ACTIVATE_OMEGA13=true' \
       --set-env-vars="GCS_BUCKET=$GCS_BUCKET" \
-      --set-env-vars="APPLICATION_DEFAULT_CREDENTIALS=/sa.json" \
+      --set-env-vars="APPLICATION_DEFAULT_CREDENTIALS=/secrets/sa.json" \
       --set-env-vars="APP_VERSION=$APP_VERSION" \
       \
+      --update-secrets=/secrets/sa.json=genai-service-account:latest \
       --update-secrets=DANGEROUS_SA_JSON_VALUE=genai-service-account:latest \
       --update-secrets=RAILS_MASTER_KEY=GENAI_RAILS_MASTER_KEY:latest \
       --update-secrets=GOOGLE_TRANSLATE_KEY=GENAI_GOOGLE_TRANSLATE_KEY:latest \
@@ -35,6 +36,7 @@ gcloud --project "$PROJECT_ID" beta run deploy "genai-kids-stories-gcloud-local"
       --update-secrets=APP_DB_PASS=GENAI_PROD_DB_PASS:latest \
       --update-secrets=APP_DB_HOST=GENAI_PROD_DB_HOST:latest \
     --labels="env=test" \
+    --labels="gks-tag=poor" \
     --region   "$REGION" \
     --allow-unauthenticated
 
