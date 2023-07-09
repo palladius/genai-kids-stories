@@ -75,3 +75,27 @@ p.beautified-paragraph {
   word-break: break-word;
   border: 0;
 }
+
+
+/* Carousel  smaller https://stackoverflow.com/questions/28589911/bootstrap-change-carousel-height  */
+.carousel .item {
+  height: 200px;
+  color: red;
+}
+.carousel .carousel-item {
+  height: 200px;
+  color: aqua;
+}
+
+.item img {
+  object-fit:cover;
+    top: 0;
+    left: 0;
+    min-height: 200px;
+}
+@media(max-width:300px){
+  .carousel .carousel-inner{
+  /*prevent it from adding a white space between carousel and container elements*/
+  height:auto;
+   }
+}

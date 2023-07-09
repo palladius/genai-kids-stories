@@ -7,6 +7,7 @@
   <%= translated_story.translated_title %>
   </h1>
 
+<div class='300-px-wide' >
 <div id="carouselExampleCaptions" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-interval="10000" >
   <div class="carousel-indicators">
     <% @story_paragraphs.each_with_index do |sp, ix|
@@ -33,8 +34,8 @@
         <div class="carousel-item active">
       <% else %>
         <div class="carousel-item">
-      <% end %>
-        <%= image_tag(sp.p_image1, class: "d-block w-100 bg-opacity-10" ) if  sp.p_image1.attached?  %>
+      <% end # , style: 'height:100;width:100' %>
+        <%= image_tag(sp.p_image1, class: "d-block w-100 bg-opacity-10"  ) if  sp.p_image1.attached?  %>
         <div class="carousel-caption d-none d-md-block">
           <h5>Slide <%= ix + 1%></h5>
           <p class='text-dark' ><%= sp.translated_text %></p>
@@ -75,5 +76,5 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div>
-
+</div>
 </div>
