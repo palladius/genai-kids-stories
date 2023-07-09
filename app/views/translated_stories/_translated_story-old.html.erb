@@ -79,6 +79,23 @@
   <h3>🐠 Translated Story (<%= @story_paragraphs.count %> paragraphs)</h3>
 
   <%= @story_paragraphs.count %>
+<div class="container">
+  <div class="row">
+    <% @story_paragraphs.each do |sp| %>
+      <div class="col-sm-1">
+        <%= sp.flag %> <%= link_to sp.story_index, sp %>
+        <%= link_to '✍🏿', edit_story_paragraph_path(sp) %>
+      </div>
+      <div class="col-sm-4"><%= sp.original_text %></div>
+      <div class="col-sm-3"><%= render_image_if_attached(sp.p_image1, verbose: false) %></div>
+      <div class="col-sm-4"><%= sp.translated_text %></div>
+    <% end %>
+
+
+      <td>
+          #{link_to p.id, p}
+          #{link_to '✍🏿', edit_story_paragraph_path(p)}
+         ".html_safe
 
   <table border="0" >
     <% @story_paragraphs.each do |sp| %>
