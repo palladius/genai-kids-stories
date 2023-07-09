@@ -67,20 +67,22 @@
         is_even = (ix % 2) == 0 rescue true
     %>
     <% if is_even %>
+      <!-- Even: images to the right-->
        <div class="col-8">
+        <%= link_to('🔷',sp)%>
         <%= sp.cleaned_up_translated_text %>
        </div>
         <div class="col-4">
           <%= render_image_if_attached(sp.p_image1, verbose: false) %>
         </div>
     <% else %>
+      <!-- Odd: images to the left-->
         <div class="col-4">
           <%= render_image_if_attached(sp.p_image1, verbose: false) %>
         </div>
         <div class="col-8">
-        <%= sp.cleaned_up_translated_text %>
+          <%= sp.cleaned_up_translated_text %>
         </div>
-
     <% end %>
       <% if ix == 0 %>
 

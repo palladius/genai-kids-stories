@@ -30,6 +30,7 @@ class Story < ApplicationRecord
   end
   # GCS test :)
   has_many_attached :additional_images, service: :google
+  has_many_attached :paragraphs_images
 
   # validates :title, uniqueness: { scope: :user_id }
 
@@ -401,6 +402,36 @@ class Story < ApplicationRecord
   def fix
     genai_magic(delay: false, force: false)
     fix_paragraphs_now(false)
+    # copy_images_from_primogenitos_images
+  end
+
+  # force
+  def copy_images_from_primogenitos_images!
+    return false if translated_stories.size < 1 # no TS available
+
+    ts1 = translated_stories.first
+    ts1.story_paragraphs.each_with_index do |sp, ix|
+      paragraphs_images.attach(
+        sp.p_image1.blob,
+        metadata: {
+          # aiHash: 'TODO ricc surface it from response if you can',
+          callingFunction: 'copy_images_from_primogenitos_images',
+          # original_description: description,
+          # model_version: opts_model_version
+          ix:,
+          sp_id: sp.id
+        }
+      )
+    end
+  end
+
+  def copy_images_from_primogenitos_images
+    unless paragraphs_images.empty?
+      puts "Sorry I already see images size=#{paragraphs_images.size}. Skip unless you force me to"
+      return true
+    end
+
+    copy_images_from_primogenitos_images!
   end
 
   def fix!

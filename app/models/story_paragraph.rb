@@ -76,13 +76,19 @@ class StoryParagraph < ApplicationRecord
   end
 
   def generate_ai_images!(gcp_opts = {})
-    puts 'TODO if multiple images then write MANY images :)'
+    # puts 'TODO if multiple images then write MANY images :)'
     # genai_input_for_image
-    unless translated_story.primogenito?
-      puts 'TODO copy instead'
-      return 1040 # TODO: in carlessian numeric
+    if translated_story.primogenito?
+      # first born: create them
+      multiple_images = genai_compute_multiple_images_by_decription(p_images, genai_input_for_image, gcp_opts)
+    else
+      # I'm not the first born, I should copy images from it.
+      puts 'TODO Not primogenito copy instead'
+      copy_images_from_primogenito_sp
+      # return 1040 # TODO: in carlessian numeric
+      # copy_images_from(translated_story.primogenito)
     end
-    single_image = genai_compute_single_image_by_decription(p_image1, genai_input_for_image, gcp_opts)
+    # single_image = genai_compute_single_image_by_decription(p_image1, genai_input_for_image, gcp_opts)
   end
 
   def copy_images_from_primogenito_sp

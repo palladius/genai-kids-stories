@@ -3,5 +3,5 @@
     <%=  image_tag(attachment, style: 'width:20%;', class: "img-fluid img-thumbnail") %>
 <% else  %>
     <i>no image</i>
-<% end %>
+<% end rescue "SOME ERR $!" %>
 </span>

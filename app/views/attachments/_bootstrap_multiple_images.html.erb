@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="row">
+<% if images.is_a? ActiveStorage::Attached::Many %>
+    Size: <b><%= images.size %></b>
+    <% images.each_with_index do |image, ix| %>
+    <div class='col-3' >
+        <%= image_tag(image, class: "img-fluid img-thumbnail") %>
+
+        <p> <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample_<%= ix %>" role="button" aria-expanded="false" aria-controls="collapseExample_<%= ix %>">
+            Metadata #<%= ix %> </a>
+        </p>
+        <div class="collapse" id="collapseExample_<%= ix %>">
+            <div class="card card-body small">
+                <%= image.metadata.to_s %>
+            </div>
+        </div>
+    </div>
+<!-- Need JS: https://getbootstrap.com/docs/5.0/components/tooltips/#examples
+<button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-html="true" title="<%= image.metadata.to_s.first(10).gsub('"','') %>" >
+  Tooltip with HTML
+</button>
+ -->
+        <!-- <figure class="figure">
+            <%= image_tag(image,  style: 'width:20%;', class: "figure-img img-fluid rounded") %>
+            <figcaption class="figure-caption">[<%=ix%>] A caption for the above image.</figcaption>
+        </figure>
+-->
+    <% end  %>
+<% else  %>
+    Wrong type: <%= images.class %>
+<% end  %>
+
+</div>
+</div>
+

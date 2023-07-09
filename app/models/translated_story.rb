@@ -38,6 +38,7 @@ class TranslatedStory < ApplicationRecord
 
   after_create :fix_missing_attributes
   #  after_save :after_each_save_fix_cheap_missing_attributes
+  #
 
   def self.default_genai_model
     # 'bison@001'

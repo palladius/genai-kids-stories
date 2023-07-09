@@ -1,24 +1,13 @@
 <%  story = @story %>
 <div id="<%= dom_id story %>">
-  <h2>
-      <%= link_to "📝", edit_story_path(story) %>
-    <strong><%= link_to render_story_title(story), story %></strong>
-  </h2>
+<h3>Attachments</h3>
+additional_images:
+<%= render partial: 'attachments/bootstrap_multiple_images', locals: {images: story.additional_images} %>
+<br/>
+paragraphs_images:
+<%= render partial: 'attachments/bootstrap_multiple_images', locals: {images: story.paragraphs_images} %>
 
-      <%#= image_tag(story.cover_image.variant(:thumb)) if story.cover_image.attached? %>
-      <%= image_tag(story.cover_image,  style: "float:right;height:200px;") if story.cover_image.attached? %>
-
-      <%#= link_to story.cover_image.filename, story.cover_image if story.cover_image.attached? %>
-
-    <i><%= story.genai_summary %></i>
-
-    <% story.paragraphs.each_with_index do |p, ix|  %>
-  <p>
-    🔸 <%= ix+1 %> <%= p %>
-  </p>
-    <% end  %>
-
-<h3>StoryParagraph</h3>
+<h3>StoryParagraph OLD </h3>
 
   <%= render 'stories/obsolete_pointer' %>
 
