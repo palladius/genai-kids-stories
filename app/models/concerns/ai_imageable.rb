@@ -5,29 +5,6 @@ module AiImageable
   extend ActiveSupport::Concern
 
   included do
-    # t0d0
-    #
-    # This for SP
-    #
-    ## OBSOLETE
-    # def generate_one_genai_image_from_image_description!
-    #   #   return genai_compute_single_image!(p_image1) if is_a?(StoryParagraph)
-    #   #   return genai_compute_single_image!(:avatar) if is_a?(Kid)
-    #   #   return if is_a?(StoryParagraph)
-    #   return unless is_a?(StoryParagraph)
-
-    #   description = genai_input_for_image.gsub(/\n/, ' ') # usually long story with quotes and so on.
-    #   puts 'SP mayeb refactor when u find the caller...'
-    #   genai_compute_single_image_by_decription(p_image1, description, gcp_opts = {})
-
-    #   # def generate_one_genai_image_from_image_description!
-    #   #   return genai_compute_single_image!(:p_image1) if is_a?(StoryParagraph)
-    #   #   # return genai_compute_single_image!(:avatar) if is_a?(Kid)
-    #   #   return if is_a?(StoryParagraph)
-
-    #   #   raise "generate_one_genai_image_from_image_description(): wrong class: #{self.class} "
-    # end
-
     def genai_compute_single_image_by_decription(model_attached_single_image, description, gcp_opts = {})
       extend Genai::AiplatformTextCurl
       extend Genai::AiplatformImageCurl
@@ -55,10 +32,71 @@ module AiImageable
       tmp_image = images[0]
       puts ''
       puts "tmp_image: '#{tmp_image}'"
-      puts("ai_ret.inspect: '''#{ai_ret.inspect}'''")
-      puts ''
+      puts "🧐 images.size: '#{images.size}'"
 
-      # puts("genai_compute_single_image! returned a: #{tmp_image} (class=#{tmp_image.class})")
+      unless tmp_image.nil?
+        if tmp_image.is_a? Hash
+          puts 'Super interesting plot twist, we have a hash here. I cant remember why I wanted to throw a hash maybe to implement a function to return a structured image without the filename? Lets print it first'
+          puts(tmp_image)
+          return false
+        end
+        if File.exist?(tmp_image)
+          puts "🍉 WOWOWOW about to save this image: #{tmp_image}. " + `file "#{tmp_image}"`
+
+          # TODO: self.update_columns(:model_attached_single_image => attach.?!? )
+          model_attached_single_image.attach(
+            io: File.open(tmp_image),
+            filename: tmp_image,
+            # https://stackoverflow.com/questions/48999264/metadata-about-blobs-stored-with-activestorage-with-rails-5
+            metadata: {
+              aiHash: 'TODO ricc surface it from response if you can',
+              callingFunction: 'genai_compute_single_image_by_decription',
+              original_description: description,
+              model_version: opts_model_version
+            }
+          )
+          # TODO: attach 4 images instead! Like the 4 MJ ones :)
+          # self.append_notes "Correctly attached image #{tmp_image} with this description: '#{description}'"
+          save!
+          # self.update_column ...
+          return true
+        else
+          puts "💔 Sorry, file not found: #{tmp_image}"
+          return false
+        end
+      end
+      false
+    end
+
+    def genai_compute_multiple_images_by_decription(_model_attached_multiple_images, description, gcp_opts = {})
+      extend Genai::AiplatformTextCurl
+      extend Genai::AiplatformImageCurl
+
+      opts_force_attach = gcp_opts.fetch :force_attach, true # only debug! TODO remove!
+      opts_model_version = gcp_opts.fetch :model_version, '001' # TODO: move to 002
+
+      if model_attached_single_image.attached? and !opts_force_attach
+        puts('genai_compute_single_image_by_decription!(): pointless since I already have an attachment!')
+        return false
+      end
+
+      # puts("genai_compute_single_image!(opts=#{gcp_opts.to_s.first(25)}..): output-size=#{genai_output_size}")
+
+      # _, tmp_image = ai_curl_images_by_content(description, gcp_opts)
+      # this is called in different places i want to make sure i call it right :)
+      ai_ret = ai_curl_images_by_content_v2(opts_model_version, description, gcp_opts) # .merge(mock: true))
+      _, images, ret_hash = ai_ret
+
+      # puts "AAAB.genai_compute_single_image_by_decription ret_hash: #{ret_hash}"
+
+      return false if images.nil?
+      return false if images == []
+
+      tmp_image = images[0]
+      puts ''
+      puts "tmp_image: '#{tmp_image}'"
+      puts "🧐 images.size: '#{images.size}'"
+
       unless tmp_image.nil?
         if tmp_image.is_a? Hash
           puts 'Super interesting plot twist, we have a hash here. I cant remember why I wanted to throw a hash maybe to implement a function to return a structured image without the filename? Lets print it first'

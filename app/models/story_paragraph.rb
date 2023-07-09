@@ -57,10 +57,6 @@ class StoryParagraph < ApplicationRecord
     attach_file_to_attachable_field(p_image1, _filename)
   end
 
-  # def attached_image
-  #   p_image1
-  # end
-
   def attached?
     p_image1.attached?
   end
