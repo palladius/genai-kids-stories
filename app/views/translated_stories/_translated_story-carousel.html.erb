@@ -8,7 +8,7 @@
   </h1>
 
 <div class='300-px-wide' >
-<div id="carouselExampleCaptions" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-interval="10000" >
+<div id="carouselExampleCaptions" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-interval="10000" data-bs-wrap="false" >
   <div class="carousel-indicators">
     <% @story_paragraphs.each_with_index do |sp, ix|
        #addon_if_first = (ix==0) ? ' aria-current=true class=active ' : ''
@@ -34,11 +34,17 @@
         <div class="carousel-item active">
       <% else %>
         <div class="carousel-item">
-      <% end # , style: 'height:100;width:100' %>
-        <%= image_tag(sp.p_image1, class: "d-block w-100 bg-opacity-10"  ) if  sp.p_image1.attached?  %>
+      <% end %>
+        <div class="image-container" >
+        <!-- from Bard -->
+          <%= image_tag(sp.p_image1,
+                class: "d-block w-100 ricc-transparent",
+                alt: 'Image Descr',
+                style: 'opacity: 0.5;' ) if  sp.p_image1.attached?  %>
+        </div>
         <div class="carousel-caption d-none d-md-block">
-          <h5>Slide <%= ix + 1%></h5>
-          <p class='text-dark' ><%= sp.translated_text %></p>
+          <h5>🌁 Slide <%= ix + 1%> 🌁</h5>
+          <p class='text-dark' ><%= sp.cleaned_up_translated_text %></p>
         </div>
 
      </div>

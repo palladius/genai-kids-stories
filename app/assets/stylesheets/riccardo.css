@@ -77,24 +77,3 @@ p.beautified-paragraph {
 }
 
 
-/* Carousel  smaller https://stackoverflow.com/questions/28589911/bootstrap-change-carousel-height  */
-.my-carousel .carousel-inner {
-  width: 80%; /* Adjust the width as per your requirement */
-  height: 300px; /* Adjust the height as per your requirement */
-  margin: 0 auto; /* Centers the carousel horizontally */
-}
-
-.my-carousel .carousel-item {
-  height: 100%; /* Adjust the item height as per your requirement */
-}
-
-.my-carousel .carousel-item img {
-  max-height: 100%; /* Ensures the images fit within the item */
-  object-fit: contain; /* Adjusts the image display within the item */
-}
-
-.my-carousel .carousel-caption {
-  background-color: rgba(0, 0, 0, 0.7); /* Adds a semi-transparent background to the caption */
-  color: #fff; /* Sets the text color to white */
-  padding: 10px; /* Adjust the padding as per your preference */
-}

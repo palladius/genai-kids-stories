@@ -28,7 +28,7 @@
     <% else  %>
       <!-- some translations available! -->
       <% story.translated_stories.each do |ts| %>
-        <%= link_to ts.flag, ts, :class => "btn  btn-outline-primary" %>
+        <%= link_to "🎠 #{ts.flag}",translated_story_path(ts) + "?style=carousel", :class => "btn  btn-outline-primary" %>
       <% end %>
     <% end %>
 

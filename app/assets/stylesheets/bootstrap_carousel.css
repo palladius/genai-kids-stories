@@ -1,21 +1,55 @@
 /* Carousel  smaller https://stackoverflow.com/questions/28589911/bootstrap-change-carousel-height  */
+
+
+
 .my-carousel .carousel-inner {
-    width: 80%; /* Adjust the width as per your requirement */
-    height: 300px; /* Adjust the height as per your requirement */
-    margin: 0 auto; /* Centers the carousel horizontally */
-  }
+  width: 80%; /* Adjust the width as per your requirement */
+  height: 100px; /* Adjust the height as per your requirement */
+  margin: 0 auto; /* Centers the carousel horizontally */
+}
 
-  .my-carousel .carousel-item {
-    height: 100%; /* Adjust the item height as per your requirement */
-  }
+.my-carousel .carousel-item {
+  height: 50%; /* Adjust the item height as per your requirement */
+}
 
-  .my-carousel .carousel-item img {
-    max-height: 100%; /* Ensures the images fit within the item */
-    object-fit: contain; /* Adjusts the image display within the item */
-  }
+.my-carousel .carousel-item img {
+  max-height: 50%; /* Ensures the images fit within the item */
+  object-fit: contain; /* Adjusts the image display within the item */
+}
 
-  .my-carousel .carousel-caption {
-    background-color: rgba(0, 0, 0, 0.7); /* Adds a semi-transparent background to the caption */
-    color: #fff; /* Sets the text color to white */
-    padding: 10px; /* Adjust the padding as per your preference */
-  }
+.my-carousel .carousel-caption {
+  background-color: rgba(0, 0, 0, 0.7); /* Adds a semi-transparent background to the caption */
+  color: #fff; /* Sets the text color to white */
+  padding: 10px; /* Adjust the padding as per your preference */
+}
+
+.my-carousel .carousel-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Adjust the item height as per your requirement */
+}
+
+.my-carousel .carousel-item .image-container {
+  background-color: #fff; /* Sets the background color to white */
+  width: 70%; /* Adjust the width of the image container as per your requirement */
+  height: 70%; /* Ensures the container fills the entire carousel item */
+  margin: 0 auto; /* Centers the container horizontally */
+  padding: 20px; /* Adjust the padding as per your preference */
+  display: flex; /* Allows centering of the image */
+  justify-content: center;
+  align-items: center;
+}
+
+.my-carousel .carousel-item img {
+  max-width: 50%; /* Ensures the image fits within the container */
+  max-height: 50%; /* Ensures the image fits within the container */
+  object-fit: contain; /* Adjusts the image display within the container */
+  opacity: 0.5;
+}
+img .ricc-transparent {
+  color: red;
+  opacity: 0.2;
+
+}
+  /* h1, h2, h3, h4, h5, h6{    color: blue; } */
