@@ -122,6 +122,7 @@ function _gcloud_run_deploy_name_and_args() {
       --set-env-vars='AI_PROJECT_ID=$AI_PROJECT_ID' \
       --set-env-vars="APPLICATION_DEFAULT_CREDENTIALS=/sa.json" \
       \
+      --update-secrets=/sa.json=genai-service-account:latest \
       --update-secrets=DANGEROUS_SA_JSON_VALUE=genai-service-account:latest \
       --update-secrets=RAILS_MASTER_KEY=GENAI_RAILS_MASTER_KEY:latest \
       --update-secrets=GOOGLE_TRANSLATE_KEY=GENAI_GOOGLE_TRANSLATE_KEY:latest \
@@ -134,6 +135,10 @@ function _gcloud_run_deploy_name_and_args() {
       --labels="ver=${VERSION//[.]/-}" \
       --allow-unauthenticated
 }
+
+# #       --update-secrets=APPLICATION_DEFAULT_CREDENTIALS='/sa.json=genai-service-account:latest' \
+
+
 #1. gcloud normal app Rails Server in prod
 _gcloud_run_deploy_name_and_args "genai-kids-stories-gcloud-test"
 #2. RoR runner

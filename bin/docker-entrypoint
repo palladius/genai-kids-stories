@@ -82,12 +82,12 @@ if [ "${*}" == "" -o "${*}" == "echo activate omega13" -o "true" == "$ACTIVATE_O
 #  if [ ! -f /sa.json ] ; then
 
   # ls -al /sa.json
-  # if [ ! -s /sa.json ] ; then # file not empty
-  #  echo "$DANGEROUS_SA_JSON_VALUE" > /sa.json
-  #  echo "👍 File /sa.json just created."
-  # else
-  #   echo Pointless. File /sa.json already present.
-  # fi
+  if [ ! -s /sa.json ] ; then # file not empty
+   echo "$DANGEROUS_SA_JSON_VALUE" > /sa.json
+   echo "👍 File /sa.json just created."
+  else
+    echo Pointless. File /sa.json already present.
+  fi
   # if [ -d /rails/private/ ]; then
   #   # Dockerized version...
   #    echo "$DANGEROUS_SA_JSON_VALUE" > /rails/private/sa.json
