@@ -51,7 +51,9 @@ steps:
     - '-eEuo'
     - 'pipefail'
     - '-c'
-    - 'docker tag ${_ARTIFACT_REPO_ALL}:cb-latest ${_ARTIFACT_REPO_ALL}:`bin/version.sh`'
+    - 'docker tag ${_ARTIFACT_REPO_ALL}:cb-latest ${_ARTIFACT_REPO_ALL}:v`bin/version.sh`;'
+    - 'docker push ${_ARTIFACT_REPO_ALL}:v`bin/version.sh`;'
+    - 'echo "✅ Done. Pushed hopefully this: ${_ARTIFACT_REPO_ALL}:v`bin/version.sh`";'
   dir: .
 
 #  - name: 'ruby:3.2.0'
