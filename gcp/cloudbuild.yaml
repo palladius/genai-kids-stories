@@ -20,14 +20,13 @@ substitutions:
   _ARTIFACT_REPO: "europe-north1-docker.pkg.dev/ror-goldie/genai"
 steps:
 
-
   #### DOCKER BUILD
 -  name: 'gcr.io/cloud-builders/docker'
    id: 2 Docker Build - to LATEST
    args: ['build', '-t', "${_ARTIFACT_REPO_ALL}:cb-latest", '.']
    dir: .
 -  name: 'gcr.io/cloud-builders/docker'
-   id: 3 Tag latest to vVERSION
+   id: 3 Tag latest to sha-SHA
    args:
     - 'tag'
     - "${_ARTIFACT_REPO_ALL}:cb-latest"
@@ -44,6 +43,16 @@ steps:
   id: Docker push vSHA
   args: ['push', "${_ARTIFACT_REPO_ALL}:sha-$SHORT_SHA"]
 
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  id: Tag to vVERSION via BASH
+  entrypoint: 'bash'
+  args:
+    - '-eEuo'
+    - 'pipefail'
+    - '-c'
+    - 'docker tag ${_ARTIFACT_REPO_ALL}:cb-latest ${_ARTIFACT_REPO_ALL}:`bin/version.sh`'
+  dir: .
 
 #  - name: 'ruby:3.2.0'
 #    id: 3 Ruby rake test ok if it fails
