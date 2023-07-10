@@ -31,5 +31,5 @@ Rails.application.routes.draw do
   # get '/fix_translated_story', 'translated_story#fix_translated_story', as: :fix_translated_story
 
   # Defines the root path route ("/")
-  root 'stories#index'
+  root 'pages#index'
 end

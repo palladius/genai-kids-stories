@@ -69,7 +69,7 @@
     <% if is_even %>
       <!-- Even: images to the right-->
        <div class="col-8">
-        <%= link_to('🔷',sp)%>
+        <%= link_to("🔷 #{sp.story_index}",sp)%>
         <%= sp.cleaned_up_translated_text %>
        </div>
         <div class="col-4">
@@ -81,6 +81,7 @@
           <%= render_image_if_attached(sp.p_image1, verbose: false) %>
         </div>
         <div class="col-8">
+          <%= link_to("🔷 #{sp.story_index}",sp)%>
           <%= sp.cleaned_up_translated_text %>
         </div>
     <% end %>
