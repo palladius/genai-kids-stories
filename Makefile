@@ -35,6 +35,7 @@ install-linux:
 
 # Runs local server by forcing a delayed job too :)
 run-local: # runs locally after starting a daemon for delayed jobs..
+	rake assets:precompile
 	make delayed-jobs-daemon &
 	bundle exec rails s -b 0.0.0.0
 run-local-prod: # runs locally after starting a daemon for delayed jobs..
