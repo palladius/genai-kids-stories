@@ -9,7 +9,8 @@ class TranslatedStoriesController < ApplicationController
   # GET /translated_stories/1 or /translated_stories/1.json
   def show
     #  hidden @translated_story
-    @story_paragraphs = StoryParagraph.where(translated_story_id: @translated_story.id)
+    @story_paragraphs = StoryParagraph.where(translated_story_id: @translated_story.id).order('story_index ASC')
+    # TODO: .sort by
     @execute_now = params[:execute_now] == 'true'
   end
 
