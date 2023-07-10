@@ -120,6 +120,15 @@ class TranslatedStory < ApplicationRecord
     flag + ' ' + translated_title.gsub('Translation of:', '').first(max_size) + '..'
   end
 
+  def fix!
+    puts 'Fixing the children paragraphs even if not needed...'
+    story_paragraphs.each do |story_paragraph|
+      id = story_paragraph.id
+      puts "Forcing redo image for #{id}"
+      story_paragraph.generate_ai_images!
+    end
+  end
+
   def fix
     # `dimmiora`
     # TODO
