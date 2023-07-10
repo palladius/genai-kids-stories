@@ -75,8 +75,8 @@ module Genai
         is_mock: opts.fetch(:mock, 'absent')
       }
 
-      # Cleanup content
-      content = content.gsub(/"/, '').gsub(/\n/, ' ') # remove quotes.. seems to give error, eg in this sentence:
+      # Cleanup content (formerly cleaned_up_content )
+      content = content.gsub(/"/, '').gsub(/\n/, ' ').gsub(/\*/, '') # remove quotes.. seems to give error, eg in this sentence:
 
       puts "🌃ImageGeneration🌃(v#{_model_version}).content='#{yellow content}'"
 
