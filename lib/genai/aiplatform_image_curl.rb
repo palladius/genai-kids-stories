@@ -12,7 +12,7 @@ module Genai
     # This should be totally Enity independent and should return an IOStream imho... easy to attach.
     def decode_nth_base64_image_to_file(_model_version, filename, json_body, ix, _opts = {})
       opts_cleanup_after_yourself = _opts.fetch :cleanup_after_yourself, false
-      # filename = "#{ix}_#{filename}"
+
       puts "[DEB] decode_nth_base64_image_to_file(filename=#{filename}, ix=#{ix})"
       # raise 'I need a Story !' unless story.is_a? Story
       raise 'I need an integer for ix!' unless ix.is_a? Integer
@@ -20,11 +20,9 @@ module Genai
 
       unless json_body.keys.include? 'predictions'
         puts("Failing - but before let me show you the answer: #{json_body}")
-        # ret_hash[:ret_message] = 'Empty body w/ no predictions'
         return nil
       end
       mimeType = json_body['predictions'][ix]['mimeType']
-      # puts("MIME[#{ix}]: #{mimeType}")    # shjould be PNG
       raise "Wrong mime type: '#{mimeType}'" unless ['image/png', 'image/jpeg'].include?(mimeType)
 
       bytesBase64Encoded = json_body['predictions'][ix]['bytesBase64Encoded']
@@ -34,31 +32,23 @@ module Genai
 
       # https://stackoverflow.com/questions/16918602/how-to-base64-encode-image-in-linux-bash-shell
       encode_file = if `uname`.chomp == 'Darwin'
+                      # Mac OSX
                       `base64 -i '#{filename}.b64enc' -d > '#{filename}'`
                     else
+                      # Linux
                       `base64 -d '#{filename}.b64enc' > '#{filename}'`
-                    end # Linux
+                    end
 
       if opts_cleanup_after_yourself
         puts 'Lets cleanup the b64enc now that the file has been decoded and created..'
         File.delete("#{filename}.b64enc")
       end
 
-      # encode_file_on_mac_or_linux = todo
-      # encode_file_on_linux = `base64 -d '#{filename}.b64enc' > '#{filename}'`
-      # encode_file_on_mac =
-      #      encode_file_on_mac = `openssl base64 -d -in '#{filename}.b64enc' -out '#{filename}'`
-      #
-      # puts "encode_file (on #{`uname`.chomp}): #{encode_file}"
-
-      # cat "$IMAGE_OUTPUT_PATH" | jq -r .predictions[$IMAGE_IX].bytesBase64Encoded > t.base64
-      # IMAGE_IX
       ## https://stackoverflow.com/questions/61157933/how-to-attach-base64-image-to-active-storage-object
 
       # enc = Base64.encode64(bytesBase64Encoded.each_byte.to_a.join)
       # File.write("tmp123.png")
       # StringIO.new(Base64.decode64(params[:base_64_image].split(',')[1])),
-      # puts("Written file: #{filename}")
       file_mime_type = `file '#{filename}'`.chomp
       puts("🖼️ Image[#{ix}]🖼️ EncSize: #{bytesBase64Encoded.size / 1024}KB #{file_mime_type}") # filename AND mimetype
 
@@ -83,17 +73,12 @@ module Genai
       ret_hash = {
         model_version: _model_version,
         is_mock: opts.fetch(:mock, 'absent')
-        # response_ok: response.instance_of?(Net::HTTPOK),
-        # http_response_code: response.respond_to?(:code) ? response.code : nil,
-        # ret_message: response.nil? ? 'Empty response' : 'All good'
       }
 
-      puts "🌃ImageGeneration🌃(v#{_model_version}).content='#{yellow content}'"
+      # Cleanup content
+      content = content.gsub(/"/, '').gsub(/\n/, ' ') # remove quotes.. seems to give error, eg in this sentence:
 
-      # puts '''TODO ricc:
-      #       3. Test the attach file as part of this, maybe as a callback or an opts object which is of type
-      #    attachable
-      # '''
+      puts "🌃ImageGeneration🌃(v#{_model_version}).content='#{yellow content}'"
 
       if opts_mock
         #######################
@@ -107,6 +92,7 @@ module Genai
         ########################
         # Real authentication
         ########################
+        # "Hello," the voice said. "My name is Sebastian Leonardo, and I'm a 3-year-old blonde boy, super cute, slightly chubby, and always smiling." Sparky was surprised to hear a voice in the haunted house. He turned around and saw a little boy standing in front of him. The little boy was wearing a blue shirt and blue shorts, and he had a big smile on his face.
 
         # puts "Riccardo copia quel che c'e' dopo"
         gcloud_access_token = GCauth.instance.token
@@ -200,9 +186,8 @@ module Genai
       # puts 'prediction_size_minus_one: ', prediction_size_minus_one
       (0..prediction_size_minus_one).each do |ix|
         # ret_hash["#{ix}_start"] = 'debug'
-        filename = "tmp_#{_model_version}-#{content.gsub(/ /, '_').gsub(/[^a-zA-Z0-9_]/, '')[0, 100]}.ix=#{ix}.png"
-        # cant be too long or you get File name too long @ rb_sysopen - tmp_002-Imagine_a_5-year-old_brown-eyed_boy_with_light_brown_hair._Beside_him,_**Act_1**
-        # filename = "tmp_#{_model_version}-#{content.gsub(/ /, '_')[0, 100]}.ix=#{ix}.png"
+        filename = "tmp_#{_model_version}-#{content.gsub(/ /, '_').gsub(/[^a-zA-Z0-9_]/, '')[0,
+                                                                                             90]}.ix=#{ix}.dmi=#{json_body['deployedModelId']}.png"
 
         file = decode_nth_base64_image_to_file(_model_version, filename, json_body, ix, opts)
 
@@ -212,8 +197,6 @@ module Genai
         end
         # puts "my_one_file[#{ix}] AFTER: #{my_one_file}"
         ret_hash["#{ix}_my_one_file"] = my_one_file
-        # ret_hash["#{ix}_file_exist"] = File.exist?(filename)
-        # ret_hash["#{ix}_correct_image_file_match"] = correct_image_file_match(`file '#{filename}'`.chomp)
       end
 
       [0, ret_files, ret_hash] # redicted_content

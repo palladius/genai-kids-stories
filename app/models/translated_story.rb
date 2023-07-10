@@ -230,4 +230,9 @@ class TranslatedStory < ApplicationRecord
     end
     ret + ']'
   end
+
+  def self.fix_all
+    puts 'This is HUGE! Fixing ALL Translated Stories! This should be a bkgd job, btw!'
+    autofix
+  end
 end
