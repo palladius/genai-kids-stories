@@ -1,4 +1,3 @@
-
 # colors
 def yellow(s)
   "\033[1;33m#{s}\033[0m"
@@ -12,6 +11,10 @@ def blue(s)
   "\033[1;33m#{s}\033[0m"
 end
 
+# Content which goes into API call needs to be removed of quotes, double quotes and asterisks.
+def cleaned_up_content(content)
+  content.gsub(/"/, '').gsub(/\n/, ' ').gsub(/\*/, '') # remove quotes.. seems to give error, eg in this sentence:
+end
 
 # This is the big migration from SParagraphs attached to stories (which is wrong as i can only translate each story in a single language)
 # to SParagraphs attached to translated_stories. Difference?

@@ -317,13 +317,12 @@ class Story < ApplicationRecord
                     "Imagine: #{kid.visual_description}.Additional context: #{genai_output}" # .gsub("\n",' ')
                   end
 
-    description = description.gsub('*', '').gsub("'", '')
+    description = cleaned_up_content(description) # .gsub('*', '').gsub("'", '').gsub('"', '')
     ret1 = genai_compute_single_image_by_decription(cover_image, description, _gcp_opts)
     # puts("ret1: #{yellow(ret1)}")
     # if Google doesnt pass this we can try this instead
     if ret1 === false
       puts 'Some errors maybe due to kids. Let me try again without the Kid part.'
-      #      genai_compute_single_image_by_decription(cover_image, title, _gcp_opts)
       ret1 = genai_compute_single_image_by_decription(cover_image, genai_summary, _gcp_opts)
     end
     if ret1 === false

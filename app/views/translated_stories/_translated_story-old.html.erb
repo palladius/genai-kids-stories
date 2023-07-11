@@ -91,17 +91,13 @@
       <div class="col-sm-4"><%= sp.translated_text %></div>
     <% end %>
 
-
-      <td>
-          #{link_to p.id, p}
-          #{link_to '✍🏿', edit_story_paragraph_path(p)}
-         ".html_safe
-
+<!--
   <table border="0" >
-    <% @story_paragraphs.each do |sp| %>
-      <%= render_working_story_paragraph(sp) %>
-    <% end %>
+    <%# @story_paragraphs.each do |sp| %>
+      <%#= render_working_story_paragraph(sp) %>
+    <%# end %>
   </table>
+  -->
 <% else  %>
   <!-- PAR PREVIEW -->
   <h3>👁️ Paragraphs Preview</h3>

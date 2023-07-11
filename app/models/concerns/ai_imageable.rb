@@ -8,7 +8,7 @@ module AiImageable
     def genai_compute_single_image_by_decription(model_attached_single_image, description, gcp_opts = {})
       extend Genai::AiplatformTextCurl
       extend Genai::AiplatformImageCurl
-      my_function_version = '0.3'
+      my_function_version = '0.4'
 
       opts_force_attach = gcp_opts.fetch :force_attach, true # only debug! TODO remove!
       opts_model_version = gcp_opts.fetch :model_version, '002'
@@ -18,14 +18,13 @@ module AiImageable
         return false
       end
 
-      # puts("genai_compute_single_image!(opts=#{gcp_opts.to_s.first(25)}..): output-size=#{genai_output_size}")
+      description = cleaned_up_content(description)
 
       # _, tmp_image = ai_curl_images_by_content(description, gcp_opts)
       # this is called in different places i want to make sure i call it right :)
       ai_ret = ai_curl_images_by_content_v2(opts_model_version, description, gcp_opts) # .merge(mock: true))
       _, images, ret_hash = ai_ret
 
-      # puts "AAAB.genai_compute_single_image_by_decription ret_hash: #{ret_hash}"
 
       return false if images.nil?
       return false if images == []
@@ -87,6 +86,8 @@ module AiImageable
         puts('genai_compute_single_image_by_decription!(): pointless since I already have some attachments!')
         return false
       end
+
+      description=cleaned_up_content(description)
 
       # this is called in different places i want to make sure i call it right :)
       ai_ret = ai_curl_images_by_content_v2(opts_model_version, description, gcp_opts) # .merge(mock: true))

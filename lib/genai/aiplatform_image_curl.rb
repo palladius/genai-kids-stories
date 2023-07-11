@@ -76,8 +76,7 @@ module Genai
       }
 
       # Cleanup content (formerly cleaned_up_content )
-      content = content.gsub(/"/, '').gsub(/\n/, ' ').gsub(/\*/, '') # remove quotes.. seems to give error, eg in this sentence:
-
+      content = cleaned_up_content(content) #
       puts "🌃ImageGeneration🌃(v#{_model_version}).content='#{yellow content}'"
 
       if opts_mock
