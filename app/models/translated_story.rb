@@ -21,7 +21,7 @@ class TranslatedStory < ApplicationRecord
   belongs_to :user # Oops its done in the DB, optional: true
   belongs_to :story
   belongs_to :kid, optional: true
-  has_many :story_paragraphs
+  has_many :story_paragraphs, dependent: :destroy
 
   # validates :language, presence: true # A TS needs a Story and a Language, STRONGLY.
   validates :language, presence: true,
