@@ -49,8 +49,10 @@ if CREATE_STORY_TEMPLATES
   puts StoryTemplate.all
 
   #ActiveRecord::FixtureSet.create_fixtures(File.dirname(f), File.basename(f, '.yaml'))
-  ENV[:FIXTURES] = 'story_templates'
-  Rake.application['db:fixtures:load FIXTURES=story_templates FIXTURES_DIR=../../db/fixtures/story_templates/'].invoke
+  ENV['FIXTURES'] = 'story_templates'
+  ENV['FIXTURES_DIR'] = '../../db/fixtures/story_templates/'
+  Rake.application['db:fixtures:load'].invoke
+  #Rake.application['db:fixtures:load FIXTURES=story_templates FIXTURES_DIR=../../db/fixtures/story_templates/'].invoke
   # raise 'TODO implement me ricc :) i half baked one in the YAML'
   puts StoryTemplate.first.instanciate()
 
