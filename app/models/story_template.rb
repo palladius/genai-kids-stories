@@ -12,4 +12,16 @@ class StoryTemplate < ApplicationRecord
     validates :short_code, presence: true,
         format: { with: /\A([a-z_-]+)\z/, message: 'No spaces, just dash underscores and lower cases' }
 
-end
+
+
+        def instanciate
+            'TODO(Rocc): the idea is to take the template and apply random or deterministic functions to the {parts}...'
+        end
+
+        def to_s
+            "STmpl(#{id}): '#{short_code}' #{validity_emoji}.."
+        end
+
+
+    end
+

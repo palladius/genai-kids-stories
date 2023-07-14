@@ -21,6 +21,10 @@ class ApplicationRecord < ActiveRecord::Base
     find(ids.sample)
   end
 
+  def validity_emoji
+    valid? ? '✅' : '❌'
+  end
+
   def self.autofix # fix_all
     all.each do |model|
       model.fix

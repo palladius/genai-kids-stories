@@ -41,10 +41,19 @@ if CREATE_USERS
 end
 if CREATE_STORY_TEMPLATES
   # StoryTemplate.create('blah')
-  puts 'TODO from fixtures YAML'
+  #puts 'TODO from fixtures YAML i need to change directory'
   STORY_TEMPLATES_FIXTURE_DIR = "#{Rails.root}/db/fixtures/story_templates/"
   puts STORY_TEMPLATES_FIXTURE_DIR
+  # rails db:fixtures:load FIXTURES=story_templates
+  f= STORY_TEMPLATES_FIXTURE_DIR + "/story_templates.yaml"
+  puts StoryTemplate.all
+
+  #ActiveRecord::FixtureSet.create_fixtures(File.dirname(f), File.basename(f, '.yaml'))
+  ENV[:FIXTURES] = 'story_templates'
+  Rake.application['db:fixtures:load FIXTURES=story_templates FIXTURES_DIR=../../db/fixtures/story_templates/'].invoke
   # raise 'TODO implement me ricc :) i half baked one in the YAML'
+  puts StoryTemplate.first.instanciate()
+
 end
 
 
@@ -52,30 +61,30 @@ end
 # Create kids doesnt need a var - checks for existence
 create_kids = Kid.find_by_nick('AJ').nil?
 
-puts '1. Creating fake child...'
-doll = Kid.create(
-  id: 1337,
-  name: 'Fake',
-  nick: 'doll',
-  date_of_birth: '2021-01-30'
-  # app/assets/images/kids/doll.jpg
-)
-puts doll.errors.full_messages
-path = 'app/assets/images/kids/doll.jpg'
-
-puts '2. Attaching avatar...'
-begin
-  doll.avatar.attach(path)
-rescue StandardError
-  puts "💔 SomeErrorAttaching Seby image: #{$!}"
-end
-# Story.last.attach_test_image
-doll.save
-puts(doll)
-
-# exit 42
-
 if create_kids
+
+  puts '1. Creating fake child...'
+  doll = Kid.create(
+    id: 1337,
+    name: 'Fake',
+    nick: 'doll',
+    favorite_language: 'ru',
+    date_of_birth: '2021-01-30',
+    # app/assets/images/kids/doll.jpg
+  )
+  puts doll.errors.full_messages
+  path = 'app/assets/images/kids/doll.jpg'
+
+  puts '2. Attaching avatar...'
+  begin
+    doll.avatar.attach(path)
+  rescue StandardError
+    puts "💔 SomeErrorAttaching Seby image: #{$!}"
+  end
+  # Story.last.attach_test_image
+  doll.save
+  puts(doll)
+
   aj = Kid.create_kid_on_steorids(
     name: 'Alessandro',
     surname: 'Carlesso', nick: 'AJ',
