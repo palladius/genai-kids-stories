@@ -79,6 +79,8 @@ module Genai
       content = cleaned_up_content(content) #
       puts "🌃ImageGeneration🌃(v#{_model_version}).content='#{yellow content}'"
 
+      return 201, 'We are offline' if Genai::Common.network_offline?
+
       if opts_mock
         #######################
         # Mock authentication #

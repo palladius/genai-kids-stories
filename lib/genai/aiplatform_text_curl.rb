@@ -13,7 +13,7 @@
 module Genai
   # Only allow authenticated admins access to precious resources.
   module AiplatformTextCurl
-    VERSION = '0.4_30jun23'
+    VERSION = '0.5_14jul23'
 
     require 'net/http'
     require 'uri'
@@ -161,6 +161,9 @@ module Genai
     def ai_curl_by_content(content, _region = 'us-central1', opts = {})
       # options
       opts_debug = opts.fetch 'DEBUG', false
+
+      return '[🚠OFFLINE] GenAI: end of creativity, connect me to urandom' if Genai::Common.network_offline?
+
 
       # filling empty values
       project_id = opts.fetch :project_id, AI_PROJECT_ID

@@ -1,68 +1,68 @@
 <%= form_with(model: translated_story) do |form| %>
-  <% if translated_story.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(translated_story.errors.count, "error") %> prohibited this translated_story from being saved:</h2>
+  <div class='form-group' >
+    <% if translated_story.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(translated_story.errors.count, "error") %> prohibited this translated_story from being saved:</h2>
 
-      <ul>
-        <% translated_story.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+        <ul>
+          <% translated_story.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= form.label :name, style: "display: block", class: 'form-control-sm' %>
+      <%= form.text_area :name, class: 'form-control form-control-sm' %>
     </div>
-  <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
-  </div>
+    <div>
+      <%= form.label :user_id, style: "display: block", class: 'form-control' %>
+      <%#= form.text_field :user_id %>
+      <%= form.select :user_id, options_for_select(User.all.collect{ |user| [user.name, user.id] }), {class: 'form-control'}, {} %>
 
-  <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%#= form.text_field :user_id %>
-    <%= form.select :user_id, options_for_select(User.all.collect{ |user| [user.name, user.id] }), {}, {} %>
+    </div>
 
-  </div>
+    <div>
+      <%= form.label :story_id, style: "display: block" %>
+      <%#= form.select :story_id, options_for_select(Story.all.collect{ |story| [story.title, story.id] }), :selected => params['story_id'], {} %>
+      <%= form.select :story_id, options_for_select(
+                                                    Story.all.collect{ |story| [story.title, story.id] },
+                                                    params['story_id']), {}, {}
+      %>
+    </div>
+    <div>
+      <%= form.label :language, style: "display: block" %>
+      <%= form.text_field :language %>
+    </div>
 
-  <div>
-    <%= form.label :story_id, style: "display: block" %>
-    <%#= form.select :story_id, options_for_select(Story.all.collect{ |story| [story.title, story.id] }), :selected => params['story_id'], {} %>
-    <%= form.select :story_id, options_for_select(
-                                                  Story.all.collect{ |story| [story.title, story.id] },
-                                                  params['story_id']), {}, {}
-    %>
+  <!-- this is a hidden dependency, should be set after story :) or nothing at all :)
+    <div>
+      <%= form.label :kid_id, style: "display: block" %>
+      <%= form.number_field :kid_id %>
+    </div>
+  -->
+    <div>
+      <%= form.label :paragraph_strategy, style: "display: block" %>
+      <%= form.text_field :paragraph_strategy, required: true, class: 'form-control', value:Story.default_paragraph_strategy %>
 
-  </div>
+    </div>
 
-  <div>
-    <%= form.label :language, style: "display: block" %>
-    <%= form.text_field :language %>
-  </div>
+    <div>
+      <%= form.label :internal_notes, style: "display: block" %>
+      <%= form.text_area :internal_notes %>
+    </div>
 
-<!-- this is a hidden dependency, should be set after story :) or nothing at all :)
-  <div>
-    <%= form.label :kid_id, style: "display: block" %>
-    <%= form.number_field :kid_id %>
-  </div>
--->
-  <div>
-    <%= form.label :paragraph_strategy, style: "display: block" %>
-    <%= form.text_field :paragraph_strategy, required: true, class: 'form-control', value:Story.default_paragraph_strategy %>
+    <div>
+      <%= form.label :genai_model, style: "display: block" %>
+      <%#= form.text_field :genai_model %>
+      <%= form.text_field :genai_model, required: true, class: 'form-control', value:TranslatedStory.default_genai_model  %>
 
-  </div>
+    </div>
 
-  <div>
-    <%= form.label :internal_notes, style: "display: block" %>
-    <%= form.text_area :internal_notes %>
-  </div>
-
-  <div>
-    <%= form.label :genai_model, style: "display: block" %>
-    <%#= form.text_field :genai_model %>
-     <%= form.text_field :genai_model, required: true, class: 'form-control', value:TranslatedStory.default_genai_model  %>
-
-  </div>
-
-  <div>
-    <%= form.submit %>
+    <div>
+      <%= form.submit %>
+    </div>
   </div>
 <% end %>

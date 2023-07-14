@@ -6,11 +6,11 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-RAKE_DB_SEED_VERSION = '1.1'
+RAKE_DB_SEED_VERSION = '1.2'
 
-CREATE_STORY_TEMPLATES = false
-CREATE_USERS = true
-ALL_THE_REST = false # Sorry this idea came a bit late :)
+CREATE_STORY_TEMPLATES =  ENV.fetch('CREATE_STORY_TEMPLATES', true)
+CREATE_USERS = ENV.fetch('CREATE_USERS', false)
+ALL_THE_REST = ENV.fetch('ALL_THE_REST', false) # Sorry this idea came a bit late :)
 
 def dbseed_cheap_attachable(_filename)
   {
@@ -42,10 +42,14 @@ end
 if CREATE_STORY_TEMPLATES
   # StoryTemplate.create('blah')
   puts 'TODO from fixtures YAML'
+  STORY_TEMPLATES_FIXTURE_DIR = "#{Rails.root}/db/fixtures/story_templates/"
+  puts STORY_TEMPLATES_FIXTURE_DIR
   # raise 'TODO implement me ricc :) i half baked one in the YAML'
 end
-return unless ALL_THE_REST
 
+
+##############
+# Create kids doesnt need a var - checks for existence
 create_kids = Kid.find_by_nick('AJ').nil?
 
 puts '1. Creating fake child...'
@@ -118,6 +122,12 @@ if create_kids
   puts 'Skipping kids - I presume theyre already created.'
 
 end
+
+unless ALL_THE_REST
+  puts 'Exiting as ENV[ALL_THE_REST] is not TRUE ;)'
+  exit 0
+end
+
 #######################
 # Stories
 #######################

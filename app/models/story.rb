@@ -122,7 +122,7 @@ class Story < ApplicationRecord
 
   def paragraphs
     # puts "TODO consider also using https://apidock.com/rails/v5.2.3/ActionView/Helpers/TextHelper/split_paragraphs"
-    smart_paragraphs(min_chunk_size = 150)
+    smart_paragraphs(min_chunk_size = 150) or []
   end
 
   def smart_paragraphs(min_chunk_size = 200)
@@ -135,7 +135,7 @@ class Story < ApplicationRecord
   def split_paragraphs_brd(str, min_chunk_size)
     paragraphs = []
     current_paragraph = ''
-    str.each_line do |line|
+    str.to_s.each_line do |line|
       if current_paragraph.length >= min_chunk_size
         paragraphs << current_paragraph
         current_paragraph = ''
@@ -495,6 +495,7 @@ class Story < ApplicationRecord
   end
 
   def genai_output_excerpt(max_size = 250)
+    return '' if genai_output.nil?
     genai_output.first(max_size).gsub('*', '').gsub(/Act [12345]/, '') + '..'
   end
 end

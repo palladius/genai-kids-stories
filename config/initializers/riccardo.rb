@@ -1,10 +1,13 @@
 # BEGIN Ricc lib/ APIs.
-require "#{Rails.root}/lib/languages"
-require "#{Rails.root}/lib/ric_utils"
-require "#{Rails.root}/lib/gcp/gcauth"
-require "#{Rails.root}/lib/genai/aiplatform_text_curl"
-require "#{Rails.root}/lib/genai/aiplatform_image_curl"
-require "#{Rails.root}/lib/genai/google_translate"
+# require "#{Rails.root}/lib/languages"
+# require "#{Rails.root}/lib/ric_utils"
+# require "#{Rails.root}/lib/gcp/gcauth"
+# require "#{Rails.root}/lib/genai/aiplatform_text_curl"
+# require "#{Rails.root}/lib/genai/aiplatform_image_curl"
+# require "#{Rails.root}/lib/genai/google_translate"
+#require "#{Rails.root}/lib/**"
+Dir["#{Rails.root}/lib/*.rb"].each {|f| require f}
+Dir["#{Rails.root}/lib/**/*.rb"].each {|f| require f}
 # END
 
 # ENV parsing
