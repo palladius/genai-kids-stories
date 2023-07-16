@@ -75,7 +75,7 @@ class StoriesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_story
-    @story = Story.find(params[:id])
+    @story = Story.find(params[:id]) rescue redirect_to( stories_url, notice: "Story #{params[:id]} error: #{ $! }")
   end
 
   # Only allow a list of trusted parameters through.

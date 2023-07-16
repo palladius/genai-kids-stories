@@ -171,7 +171,7 @@ module Genai
       # next unless 200 :)
       my_one_file = nil
 
-      #print("results size: ", json_body['predictions'].size rescue "?!?")
+      print("results size: ", json_body['predictions'].size rescue "?!?")
       prediction_size_minus_one = begin
         json_body['predictions'].size - 1
       rescue StandardError
