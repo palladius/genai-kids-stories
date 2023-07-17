@@ -76,6 +76,14 @@ class StoriesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_story
     @story = Story.find(params[:id]) rescue redirect_to( stories_url, notice: "Story #{params[:id]} error: #{ $! }")
+
+    # https://stackoverflow.com/questions/2139996/how-to-redirect-to-previous-page-in-ruby-on-rails
+    session[:return_to] ||= request.referer
+
+    @already_translated = []
+    TranslatedStory.where(story_id: @story.id).each do |ts|
+      @already_translated << ts.language
+    end
   end
 
   # Only allow a list of trusted parameters through.

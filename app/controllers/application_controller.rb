@@ -9,4 +9,8 @@ class ApplicationController < ActionController::Base
       u.permit(:avatar, :email, :name, :password, :password_confirmation, :current_password)
     end
   end
+
+  #def fix()
+    # Should call the method fix for anything :)
+  #end
 end

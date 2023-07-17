@@ -11,10 +11,15 @@
         <figcaption class="figure-caption">
             <b><%= image.record.class.emoji %> Caption</b>:
             <i><%= image.metadata['original_description'] %></i>
+
+            <a href="/attachments/destroy?signed_id=<%= image.signed_id %>" class="btn btn-outline-danger" role="button" >💣Kill Signed</a>
+
         </figcaption>
     </figure>
 <% elsif image.is_a?(ActiveStorage::Attached::Many) %>
-    TODO         image class = '<%= image.class %>'
-
+    TODO image class = '<%= image.class %>'
+    <!-- Note this is already implemented in
+    app/views//attachments/_bootstrap_multiple_images.html.erb:
+    -->
 <% end %>
 </div>

@@ -124,7 +124,7 @@ class StoryParagraph < ApplicationRecord
   end
 
   # TODO: fix typo
-  def self.available_lanugages
+  def self.available_languages
     AVAIL_LANGUAGES
   end
 

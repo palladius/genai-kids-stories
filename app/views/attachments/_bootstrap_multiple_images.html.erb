@@ -8,12 +8,24 @@
 
         <p> <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample_<%= ix %>" role="button" aria-expanded="false" aria-controls="collapseExample_<%= ix %>">
             Metadata #<%= ix %> </a>
+            <!-- https://stackoverflow.com/questions/49515529/rails-5-2-active-storage-purging-deleting-attachments -->
+            <%= link_to('Remove',
+                #destroy_attachments_url(image.signed_id),
+                "/attachments/destroy?id=#{image.signed_id}",
+                method: :delete,
+                data: { "turbo-method": :delete, confirm: 'Are you sure?' }) %>
+            <%= button_to 'ButRmv', "/attachments/destroy?id=#{image.signed_id}", method: :delete, data: { "turbo-method": :delete, confirm: 'Are you sure?' } %>
+
+            <a href="/attachments/destroy?signed_id=<%= image.signed_id %>&parent_entity_url=/stories/TODO_SELF" class="btn btn-outline-danger" role="button" >💣Kill Signed</a>
+            <a href="/attachments/destroy?signed_id=<%= image.blob.id %>&return_to=<%=request.referer%>" class="btn btn-outline-danger" role="button" >💣Kill Id RET</a>
+            <a href="/attachments/regenerate?id=<%= image.signed_id %>" class="btn btn-outline-warning" role="button">🌿Redo</a>
         </p>
         <div class="collapse" id="collapseExample_<%= ix %>">
             <div class="card card-body small">
                 <%= image.metadata.to_s %>
             </div>
         </div>
+
     </div>
 <!-- Need JS: https://getbootstrap.com/docs/5.0/components/tooltips/#examples
 <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-html="true" title="<%= image.metadata.to_s.first(10).gsub('"','') %>" >

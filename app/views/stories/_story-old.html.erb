@@ -1,4 +1,4 @@
-<%  story = @story %>
+<% story = @story %>
 <div id="<%= dom_id story %>">
 <h3>Attachments</h3>
 additional_images:
@@ -13,9 +13,11 @@ paragraphs_images:
 
 <h3><%= TranslatedStory.emoji %> Translated Stories</h3>
 
-<% already_translated = []
-   TranslatedStory.where(story_id: @story.id).each do |ts|
-     already_translated <<ts.language
+<% #already_translated = []
+   #TranslatedStory.where(story_id: @story.id).each do |ts|
+     #already_translated << ts.language
+     #@already_translated.each do ||
+  @story.translated_stories.each do |ts|
 %>
   ✅  Already translated <%= ts.flag %> <%= link_to( ts, ts )%>
       <span class='debug'>DELETEME[
@@ -26,8 +28,8 @@ paragraphs_images:
 
   <br/>
 <% end %>
-<% StoryParagraph.available_lanugages.each do |language|
-    unless already_translated.include?(language)
+<% StoryParagraph.available_languages.each do |language|
+    unless @already_translated.include?(language)
 # https://stackoverflow.com/questions/2695538/add-querystring-parameters-to-link-to
 %>
   ❌ Missing: <%= link_to "Translate to #{waving_flag language}", # https://stackoverflow.com/questions/15410895/rails-ruby-prepopulate-form-with-data-passed-from-another-page
@@ -37,8 +39,8 @@ paragraphs_images:
       :language => language,
       :internal_notes => "#{@story.title} -- Created from _story.html AppVersion=#{APP_VERSION}",
       :name => "#{waving_flag(language)} Translation of: #{@story.title}",
-      'translated_story[name]' => 'nome 1',
-      'translated_story[name]'.to_sym => 'nome2',
+      #'translated_story[name]' => 'nome 1',
+      #'translated_story[name]'.to_sym => 'nome2',
       },
       #:class => "debug btn btn-primary"
     )#, method: :post

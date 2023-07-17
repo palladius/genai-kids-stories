@@ -1,0 +1,15 @@
+Note: currently this is NOT utilized.
+
+  ❌ Missing: <%= link_to "Translate to #{waving_flag language}", # https://stackoverflow.com/questions/15410895/rails-ruby-prepopulate-form-with-data-passed-from-another-page
+    new_translated_story_path({
+      :story_id => @story.id,
+      :story => @story,
+      :language => language,
+      :internal_notes => "#{@story.title} -- Created from _story.html AppVersion=#{APP_VERSION}",
+      :name => "#{waving_flag(language)} Translation of: #{@story.title}",
+      #'translated_story[name]' => 'nome 1',
+      #'translated_story[name]'.to_sym => 'nome2',
+      },
+      #:class => "debug btn btn-primary"
+    )#, method: :post
+    %>
