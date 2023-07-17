@@ -1,0 +1,20 @@
+<div class="ricc-attached-image-card" >
+<% if not image.is_a?(ActiveStorage::Attached) %>
+        Wrong class (no image ActiveStorage::Attached)
+        image class = '<%= image.class %>'
+<% elsif image.is_a?(ActiveStorage::Attached::One) %>
+<!-- can be ONE or MANY -->
+    <%#= image_tag(image,  style: "float:right;height:150px;") if image.attached? %>
+    <!-- https://getbootstrap.com/docs/5.0/content/figures/ -->
+    <figure class="figure">
+        <%= image_tag(image,  class: "figure-img img-fluid rounded", alt: 'alt TODO ricc ') if image.attached? %>
+        <figcaption class="figure-caption">
+            <b><%= image.record.class.emoji %> Caption</b>:
+            <i><%= image.metadata['original_description'] %></i>
+        </figcaption>
+    </figure>
+<% elsif image.is_a?(ActiveStorage::Attached::Many) %>
+    TODO         image class = '<%= image.class %>'
+
+<% end %>
+</div>

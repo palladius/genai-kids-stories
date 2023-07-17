@@ -4,13 +4,14 @@
  <%= render_story_title(story) %>
   </h2>
 
-  <%= image_tag(story.cover_image,  style: "float:right;height:150px;") if story.cover_image.attached? %>
-  <i><%= story.genai_summary %></i>
+  <i><%= story.genai_summary %></i>. See story translated in:
 
-<!--  <p>See also in   <small class="text-muted">With faded secondary text</small>  </p>
--->
+ <div class="row justify-content-end">
+      <div class="col-9">
 
-See story translated in:
+
+
+
 <ul class="list-group">
   <% story.translated_stories.each do |ts| %>
     <li class="list-group-item small">
@@ -33,4 +34,12 @@ See story translated in:
 
 </ul>
 
+ </div>
+
+      <div class="col-3 justify-content-end clearfix">
+        <%#= image_tag(story.cover_image,  style: "float:right;height:150px;") if story.cover_image.attached? %>
+        <%= render partial: 'attachments/image_card', locals: {image: story.cover_image }  %>
+        <%= render partial: 'kids/floating_card', locals: {kid: story.kid }  %>
+      </div>
+</div>
 </div>
