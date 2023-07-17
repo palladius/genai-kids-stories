@@ -9,13 +9,21 @@
         <p> <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample_<%= ix %>" role="button" aria-expanded="false" aria-controls="collapseExample_<%= ix %>">
             Metadata #<%= ix %> </a>
             <!-- https://stackoverflow.com/questions/49515529/rails-5-2-active-storage-purging-deleting-attachments -->
-            <%= link_to('Remove',
+            <%= button_to("rm #{image.blob.id}",
                 #destroy_attachments_url(image.signed_id),
-                "/attachments/destroy?id=#{image.signed_id}",
+                "/attachments/#{image.blob.id}/destroy",
                 method: :delete,
-                data: { "turbo-method": :delete, confirm: 'Are you sure?' }) %>
-            <%= button_to '💣Kill B Signed', "/attachments/#{image.signed_id}/destroy?signed_id=#{image.signed_id}", method: :delete, class: "btn btn-outline-danger", data: { "turbo-method": :delete, confirm: 'Are you sure?' } %>
-            <%= button_to '💣Kill Bl Id RET', "/attachments/#{image.blob.id}/destroy?return_to=#{request.referer}", method: :delete, class: "btn btn-outline-danger", data: { "turbo-method": :delete, confirm: 'Are you sure?' } %>
+                 class: "btn btn-outline-secondary",
+                data: {
+                    #"turbo-method": :delete,
+                    confirm: 'Are you sure?',
+                }) %>
+            <%= button_to('💣Kill Blob',
+                    "/attachments/#{image.blob.id}/destroy?signed_id=#{image.signed_id}&id=#{image.blob.id}",
+                    method: :delete,
+                    class: "btn btn-outline-danger",
+                    data: { confirm: 'Are you sure?' }) %>
+            <%#= button_to '💣Kill Bl Id RET', "/attachments/#{image.blob.id}/destroy?return_to=#{request.referer}", method: :delete, class: "btn btn-outline-danger", data: { confirm: 'Are you sure?' } %>
             <!--
             <a href="/attachments/regenerate?id=<%= image.signed_id %>" class="btn btn-outline-warning" role="button">🌿Redo</a>
             -->

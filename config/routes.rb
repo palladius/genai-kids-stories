@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     member do
       delete :destroy
       delete :regenerate
+      delete :destroy_all
+      delete :regenerate_all
     end
   end
 

@@ -28,9 +28,13 @@ class AttachmentsController < ApplicationController
     #redirect_to( session.delete(:return_to)) # rescue redirect_to(stories_url)# , notice: 'sobenme'
   end
 
+  # borrowing the regenerate = destroy by signed_id for test
   def regenerate
     # destroy and then fix() :)
-    ret = @image.purge # rescue nil
+    @image = ActiveStorage::Blob.find_signed(params[:signed_id])
+    ret = @image.purge! # rescue nil
+    return redirect_to(params[:return_to], notice: 'ReturnTo is valid. Image = @image') if params[:return_to]
+
   end
 
 
