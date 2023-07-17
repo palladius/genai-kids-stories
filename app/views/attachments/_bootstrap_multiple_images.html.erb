@@ -14,11 +14,11 @@
                 "/attachments/destroy?id=#{image.signed_id}",
                 method: :delete,
                 data: { "turbo-method": :delete, confirm: 'Are you sure?' }) %>
-            <%= button_to 'ButRmv', "/attachments/destroy?id=#{image.signed_id}", method: :delete, data: { "turbo-method": :delete, confirm: 'Are you sure?' } %>
-
-            <a href="/attachments/destroy?signed_id=<%= image.signed_id %>&parent_entity_url=/stories/TODO_SELF" class="btn btn-outline-danger" role="button" >💣Kill Signed</a>
-            <a href="/attachments/destroy?signed_id=<%= image.blob.id %>&return_to=<%=request.referer%>" class="btn btn-outline-danger" role="button" >💣Kill Id RET</a>
+            <%= button_to '💣Kill B Signed', "/attachments/#{image.signed_id}/destroy?signed_id=#{image.signed_id}", method: :delete, class: "btn btn-outline-danger", data: { "turbo-method": :delete, confirm: 'Are you sure?' } %>
+            <%= button_to '💣Kill Bl Id RET', "/attachments/#{image.blob.id}/destroy?return_to=#{request.referer}", method: :delete, class: "btn btn-outline-danger", data: { "turbo-method": :delete, confirm: 'Are you sure?' } %>
+            <!--
             <a href="/attachments/regenerate?id=<%= image.signed_id %>" class="btn btn-outline-warning" role="button">🌿Redo</a>
+            -->
         </p>
         <div class="collapse" id="collapseExample_<%= ix %>">
             <div class="card card-body small">

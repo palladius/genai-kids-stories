@@ -48,7 +48,10 @@
             <p>
               <strong>paragraphs_with_no_images:</strong>
               <b><%= translated_story.paragraphs_with_no_images.size %></b> (<%= translated_story.paragraphs_with_no_images %>)
-              Call <tt class='debug' >TranslatedStory.find(<%=translated_story.id%>).fix</tt> to fix
+              Call <tt class='debug' >TranslatedStory.find(<%=translated_story.id%>).fix</tt> to fix-bs
+                  <%= link_to("fix now", "/translated_stories/#{translated_story.id}/fix", class: "btn btn-info") %>
+                  <%= link_to("fix later", "/translated_stories/#{translated_story.id}/fix?delay=true", class: "btn btn-primary") %>
+
             </p>
 
 
