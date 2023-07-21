@@ -11,19 +11,25 @@
   <% StoryParagraph.available_languages.each do |language|
     unless @already_translated.include?(language) or language != story.kid.language
 # https://stackoverflow.com/questions/2695538/add-querystring-parameters-to-link-to
-%>
-  <%= link_to("Translate to #{waving_flag language}", # https://stackoverflow.com/questions/15410895/rails-ruby-prepopulate-form-with-data-passed-from-another-page
-              new_translated_story_path({
+ 
+ broken_path = new_translated_story_path({
                 :story_id => @story.id,
                 :story => @story,
                 :language => language,
                 :internal_notes => "#{@story.title} -- Created from _story.html AppVersion=#{APP_VERSION}",
                 :name => "#{waving_flag(language)} Translation of: #{@story.title}",
                 },
-
                 id: "btn-translate-story-todoid-to-todolang",
                 method: :get
-              ), #, method: :post
+              )
+fixed_path = broken_path.gsub(/\/new.int/,'/new?int')
+%>
+broken_path = <%= broken_path %>
+fixed_path = <%= fixed_path %>
+
+
+  <%= link_to("Translate BUG to #{waving_flag language}", # https://stackoverflow.com/questions/15410895/rails-ruby-prepopulate-form-with-data-passed-from-another-page
+              fixed_path, # horrible monkey patch
               class: "btn btn-success",
               )
     %>

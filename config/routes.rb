@@ -14,8 +14,9 @@ Rails.application.routes.draw do
 
 
   resources :translated_stories do
+    # needs collections or wont have DFLT CRUD
     # collection do
-    #   # get :fix_translated_story
+    # #   # get :fix_translated_story
     #   post :fix_translated_story
     # end
     member do
