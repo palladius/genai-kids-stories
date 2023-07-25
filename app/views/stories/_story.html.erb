@@ -11,7 +11,7 @@
   <% StoryParagraph.available_languages.each do |language|
     unless @already_translated.include?(language) or language != story.kid.language
 # https://stackoverflow.com/questions/2695538/add-querystring-parameters-to-link-to
- 
+
  broken_path = new_translated_story_path({
                 :story_id => @story.id,
                 :story => @story,
@@ -24,9 +24,10 @@
               )
 fixed_path = broken_path.gsub(/\/new.int/,'/new?int')
 %>
-broken_path = <%= broken_path %>
-fixed_path = <%= fixed_path %>
-
+<!-- cleanup. Still broken but really ugly! :)
+broken_path = <%#= broken_path %>
+fixed_path = <%#= fixed_path %>
+-->
 
   <%= link_to("Translate BUG to #{waving_flag language}", # https://stackoverflow.com/questions/15410895/rails-ruby-prepopulate-form-with-data-passed-from-another-page
               fixed_path, # horrible monkey patch
@@ -36,7 +37,10 @@ fixed_path = <%= fixed_path %>
 
 <% end
 end  %>
-
+<% if story.genai_output.size < 3  %>
+  <span class="btn bg-danger" >Empty! Please add link to re-genrate or fix.</span>
+  <%= render_story_fix_button(story) %>
+<% end  %>
 
  <div class="row justify-content-end">
       <div class="col-9">

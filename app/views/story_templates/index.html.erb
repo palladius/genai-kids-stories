@@ -4,7 +4,7 @@
 
 <div id="story_templates">
   <% @story_templates.each do |story_template| %>
-    <%= render story_template %>
+    <%= render story_template, short: true %>
       <%#= link_to "Show this story template", story_template %>
   <% end %>
 </div>

@@ -10,7 +10,7 @@
         <%= image_tag(image,  class: "figure-img img-fluid rounded", alt: 'alt TODO ricc ') if image.attached? %>
         <figcaption class="figure-caption">
             <b><%= image.record.class.emoji %> Caption</b>:
-            <i><%= image.metadata['original_description'] %></i>
+            <i><%= image.metadata['original_description'] rescue :Err %></i>
 
             <a href="/attachments/destroy?signed_id=<%= image.signed_id %>" class="btn btn-outline-danger" role="button" >💣Kill Signed</a>
 

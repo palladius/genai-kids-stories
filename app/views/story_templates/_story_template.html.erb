@@ -5,11 +5,13 @@
     <strong>Description:</strong>
     <%= story_template.description %>
   </p>
-<!--
   <p>
     <strong>Template:</strong>
-    <%#= story_template.template %>
+    <%= render_colored_story_template_template(story_template) %>
   </p>
+
+<!--
+
 
   <p>
     <strong>Internal notes:</strong>
