@@ -97,4 +97,9 @@ class ApplicationRecord < ActiveRecord::Base
     # ": attacched? = #{ret} ; attachment_name=#{attachment_name}"
     ret
   end
+
+  def self.emoji
+    '?'
+  end
+
 end
