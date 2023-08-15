@@ -1,0 +1,12 @@
+{
+   "metadata":{
+      "version":"1"
+   },
+   "templates":[
+      {
+         "path":".",
+         "name":"GenAI Kids Story (RoR 7)",
+         "description":"A Ruby on Rails app on Cloud Run application that demonstrates working with Vertex AI API (both for text and images)"
+      }
+   ]
+}
