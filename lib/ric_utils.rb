@@ -1,3 +1,5 @@
+# RicUtils v1.0
+
 # colors
 def yellow(s)
   "\033[1;33m#{s}\033[0m"
@@ -8,7 +10,7 @@ def white(s)
 end
 
 def blue(s)
-  "\033[1;33m#{s}\033[0m"
+  "\033[1;34m#{s}\033[0m"
 end
 
 # Content which goes into API call needs to be removed of quotes, double quotes and asterisks.

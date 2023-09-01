@@ -4,9 +4,16 @@
 
 <div id="story_templates">
   <% @story_templates.each do |story_template| %>
-    <%= render story_template %>
+    <%#= render partial: story_template, locals: {short: true }, short: 'index'  %>
       <%#= link_to "Show this story template", story_template %>
+      <div id="<%= dom_id story_template %>">
+    <p>
+      👀<tt><%= link_to story_template.short_code,story_template %></tt>
+      (<i><%= story_template.description %></i>)
+    </p>
+  </div>
+
   <% end %>
 </div>
 
-<%= link_to "New story template", new_story_template_path %>
+<%= link_to "➕ New story template", new_story_template_path %>

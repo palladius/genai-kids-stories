@@ -9,6 +9,30 @@ class ApplicationRecord < ActiveRecord::Base
     _attachable_field.attach(io: File.open(File.expand_path(_filename)), filename: _filename)
   end
 
+  # https://stackoverflow.com/questions/49515529/rails-5-2-active-storage-purging-deleting-attachments
+  # for commodity I put it on parent :) It would be nicer on sub classes but this shows me a SINGLE method, and
+  # its easier to see if its missing somewhere :)
+  def delete_all_images
+    # Story version :)
+    return self.cover_image.purge if is_a?(Story)
+    if is_a?(StoryParagraph)
+      # TODO
+      puts "DEBUG ApplicationRecord::delete_all_images: its a SP!"
+      self.p_image1.purge
+      self.p_image2.purge
+      self.p_image3.purge
+      self.p_image4.purge
+      return self.p_images.purge
+    end
+    if is_a?(TranslatedStory)
+      self.story_paragraphs.each do |sp|
+        sp.delete_all_images
+      end
+      return
+    end
+  end
+
+
   # initially used for Story but useful for others as well..
   def append_notes(str)
     self.internal_notes ||= '🌍'
@@ -73,4 +97,9 @@ class ApplicationRecord < ActiveRecord::Base
     # ": attacched? = #{ret} ; attachment_name=#{attachment_name}"
     ret
   end
+
+  def self.emoji
+    '?'
+  end
+
 end

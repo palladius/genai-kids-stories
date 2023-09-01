@@ -3,23 +3,17 @@
   <%#= render partial: 'attachments/bootstrap_attachment_view', locals: {attachment: story_paragraph.p_image1 } %>
 
 p_image1234:
-  <%#= render partial: 'attachments/bootstrap_four_images',
+  <%= render partial: 'attachments/bootstrap_four_images',
         locals: {four_attachments: [story_paragraph.p_image1, story_paragraph.p_image2, story_paragraph.p_image3, story_paragraph.p_image4] } %>
-  <%= render partial: 'attachments/bootstrap_multiple_images',
-        locals: {images: [story_paragraph.p_image1, story_paragraph.p_image2, story_paragraph.p_image3, story_paragraph.p_image4] } %>
 p_images:
   <%= render partial: 'attachments/bootstrap_multiple_images', locals: {images: story_paragraph.p_images } %>
 
   <p>
     <strong>Image1234 (4 single):</strong>
-    <%= render_image_if_attached(story_paragraph.p_image1) %>
-    <%= render_image_if_attached(story_paragraph.p_image2) %>
-    <%= render_image_if_attached(story_paragraph.p_image3) %>
-    <%= render_image_if_attached(story_paragraph.p_image4) %>
-  </p>
-    <p>
-    <strong>Images (multi) :</strong>
-    <%= render_images_if_attached(story_paragraph.p_images) %>
+    1<%= render_image_if_attached(story_paragraph.p_image1) %>
+    2<%= render_image_if_attached(story_paragraph.p_image2) %>
+    3<%= render_image_if_attached(story_paragraph.p_image3) %>
+    4<%= render_image_if_attached(story_paragraph.p_image4) %>
   </p>
 
   <p>
@@ -54,11 +48,11 @@ p_images:
 
   <p>
     <strong>Story (OLD):</strong>
-    <%= story_paragraph.story_id %>
+    <%= link_to story_paragraph.story,story_paragraph.story %>
   </p>
   <p>
     <strong>Translated Story (new):</strong>
-    <%= story_paragraph.translated_story_id %>
+    <%= link_to story_paragraph.translated_story,story_paragraph.translated_story %>
   </p>
 
   <p>

@@ -7,7 +7,7 @@ google:
   # Locally I ahve private/sa.json but in the cloud sometimes it gives me error, so /sa.json is always set up
   # correctly from entrypoint and i dont want to introduce duplication...
   credentials: <%= File.exist?(Rails.root.join("private/sa.json")) ? Rails.root.join("private/sa.json") : '/sa.json' %>
-  # TODO(ricc): set up thos for public access:
+  # TODO(ricc): set up those for public access:
   # https://cloud.google.com/storage/docs/access-control/making-data-public?hl=it#buckets
   bucket: <%= ENV['GCS_BUCKET'] %>
   #bucket: genai-kids-stories-<%= Rails.env %>

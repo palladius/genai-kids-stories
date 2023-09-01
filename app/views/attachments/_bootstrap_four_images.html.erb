@@ -23,19 +23,22 @@ https://getbootstrap.com/docs/5.0/content/images/
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">p_image1</th>
-      <th scope="col">p_image2</th>
-      <th scope="col">p_image3</th>
-      <th scope="col">p_image4</th>
+      <th scope="col">p_image1 3</th>
+      <th scope="col">p_image2 4</th>
     </tr>
   </thead>
   <tbody>
     <tr class="table-primary" >
-      <th scope="row">1</th>
-        <% four_attachments.each do |att_i| %>
+      <th scope="row">1 2</th>
+        <% four_attachments.each_with_index do |att_i, i| %>
         <td>
             <%= render partial: 'attachments/bootstrap_attachment_view', locals: {attachment: att_i } %>
         </td>
+        <% if i == 1%>
+            </tr>
+            <tr>
+              <th scope="row">3 4</th>
+        <% end %>
         <% end %>
     </tr>
     <!-- 00 00=

@@ -9,9 +9,11 @@
 # t.integer "user_id"
 # t.bigint "kid_id", null: false
 # t.index ["kid_id"], name: "index_stories_on_kid_id"
-# #
 #       , :active
 # end
+
+# ATTACCHMENTS:
+# * `cover_image`
 
 class Story < ApplicationRecord
   include AiImageable
@@ -54,6 +56,12 @@ class Story < ApplicationRecord
   def cleaned_up_title
     title.gsub('**', '')
   end
+
+  # Implemented on father
+  # def delete_all_images
+  #   # Story version :)
+  #   self.cover_image.purge
+  # end
 
   # seby_story1.attach_cover('seby-firefighter.png')
   def attach_cover(filename, _opts = {})

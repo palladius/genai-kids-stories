@@ -1,9 +1,22 @@
 Rails.application.routes.draw do
   # get ':fix', to: 'translated_stories#fix', as: :translated_story
 
+  # For attachments: https://stackoverflow.com/questions/49515529/rails-5-2-active-storage-purging-deleting-attachments
+  # WIP
+  resources :attachments do
+    member do
+      delete :destroy
+      delete :regenerate
+      delete :destroy_all
+      delete :regenerate_all
+    end
+  end
+
+
   resources :translated_stories do
+    # needs collections or wont have DFLT CRUD
     # collection do
-    #   # get :fix_translated_story
+    # #   # get :fix_translated_story
     #   post :fix_translated_story
     # end
     member do
@@ -17,7 +30,6 @@ Rails.application.routes.draw do
   get 'pages/index'
   get 'pages/about'
   get 'pages/help'
-
   resources :stories
   resources :kids
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

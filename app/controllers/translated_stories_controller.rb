@@ -32,7 +32,11 @@ class TranslatedStoriesController < ApplicationController
       nil
     end
     @ret = begin
-      @translated_story.fix
+      if params.fetch(:delay, '') == 'true'
+        @translated_story.delay(queue: 'translated_stories_controller::fix').fix
+      else
+        @translated_story.fix
+      end
     rescue StandardError
       nil
     end
@@ -87,7 +91,7 @@ class TranslatedStoriesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_translated_story
-    @translated_story = TranslatedStory.find(params[:id])
+    @translated_story = TranslatedStory.find(params[:id])  rescue redirect_to( translated_stories_url, notice: "Translated Story #{params[:id]} error: #{ $! }")
   end
 
   # Only allow a list of trusted parameters through.

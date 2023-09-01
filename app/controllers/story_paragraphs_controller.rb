@@ -1,5 +1,5 @@
 class StoryParagraphsController < ApplicationController
-  before_action :set_story_paragraph, only: %i[show edit update destroy]
+  before_action :set_story_paragraph, only: %i[show edit update destroy regenerate_images]
 
   # GET /story_paragraphs or /story_paragraphs.json
   def index
@@ -59,6 +59,11 @@ class StoryParagraphsController < ApplicationController
       format.html { redirect_to story_paragraphs_url, notice: 'Story paragraph was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def regenerate_images
+    # @story_paragraph = StoryParagraph.find(params[:id])
+    @story_paragraph.delete_all_images
   end
 
   private

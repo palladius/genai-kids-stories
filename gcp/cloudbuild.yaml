@@ -22,11 +22,11 @@ steps:
 
   #### DOCKER BUILD
 -  name: 'gcr.io/cloud-builders/docker'
-   id: 2 Docker Build - to LATEST
+   id: 1 Docker Build - to LATEST
    args: ['build', '-t', "${_ARTIFACT_REPO_ALL}:cb-latest", '.']
    dir: .
 -  name: 'gcr.io/cloud-builders/docker'
-   id: 3 Tag latest to sha-SHA
+   id: 2 Tag latest to sha-SHA
    args:
     - 'tag'
     - "${_ARTIFACT_REPO_ALL}:cb-latest"
@@ -36,15 +36,16 @@ steps:
   #### DOCKER PUSH
   # I think its useless
 - name: 'gcr.io/cloud-builders/docker'
-  id: Docker push CB LATEST
+  id: 3 Docker push CB LATEST
   args: ['push', "${_ARTIFACT_REPO_ALL}:cb-latest"]
 
 - name: 'gcr.io/cloud-builders/docker'
-  id: Docker push vSHA
+  id: 4 Docker push vSHA
   args: ['push', "${_ARTIFACT_REPO_ALL}:sha-$SHORT_SHA"]
 
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  id: 5 bash bin/deploy-to-cloud-run-poor.sh
   entrypoint: 'bash'
   args:
     - '-eEuo'

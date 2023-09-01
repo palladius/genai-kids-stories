@@ -38,6 +38,10 @@ class StoryTemplate < ApplicationRecord
             "STmpl(#{id}): '#{short_code}' #{validity_emoji}.."
         end
 
+        def self.emoji
+            '📋'
+        end
+
 
     end
 

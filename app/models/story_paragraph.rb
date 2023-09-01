@@ -99,7 +99,9 @@ class StoryParagraph < ApplicationRecord
     # story_ix1 = sp1.story_index
     # only ONE element. The TAKE transforms the relation in first elemnt:
     # https://stackoverflow.com/questions/12135745/what-is-the-fastest-way-to-find-the-first-record-in-rails-activerecord
-    sp1 = StoryParagraph.where(story_index:, story_id: story.id).take
+
+    # ATTENTION I'm afraid its copying always the SAME image over and over, as if story_index is not working
+    sp1 = StoryParagraph.where(story_index: story_index, story_id: story.id).take
     return :sp_not_found unless sp1.is_a?(StoryParagraph)
 
     # copy paro paro - https://stackoverflow.com/questions/54203886/how-to-copy-one-object-from-one-model-to-another-model-with-rails-activestorage
@@ -124,7 +126,7 @@ class StoryParagraph < ApplicationRecord
   end
 
   # TODO: fix typo
-  def self.available_lanugages
+  def self.available_languages
     AVAIL_LANGUAGES
   end
 

@@ -53,4 +53,8 @@ module StoriesHelper
 
     ret.html_safe
   end
+
+  def render_story_fix_button(story)
+    "span class btn TODO Button fix now and fix later"
+  end
 end

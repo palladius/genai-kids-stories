@@ -1,15 +1,21 @@
 <div id="<%= dom_id story_template %>">
+  <h2>
+    <%= StoryTemplate.emoji %>
+    <%= link_to story_template.short_code,story_template %>
+  </h2>
+
   <p>
-    <tt>  <%= link_to story_template.short_code,story_template %></tt>
 
     <strong>Description:</strong>
     <%= story_template.description %>
   </p>
-<!--
   <p>
     <strong>Template:</strong>
-    <%#= story_template.template %>
+    <%= render_colored_story_template_template(story_template) %>
   </p>
+
+<!--
+
 
   <p>
     <strong>Internal notes:</strong>

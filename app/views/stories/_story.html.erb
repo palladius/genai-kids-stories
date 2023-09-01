@@ -4,33 +4,72 @@
  <%= render_story_title(story) %>
   </h2>
 
-  <%= image_tag(story.cover_image,  style: "float:right;height:150px;") if story.cover_image.attached? %>
+<p>
   <i><%= story.genai_summary %></i>
+</p>
 
-<!--  <p>See also in   <small class="text-muted">With faded secondary text</small>  </p>
+  <% StoryParagraph.available_languages.each do |language|
+    unless @already_translated.include?(language) or language != story.kid.language
+# https://stackoverflow.com/questions/2695538/add-querystring-parameters-to-link-to
+
+ broken_path = new_translated_story_path({
+                :story_id => @story.id,
+                :story => @story,
+                :language => language,
+                :internal_notes => "#{@story.title} -- Created from _story.html AppVersion=#{APP_VERSION}",
+                :name => "#{waving_flag(language)} Translation of: #{@story.title}",
+                },
+                id: "btn-translate-story-todoid-to-todolang",
+                method: :get
+              )
+fixed_path = broken_path.gsub(/\/new.int/,'/new?int')
+%>
+<!-- cleanup. Still broken but really ugly! :)
+broken_path = <%#= broken_path %>
+fixed_path = <%#= fixed_path %>
 -->
 
-See story translated in:
-<ul class="list-group">
-  <% story.translated_stories.each do |ts| %>
-    <li class="list-group-item small">
-      <small class="text-muted"><%= link_to ts.excerpt, ts %></small></li>
-  <% end %>
-</ul>
+  <%= link_to("Translate BUG to #{waving_flag language}", # https://stackoverflow.com/questions/15410895/rails-ruby-prepopulate-form-with-data-passed-from-another-page
+              fixed_path, # horrible monkey patch
+              class: "btn btn-success",
+              )
+    %>
 
-<ul class="list-group">
-  <% story.paragraphs.each_with_index do |p, ix|  %>
-    <li class="list-group-item" aria-current="<%= (ix==1).to_s %>" >
-    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-      🔸 Paragraph #<%= ix+1 %>
-      <% story.story_paragraphs.where(story_index: ix+1).each do |sp| %>
-          <%= sp.language %>
-      <% end %>
+<% end
+end  %>
+<% if story.genai_output.size < 3  %>
+  <span class="btn bg-danger" >Empty! Please add link to re-genrate or fix.</span>
+  <%= render_story_fix_button(story) %>
+<% end  %>
 
-  </a>
-    <%= p %> </li>
-  <% end  %>
+ <div class="row justify-content-end">
+      <div class="col-9">
+        <ul class="list-group">
+          <% story.translated_stories.each do |ts| %>
+            <li class="list-group-item small">
+              <small class="text-muted"><%= link_to ts.excerpt, ts %></small></li>
+          <% end %>
+        </ul>
 
-</ul>
+        <ul class="list-group">
+          <% story.paragraphs.each_with_index do |p, ix|  %>
+            <li class="list-group-item" aria-current="<%= (ix==1).to_s %>" >
+            <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+              🔸 Paragraph #<%= ix+1 %>
+              <% story.story_paragraphs.where(story_index: ix+1).each do |sp| %>
+                  <%= sp.language %>
+              <% end %>
 
+          </a>
+            <%= p %> </li>
+          <% end  %>
+
+        </ul>
+     </div>
+      <div class="col-3 justify-content-end clearfix">
+        <%#= image_tag(story.cover_image,  style: "float:right;height:150px;") if story.cover_image.attached? %>
+        <%= render partial: 'attachments/image_card', locals: {image: story.cover_image }  %>
+        <%= render partial: 'kids/floating_card', locals: {kid: story.kid }  %>
+      </div>
+</div>
 </div>
