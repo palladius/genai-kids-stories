@@ -95,3 +95,6 @@ class Application < Rails::Application
     puts("⬢ [after_initialize] ActiveStorage Service:  '#{ Rails.application.config.active_storage.service rescue '?!?' }'")
   end
 end
+
+# This is SOOOO brilliant! :)
+GithubLatestVersion = `curl https://raw.githubusercontent.com/palladius/genai-kids-stories/main/VERSION`.chomp
