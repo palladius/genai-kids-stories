@@ -176,7 +176,8 @@ module Genai
       prediction_size_minus_one = begin
         json_body['predictions'].size - 1
       rescue StandardError
-        -1
+        0
+        # not -1!
       end
 
       if prediction_size_minus_one < 0
