@@ -33,6 +33,7 @@ echo "👍 Entrypoint ARGS:                    '$*'"
 echo "👍 PORT:                               '$PORT'"
 echo "👍 PROJECT_ID:                         '$PROJECT_ID'"
 #echo "👍 AI_PROJECT_ID:                      '$AI_PROJECT_ID'"
+echo "👍 APP_DB_NAME:                        '$APP_DB_NAME'"
 echo "👍 APP_VERSION:                        '$APP_VERSION'"
 echo "👍 RAILS_ENV:                          '$RAILS_ENV'"
 echo "👍 GOOGLE_TRANSLATE_KEY (redacted):    '${GOOGLE_TRANSLATE_KEY:1:20}..'"
@@ -64,11 +65,10 @@ if [ "${*}" == "" -o "${*}" == "echo activate omega13" -o "true" == "$ACTIVATE_O
   # Checking PostgreS is ready:
   echo "02. Checking that postgreS is ready.."
   while ! pg_isready -q -h "$APP_DB_HOST" -U "$APP_DB_USER" ; do
-    echo "$(date) [$RAILS_ENV]🔋 waiting for PG DB (host='$APP_DB_HOST') to start.."
+    echo "[$RAILS_ENV]🔋 wait for PG DB (host='$APP_DB_HOST', user='$APP_DB_USER') to start.."
     sleep 2
   done
   echo '👍 PostgreS works!'
-
 
   # TODO obly execute if needed (from ENV=prod or from RAILS_SERVE_STATIC_FILES ? )
   echo "04. Assets precomp in PROD :)"
@@ -78,9 +78,6 @@ if [ "${*}" == "" -o "${*}" == "echo activate omega13" -o "true" == "$ACTIVATE_O
   rm -f /tmp/pids/server.pid
 
   # I pray Ill be able soon to remove this and use APIs instead of gcloud :)
-  echo "06. Setting up gcloud (TODO remove)"
-  #echo TODO gcloud config set account  TODOricc
-#  if [ ! -f /sa.json ] ; then
 
   # ls -al /sa.json
   if [ ! -s /sa.json ] ; then # file not empty
