@@ -22,7 +22,8 @@ module Genai
     require 'base64'
 
     # Text must be 001
-    MODEL_ID = 'text-bison@001'
+    #MODEL_ID = 'text-bison@001'
+    MODEL_ID = 'text-bison'
     # Video can be 002 (se below)
 
     # taken by my buddy Guillaume: https://github.com/glaforge/bedtimestories/blob/main/src/main/resources/public/index.html

@@ -41,8 +41,8 @@ class TranslatedStory < ApplicationRecord
   #
 
   def self.default_genai_model
-    # 'bison@001'
-    'text-bison@001'
+    #'text-bison@001'
+    'text-bison'
   end
 
   # after save, many times

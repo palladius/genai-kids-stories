@@ -96,7 +96,7 @@ docker-run-prod-nobuild:
 
 docker-run-dev: docker-build docker-run-nobuild
 docker-run-prod: docker-build
-	RAILS_ENV=production bin/docker-run-locally.sh
+	OCCASIONAL_MESSAGE='make docker-run-prod' RAILS_ENV=production bin/docker-run-locally.sh
 
 docker-run-bash: docker-build docker-run-bash-nobuild
 

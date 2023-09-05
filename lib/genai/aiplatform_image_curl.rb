@@ -1,6 +1,6 @@
 # Sample usage:
 #    extend Genai::AiplatformImageCurl
-#    ai_curl_images_by_content_v2('001', 'blah blah blah poo', :mock => true )
+#    ai_curl_images_by_content_v2('00X', 'blah blah blah poo', :mock => true )
 
 module Genai
   # Only allow authenticated admins access to precious resources.
