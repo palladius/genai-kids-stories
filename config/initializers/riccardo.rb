@@ -33,6 +33,34 @@ DEFAULT_PARAGRAPH_STRATEGY = 'smart-v0.1'
 #   raise('I need to be able to compute a GCLOUD_ACCESS_TOKEN in GCP mode...!!!')
 # end
 
+# bring from bin/docker-run-locally here
+# if [ "production" = "$RAILS_ENV" ]; then
+# 	echo Configuring PostgreS for PROD
+# 	export APP_DB_NAME="$PROD_DB_NAME"
+# 	export APP_DB_USER="$PROD_DB_USER"
+# 	export APP_DB_PASS="$PROD_DB_PASS"
+# 	export APP_DB_HOST="$PROD_DB_HOST"
+# else
+# 	echo Configuring PostgreS for DEV on GCP or anything else..
+# 	export APP_DB_NAME="$DEV_DB_NAME"
+# 	export APP_DB_USER="$DEV_DB_USER"
+# 	export APP_DB_PASS="$DEV_DB_PASS"
+# 	export APP_DB_HOST="$DEV_DB_HOST"
+# fi
+
+if Rails.env == 'production'
+  ENV['APP_DB_NAME'] = ENV['PROD_DB_NAME']
+  ENV['APP_DB_USER'] = ENV["PROD_DB_USER"]
+  ENV['APP_DB_PASS'] = ENV["PROD_DB_PASS"]
+  ENV['APP_DB_HOST'] = ENV["PROD_DB_HOST"]
+else
+  ENV['APP_DB_NAME'] = ENV['DEV_DB_NAME']
+  ENV['APP_DB_USER'] = ENV["DEV_DB_USER"]
+  ENV['APP_DB_PASS'] = ENV["DEV_DB_PASS"]
+  ENV['APP_DB_HOST'] = ENV["DEV_DB_HOST"]
+end
+
+
 STORIES_FIXTURE_IMAGES_DIR ||= "#{Rails.root}/db/fixtures/stories/"
 
 # App stuff
@@ -52,13 +80,13 @@ puts("⬢ Rails.Env: '#{Rails.env}'")
 puts("⬢ Language: '#{DEFAULT_LANGUAGE}'")
 puts("⬢ Database:  '#{database}'")
 if database == 'postgresql'
-  puts("⬢ * APP_DB_NAME:  '#{ENV['APP_DB_NAME']}'")
-  puts("⬢ * APP_DB_HOST:  '#{ENV['APP_DB_HOST']}'")
+  puts("⬢ * [DB] APP_DB_NAME:  '#{ENV['APP_DB_NAME']}'")
+  puts("⬢ * [DB] APP_DB_HOST:  '#{ENV['APP_DB_HOST']}'")
+  # to remind myself
+  puts("⬢ * [DEB] DEV_DB_NAME/PROD_DB_NAME/APP_DB_NAME:  '#{ENV['DEV_DB_NAME']}'/'#{ENV['PROD_DB_NAME']}' => '#{ENV['APP_DB_NAME']}'")
 end
-puts("⬢ ActiveStorage:  '#{begin
-  Rails.application.config.active_storage.service_configurations[Rails.env]
-rescue StandardError
-  '?!?'
-end}'")
-
+#Rails.application.config.active_storage.service_configurations => nil
+puts("⬢ ActiveStorage:  '#{ Rails.application.config.active_storage.service_configurations[Rails.env] rescue '?!?' }'")
 puts(arzigogolo * 12)
+
+#exit 42

@@ -5,19 +5,20 @@ set -euo pipefail
 
 export RAILS_ENV="${RAILS_ENV:-dev-on-gcp}"
 
-if [ "production" = "$RAILS_ENV" ]; then
-	echo Configuring PostgreS for PROD
-	export APP_DB_NAME="$PROD_DB_NAME"
-	export APP_DB_USER="$PROD_DB_USER"
-	export APP_DB_PASS="$PROD_DB_PASS"
-	export APP_DB_HOST="$PROD_DB_HOST"
-else
-	echo Configuring PostgreS for DEV on GCP or anything else..
-	export APP_DB_NAME="$DEV_DB_NAME"
-	export APP_DB_USER="$DEV_DB_USER"
-	export APP_DB_PASS="$DEV_DB_PASS"
-	export APP_DB_HOST="$DEV_DB_HOST"
-fi
+# moved logic to ruby
+# if [ "production" = "$RAILS_ENV" ]; then
+# 	echo Configuring PostgreS for PROD
+# 	export APP_DB_NAME="$PROD_DB_NAME"
+# 	export APP_DB_USER="$PROD_DB_USER"
+# 	export APP_DB_PASS="$PROD_DB_PASS"
+# 	export APP_DB_HOST="$PROD_DB_HOST"
+# else
+# 	echo Configuring PostgreS for DEV on GCP or anything else..
+# 	export APP_DB_NAME="$DEV_DB_NAME"
+# 	export APP_DB_USER="$DEV_DB_USER"
+# 	export APP_DB_PASS="$DEV_DB_PASS"
+# 	export APP_DB_HOST="$DEV_DB_HOST"
+# fi
 
 set -x
 

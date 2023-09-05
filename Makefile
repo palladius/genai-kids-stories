@@ -43,6 +43,7 @@ run-local-prod: # runs locally after starting a daemon for delayed jobs..
 
 	RAILS_LOG_TO_STDOUT="1" \
     RAILS_SERVE_STATIC_FILES="true" \
+	_DANGEROUS_SA_JSON_VALUE="private/sa.json" \
     RAILS_ENV="production" \
     BUNDLE_WITHOUT="development" \
 	APP_DB_NAME="$(PROD_DB_NAME)" \
@@ -62,6 +63,9 @@ delayed-jobs-start-foreground:
 delayed-jobs-daemon-stop:
 	RAILS_ENV=development bin/delayed_job stop
 	RAILS_ENV=development bin/delayed_job status
+
+delayed-jobs-start-foreground-prod:
+	RAILS_ENV=production _DANGEROUS_SA_JSON_VALUE=private/sa.json bin/delayed_job run -l --logfilename log/production-delayed-jobs.log
 
 cloud-build-local:
 	bin/cloud-build-local.sh
@@ -86,7 +90,14 @@ docker-run-nobuild:
 	echo Docker running on http://localhost:30080/
 	bin/docker-run-locally.sh
 
-docker-run: docker-build docker-run-nobuild
+docker-run-prod-nobuild:
+	echo Docker running on http://localhost:30080/
+	RAILS_ENV=production bin/docker-run-locally.sh
+
+docker-run-dev: docker-build docker-run-nobuild
+docker-run-prod: docker-build
+	RAILS_ENV=production bin/docker-run-locally.sh
+
 docker-run-bash: docker-build docker-run-bash-nobuild
 
 docker-push:
