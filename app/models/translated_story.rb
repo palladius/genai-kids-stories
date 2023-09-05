@@ -26,7 +26,7 @@ class TranslatedStory < ApplicationRecord
   # validates :language, presence: true # A TS needs a Story and a Language, STRONGLY.
   validates :language, presence: true,
                        format: { with: AVAIL_LANGUAGE_REGEX,
-                                 message: 'We only support ITalian, Spanish, portuguese, german, english, Russian and Japanese now. Ok now also 🇫🇷 :)' }
+                                 message: AVAIL_LANGUAGE_MESSAGE }
 
   validates :story_id, uniqueness: { scope: %i[language paragraph_strategy] }
   validates :paragraph_strategy, presence: true,

@@ -35,8 +35,7 @@ Rails.application.configure do
   end
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :google
-  # config.active_storage.service = ACTIVE_STORAGE_DEV # :local
+  config.active_storage.service = :google # ACTIVE_STORAGE_PROD # should probably be dev-on-gcp
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false

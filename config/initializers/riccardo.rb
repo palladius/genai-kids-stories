@@ -85,8 +85,9 @@ if database == 'postgresql'
   # to remind myself
   puts("⬢ * [DEB] DEV_DB_NAME/PROD_DB_NAME/APP_DB_NAME:  '#{ENV['DEV_DB_NAME']}'/'#{ENV['PROD_DB_NAME']}' => '#{ENV['APP_DB_NAME']}'")
 end
-#Rails.application.config.active_storage.service_configurations => nil
-puts("⬢ ActiveStorage:  '#{ Rails.application.config.active_storage.service_configurations[Rails.env] rescue '?!?' }'")
+# => nil
+puts("⬢ ActiveStorage Service:  '#{ Rails.application.config.active_storage.service rescue '?!?' }'")
+puts("⬢ ActiveStorage Config:  '#{ Rails.application.config.active_storage.service_configurations[Rails.env] rescue '?!?' }'")
 puts(arzigogolo * 12)
 
 #exit 42

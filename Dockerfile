@@ -1,5 +1,7 @@
 # [ricc] copied from https://fly.io/ruby-dispatch/rails-on-docker/
-# [rocc] Added from https://github.com/nickjj/docker-rails-example/blob/main/Dockerfile once IO installed bootstrap
+# [ricc] Added from https://github.com/nickjj/docker-rails-example/blob/main/Dockerfile once IO installed bootstrap
+# [ricc] Added netcat to support Witse crazy idea of listening to port 8080 to let Cloud Run work also for bkg jobs where no 
+#        port is spun up so the system appears dead to the CR pinging job :)
 # Make sure it matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.2.0
 FROM --platform=linux/amd64 ruby:$RUBY_VERSION
@@ -25,7 +27,7 @@ RUN bash -c "set -o pipefail && apt-get update \
   curl -sSL https://deb.nodesource.com/setup_18.x | bash - \
   && curl -sSL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo 'deb https://dl.yarnpkg.com/debian/ stable main' | tee /etc/apt/sources.list.d/yarn.list \
-  && apt-get update && apt-get install -y --no-install-recommends nodejs yarn \
+  && apt-get update && apt-get install -y --no-install-recommends nodejs yarn netcat \
     && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man"

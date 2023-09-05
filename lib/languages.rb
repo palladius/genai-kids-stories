@@ -1,5 +1,7 @@
-AVAIL_LANGUAGES = %w[it de es fr ko ja pt ru zh].sort.freeze
-AVAIL_LANGUAGE_REGEX = /\A(de|es|fr|it|ja|ko|pt|ru|zh)\z/i
+AVAIL_LANGUAGES =       %w[de es fr ga it ja ko pt ru zh].sort.freeze
+AVAIL_LANGUAGE_REGEX = /\A(de|es|fr|ga|it|ja|ko|pt|ru|zh)\z/i
+
+AVAIL_LANGUAGE_MESSAGE = 'We only support Latin languages (IT ES FR PT), Gaelic, German, English, Korean, Russian and Japanese.'
 
 # TODO: MOdule Language START
 
@@ -14,7 +16,9 @@ def waving_flag(language)
   when 'de'
     '🇩🇪'
   when 'es'
-    '🇪🇸' # '🇦🇷'
+    '🇪🇸' # Argentina: '🇦🇷'
+  when 'ga'
+    '🇮🇪' 
   when 'ko'
     '🇰🇷'
   when 'pt'

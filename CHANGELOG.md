@@ -1,3 +1,5 @@
+2023-09-05 0.11.40 Added `netcat` to Dockerfile, added Gaelic to languages for the demo
+                   working towards working bkg jobs in the Cloud!
 2023-09-05 0.11.39 moved text-bison@001 to text-bison without any AT :)
 2023-09-05 0.11.38 Fixed dev/prod part from BIN to RB!
 2023-07-08 0.11.13 TranslatedStory is now bootstrap/cute
