@@ -29,9 +29,10 @@ APP_DB_NAME=${APP_DB_NAME:=$PROD_DB_NAME}
 echo '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍'
 echo "👍👍👍👍👍👍👍👍👍👍 genai-kids-stories docker entrypoint 👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍"
 echo '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍'
+echo "👍 Entrypoint ARGS:                    '$*'"
 echo "👍 PORT:                               '$PORT'"
 echo "👍 PROJECT_ID:                         '$PROJECT_ID'"
-echo "👍 AI_PROJECT_ID:                      '$AI_PROJECT_ID'"
+#echo "👍 AI_PROJECT_ID:                      '$AI_PROJECT_ID'"
 echo "👍 APP_VERSION:                        '$APP_VERSION'"
 echo "👍 RAILS_ENV:                          '$RAILS_ENV'"
 echo "👍 GOOGLE_TRANSLATE_KEY (redacted):    '${GOOGLE_TRANSLATE_KEY:1:20}..'"
@@ -57,13 +58,13 @@ if [ "${*}" == "" -o "${*}" == "echo activate omega13" -o "true" == "$ACTIVATE_O
   echo '🌌 Omega13 enabled! 🌌'
   echo '🌌🌌🌌🌌🌌🌌🌌🌌🌌🌌🌌'
 
-  echo '01. [Ω13] You were too lazy to give me any var. No probs, sit back and relax, Ricc will do it for you'
+  echo '01. [Ω13] You were too lazy to give me any var. No probs, sit back and relax, Ricc will do all the magic for you'
 
   # Great ideas from https://github.com/gilcierweb/rails-docker/blob/master/entrypoint.sh
   # Checking PostgreS is ready:
   echo "02. Checking that postgreS is ready.."
-  while ! pg_isready -q -h $APP_DB_HOST -U $APP_DB_USER ; do
-    echo "$(date) 🔋 waiting for PG DB (host='$APP_DB_HOST') to start.."
+  while ! pg_isready -q -h "$APP_DB_HOST" -U "$APP_DB_USER" ; do
+    echo "$(date) [$RAILS_ENV]🔋 waiting for PG DB (host='$APP_DB_HOST') to start.."
     sleep 2
   done
   echo '👍 PostgreS works!'

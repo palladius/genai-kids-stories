@@ -1,3 +1,4 @@
+2023-09-05 0.11.41 Small changes to deployment scripts and ENTRYPOINT. Wish me luck.
 2023-09-05 0.11.40 Added `netcat` to Dockerfile, added Gaelic to languages for the demo
                    working towards working bkg jobs in the Cloud!
 2023-09-05 0.11.39 moved text-bison@001 to text-bison without any AT :)
