@@ -160,7 +160,7 @@ class StoryParagraph < ApplicationRecord
   end
 
   def to_s
-    "StoryParagraph.##{id} from Story(#{story_id}) and TransStory(#{translated_story_id})"
+    "StoryParagraph.#{id} from Story(#{story_id}) and TransStory(#{translated_story_id})"
   end
 
 end
