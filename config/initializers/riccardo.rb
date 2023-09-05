@@ -92,7 +92,8 @@ puts(arzigogolo * 12)
 
 class Application < Rails::Application
   config.after_initialize do
-    puts("⬢ [after_initialize] ActiveStorage Service:  '#{ Rails.application.config.active_storage.service rescue '?!?' }'")
+    puts("⬢ [after_initialize] ActiveStorage Service: '#{ Rails.application.config.active_storage.service rescue '?!?' }'")
+    puts("⬢ [after_initialize] ActiveStorage Config: '#{ Rails.application.config.active_storage.service_configurations[Rails.env] rescue '?!?' }'")
   end
 end
 

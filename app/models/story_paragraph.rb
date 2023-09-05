@@ -27,7 +27,7 @@ class StoryParagraph < ApplicationRecord
   belongs_to :translated_story
 
   validates :story_index, uniqueness: { scope: %i[language story_id] }
-  validates :story_index, numericality: { in: 1..100 }
+  validates :story_index, numericality: { in: 1..1000 }
   validates :rating, numericality: { in: 1..5 }, allow_nil: true
   validates :language, presence: true,
                        format: { with: AVAIL_LANGUAGE_REGEX,
@@ -158,4 +158,9 @@ class StoryParagraph < ApplicationRecord
     translated_text.gsub(/\*\*(A[a-z]+ [12345])\*\*/, '<b class="story_act opacity-75" ><u>\1</b></u>').gsub('**',
                                                                                                              '').html_safe
   end
+
+  def to_s
+    "StoryParagraph.##{id} from Story(#{story_id}) and TransStory(#{translated_story_id})"
+  end
+
 end
