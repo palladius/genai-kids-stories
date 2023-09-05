@@ -20,4 +20,4 @@
 </div>
 
 <hr/>
-<%= render 'stories/story-old', locals: {story: @story } %>
+<%= render 'stories/story-old', locals: {story: @story } unless prod? %>

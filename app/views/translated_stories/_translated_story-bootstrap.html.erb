@@ -74,6 +74,12 @@
             <%= translated_story.user rescue $! %>
           </p>
 
+          <p>
+            <strong>Summary:</strong>
+            <%= translated_story.story.genai_summary rescue $! %>
+          </p>
+
+
 
         <!-- END header :) -->
         </div>

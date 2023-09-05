@@ -3,6 +3,10 @@ module ApplicationHelper
     "\033[1;33m#{s}\033[0m"
   end
 
+  def  prod?
+    Rails.env == 'production'
+  end
+
   def render_image_if_attached(model_field, _opts = {})
     # return "wrong object: #{model_field.class}" unless model_field.is_a?(ActiveStorage::Attached::One)
 
