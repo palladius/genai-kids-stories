@@ -10,4 +10,8 @@ class User < ApplicationRecord
 
   # TODO: user permit :avatar in controller..
   has_one_attached :avatar
+
+  def to_s
+    email
+  end
 end

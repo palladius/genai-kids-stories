@@ -19,7 +19,7 @@ module Genai
       raise 'I need an hash for Opts!' unless _opts.is_a? Hash
 
       unless json_body.keys.include? 'predictions'
-        puts("Failing - but before let me show you the answer: #{json_body}")
+        puts("Failing - but before let me show you the answer: json_body=#{yellow json_body.to_s}")
         return nil
       end
       mimeType = json_body['predictions'][ix]['mimeType']
@@ -176,8 +176,9 @@ module Genai
       prediction_size_minus_one = begin
         json_body['predictions'].size - 1
       rescue StandardError
-        0
+        -1
       end
+
       if prediction_size_minus_one < 0
         # puts "#{Story.emoji}.#{id} The system returned 200 but it failed to generate this: #{red content}. Failing gracefully. But let me show you the payload first"
         puts 'The system returned 200 but it failed to generate anything: Failing gracefully. But let me show you the payload first'
@@ -194,6 +195,7 @@ module Genai
         file = decode_nth_base64_image_to_file(_model_version, filename, json_body, ix, opts)
 
         if File.exist?(filename) and correct_image_file_match(`file '#{filename}'`.chomp) # .match(/PNG image data/)
+          puts "File exists and matches: #{filename}"
           my_one_file = filename
           ret_files << filename
         end

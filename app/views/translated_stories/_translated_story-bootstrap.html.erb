@@ -2,157 +2,180 @@
   kid = translated_story.story.kid
 %>
 <div id="<%= dom_id translated_story %>">
-<h1> 🅱️  <%= waving_flag translated_story.language %>
-  <%= translated_story.translated_title %>
-  </h1>
+  <div class="container">
+    <div class="row justify-content-end">
+        <div class="col-9">
+          <!--  HEADER PART -->
 
-
-
-<div class="container">
-  <div class="row justify-content-end">
-      <div class="col-9">
-        <!--  HEADER PART -->
-        <p> <strong>Language:</strong> <%= translated_story.language %> </p>
-        <p>
-          <strong>User:</strong>
-          <%= translated_story.user_id %>
-          <%= translated_story.name %>
-          <%= image_tag translated_story.user.avatar.variant(resize_to_limit: [50, 50]) if translated_story.user.avatar.attached? %>
-        </p>
-
-        <p>
-          <strong>Story2:</strong>
-          <%= translated_story.story_id %> -
-          <%= link_to(translated_story.story.title, translated_story.story) %>
-        </p>
-
-                  <p>
-            <strong>Paragraph strategy:</strong>
-            <%= translated_story.paragraph_strategy %>
+          <!--
+          <p> <strong>Language:</strong> <%= translated_story.language %> </p>
+          <p>
+            <strong>User:</strong>
+            <%= translated_story.user_id %>
+            <%= translated_story.name %>
+            <%= image_tag translated_story.user.avatar.variant(resize_to_limit: [50, 50]) if translated_story.user.avatar.attached? %>
+          </p>
+    -->
+          <p>
+            <strong>Story #<%= translated_story.story_id %>:</strong>
+            <%= link_to(translated_story.story.title, translated_story.story) %>
           </p>
 
+                    <p>
+              <strong>Paragraph strategy:</strong>
+              <%= translated_story.paragraph_strategy %>
+            </p>
+
+
+            <p>
+              <strong>Genai model:</strong>
+              <%= translated_story.genai_model %>
+            </p>
+
+  <!--
+              <p>
+                <strong>first_born?:</strong>
+                <%= translated_story.first_born? %>
+                <% unless translated_story.first_born? %>
+                  (big brother: <%= link_to translated_story.big_brother, translated_story.big_brother %>)
+                <% end %>
+              </p>
+    -->
+              <p><b>Image generation for this TranslatedStory: <%= translated_story.paragraphs_with_no_images.size %></b>
+                  <%= translated_story.story_paragraphs_images_succint %>
+              </p>
+
+<% if (translated_story.paragraphs_with_no_images.size > 0 rescue true) %>
+  <!-- Some pics are missing, let me show you the button to fix -->
+              <p>
+                  <%= link_to("fix now", "/translated_stories/#{translated_story.id}/fix", class: "btn btn-info") %>
+                    <%= link_to("fix later", "/translated_stories/#{translated_story.id}/fix?delay=true", class: "btn btn-primary") %>
+
+              </p>
+<% end %>
+
+  <!--
+              <p>
+                <strong>paragraphs_with_no_images:</strong>
+                <b><%= translated_story.paragraphs_with_no_images.size %></b> (<%= translated_story.paragraphs_with_no_images %>)
+                Call <tt class='debug' >TranslatedStory.find(<%=translated_story.id%>).fix</tt> to fix-bs
+
+              </p>
+              <p>
+
+                <strong>story_paragraphs_images_succint:</strong>
+                <%= translated_story.story_paragraphs_images_succint %>
+
+              </p>
+    -->
 
           <p>
-            <strong>Genai model:</strong>
-            <%= translated_story.genai_model %>
+            <strong>User:</strong>
+            <%= translated_story.user rescue $! %>
           </p>
 
-            <p>
-              <strong>first_born?:</strong>
-              <%= translated_story.first_born? %>
-              <% unless translated_story.first_born? %>
-                (big brother: <%= link_to translated_story.big_brother, translated_story.big_brother %>)
-              <% end %>
-            </p>
-            <p>
-            <p>
-              <strong>paragraphs_with_no_images:</strong>
-              <b><%= translated_story.paragraphs_with_no_images.size %></b> (<%= translated_story.paragraphs_with_no_images %>)
-              Call <tt class='debug' >TranslatedStory.find(<%=translated_story.id%>).fix</tt> to fix-bs
-                  <%= link_to("fix now", "/translated_stories/#{translated_story.id}/fix", class: "btn btn-info") %>
-                  <%= link_to("fix later", "/translated_stories/#{translated_story.id}/fix?delay=true", class: "btn btn-primary") %>
 
-            </p>
-
-
-              <strong>story_paragraphs_images_succint:</strong>
-              <%= translated_story.story_paragraphs_images_succint %>
-
-            </p>
-      <!-- END header :) -->
-      </div>
-      <div class="col-3 justify-content-end clearfix">
-             <%= render partial: 'kids/floating_card', locals: {kid: kid }  %>
-      </div>
+        <!-- END header :) -->
+        </div>
+        <div class="col-3 justify-content-end clearfix">
+              <%= render partial: 'kids/floating_card', locals: {kid: kid }  %>
+        </div>
+    </div>
   </div>
-  <div class="row justify-content-start">
-    <% @story_paragraphs.each_with_index do |sp, ix|
-        is_even = (ix % 2) == 0 rescue true
-    %>
-    <% if is_even %>
-      <!-- Even: images to the right-->
-       <div class="col-8">
-        <%= link_to("🔷 #{sp.story_index}",sp)%>
-        <%= sp.cleaned_up_translated_text %>
-       </div>
-        <div class="col-4">
-          <%= render_image_if_attached(sp.p_image1, verbose: false) %>
-        </div>
-    <% else %>
-      <!-- Odd: images to the left-->
-        <div class="col-4">
-          <%= render_image_if_attached(sp.p_image1, verbose: false) %>
-        </div>
-        <div class="col-8">
+
+  <h1><%= waving_flag translated_story.language %>
+    <%= translated_story.translated_title %>
+    </h1>
+
+  <div class='container-fluid' >
+    <div class="row justify-content-start">
+      <% @story_paragraphs.each_with_index do |sp, ix|
+          is_even = (ix % 2) == 0 rescue true
+      %>
+      <% if is_even %>
+        <!-- Even: images to the right-->
+        <div class="col-md-8 h4" style="font-family: Bradley Hand, cursive;" >
           <%= link_to("🔷 #{sp.story_index}",sp)%>
           <%= sp.cleaned_up_translated_text %>
         </div>
-    <% end %>
-      <% if ix == 0 %>
-
+          <div class="col-md-4">
+            <%= render_image_if_attached(sp.p_image1, width: 250, style: ';float:right;height:250px;', verbose: false, class: 'rounded mx-auto d-block img-fluid img-thumbnail img-float float') %>
+          </div>
+      <% else %>
+        <!-- Odd: images to the left-->
+          <div class="col-3">
+            <%= render_image_if_attached(sp.p_image1,  width: 250, style: 'float:right;height:250px;') %>
+          </div>
+          <div class="col-9 h4"  style="font-family: Bradley Hand, cursive;">
+            <%= link_to("🔷 #{sp.story_index}",sp)%>
+            <%= sp.cleaned_up_translated_text %>
+          </div>
       <% end %>
-     <% end %>
+        <% if ix == 0 %>
+        <% end %>
+      <% end %>
+    </div>
   </div>
-</div>
 
 
-<!-- HTML !-->
-<button class="button-34" role="button" onclick="window.location.href='/translated_stories/<%= translated_story.id %>/fix';" >Fix TStory: fix()</button>
-<%#= button_to 'Fix TStory2: fix()', class: "button-34 debug" , role: "button", action: "fix_translated_story" %>
+  <!-- HTML !-->
+  <button class="button-34" role="button" onclick="window.location.href='/translated_stories/<%= translated_story.id %>/fix';" >Fix TStory: fix()</button>
+  <%#= button_to 'Fix TStory2: fix()', class: "button-34 debug" , role: "button", action: "fix_translated_story" %>
 
-<%#= link_to "Fix", fix_translated_story_path, remote: true, class: "button-34" %>
-<%#= button_to "fix TS.#{translated_story.id}", fix_translated_story_path(translated_story.id), id: translated_story.id %>
+  <%#= link_to "Fix", fix_translated_story_path, remote: true, class: "button-34" %>
+  <%#= button_to "fix TS.#{translated_story.id}", fix_translated_story_path(translated_story.id), id: translated_story.id %>
 
 
 
-<% if (not @story_paragraphs.nil?) and @story_paragraphs.count > 0 %>
-  <!-- story exists -->
-<% else  %>
-  <!-- PAR PREVIEW -->
-  <h3>👁️ Paragraphs Preview</h3>
+  <% if (not @story_paragraphs.nil?) and @story_paragraphs.count > 0 %>
+    <!-- story exists -->
+  <% else  %>
+    <!-- PAR PREVIEW -->
+    <h3>👁️ Paragraphs Preview</h3>
 
- 😥 @story_paragraphs is either null or empty. Let's generate them!<br/>
- @execute_now=<%=@execute_now %>
+  😥 @story_paragraphs is either null or empty. Let's generate them!<br/>
+  @execute_now=<%=@execute_now %>
 
-  <% if params[:execute_now] == 'true' %>
-    💻 NOW: IMMEDIATE execution... generating kids of this story in the <b> <%= translated_story.paragraph_strategy %></b> strategy, with language=<%= translated_story.language %>.
-    <% @translated_story.generate_polymorphic_paragraphs %>
-  <%  else %>
-    💻😴 Enqueued a Delayed execution to 'translated_story::generate_polymorphic_paragraphs' queue... use  (<%= link_to('execute_now!', "#{request.fullpath.to_s}?execute_now=true") %> ) to generate immediately!
-    <% @translated_story.delay(queue: 'translated_story::generate_polymorphic_paragraphs').generate_polymorphic_paragraphs %>
+    <% if params[:execute_now] == 'true' %>
+      💻 NOW: IMMEDIATE execution... generating kids of this story in the <b> <%= translated_story.paragraph_strategy %></b> strategy, with language=<%= translated_story.language %>.
+      <% @translated_story.generate_polymorphic_paragraphs %>
+    <%  else %>
+      💻😴 Enqueued a Delayed execution to 'translated_story::generate_polymorphic_paragraphs' queue... use  (<%= link_to('execute_now!', "#{request.fullpath.to_s}?execute_now=true") %> ) to generate immediately!
+      <% @translated_story.delay(queue: 'translated_story::generate_polymorphic_paragraphs').generate_polymorphic_paragraphs %>
 
-    <%= link_to('execute_now!', "#{request.fullpath.to_s}?execute_now=true", class: "btn btn-primary" ) %>
+      <%= link_to('execute_now!', "#{request.fullpath.to_s}?execute_now=true", class: "btn btn-primary" ) %>
 
-<!-- toast: https://getbootstrap.com/docs/5.0/components/toasts/ -->
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-      <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-          <img src="..." class="rounded me-2" alt="...">
-          <strong class="me-auto">Bootstrap</strong>
-          <small>11 mins ago</small>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-          Hello, world! This is a toast message.
-          Translated story in progress... be patient
+  <!-- toast: https://getbootstrap.com/docs/5.0/components/toasts/ -->
+      <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <img src="..." class="rounded me-2" alt="...">
+            <strong class="me-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            Hello, world! This is a toast message.
+            Translated story in progress... be patient
+          </div>
         </div>
       </div>
-    </div>
 
-  <%  end %>
+    <%  end %>
 
-    <% translated_story.polymorphic_paragraphs.each_with_index do |p, ix|  %>
-      <p>
-          🧠 <%= ix+1 %>🧠
-          <span class='story' ><%= p %></span>
-      </p>
+      <% translated_story.polymorphic_paragraphs.each_with_index do |p, ix|  %>
+        <p>
+            🧠 <%= ix+1 %>🧠
+            <span class='story' ><%= p %></span>
+        </p>
+      <% end  %>
+
+
+    <p class='debug' >TODO. This is big - going to require to move and repurpose existing ones under this one :)
+    But probably they're going to be these: <tt>Story.find(self.story_id).paragraphs</tt>
+    </p>
+
+
     <% end  %>
-
-
-  <p class='debug' >TODO. This is big - going to require to move and repurpose existing ones under this one :)
-  But probably they're going to be these: <tt>Story.find(self.story_id).paragraphs</tt>
-  </p>
-
-
-  <% end  %>
+  </div>
 </div>

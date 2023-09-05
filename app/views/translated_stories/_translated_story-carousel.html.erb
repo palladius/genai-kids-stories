@@ -19,11 +19,7 @@
           <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="<%= ix %>" aria-label="Slide <%= ix+1 %>"></button>
         <% end %>
       <% end %>
-  <!--
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-      -->
+
     </div>
     <div class="carousel-inner">
       <!-- start of carousel https://getbootstrap.com/docs/5.0/components/carousel/ -->
@@ -44,7 +40,7 @@
           </div>
           <div class="carousel-caption d-md-block small">
             <h5>🌁 Slide <%= ix + 1%> 🌁</h5>
-            <p class='text-dark' ><%= sp.cleaned_up_translated_text %></p>
+            <p class='text-dark h5' ><%= sp.cleaned_up_translated_text %></p>
           </div>
 
       </div>

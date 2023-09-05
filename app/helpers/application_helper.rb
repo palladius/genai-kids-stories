@@ -8,11 +8,12 @@ module ApplicationHelper
 
     verbose = _opts.fetch :verbose, false
     my_style = _opts.fetch :style, 'float:right;height:150px;'
-    my_width = _opts.fetch :width, nil
+    my_width = _opts.fetch :width, '100%' # according to docs: https://getbootstrap.com/docs/4.0/content/images/#:~:text=Images%20in%20Bootstrap%20are%20made,scales%20with%20the%20parent%20element.
+    my_height = _opts.fetch :height, 'auto'
     my_class = _opts.fetch :class, 'figure-img img-fluid rounded'
 
     if model_field.attached?
-      image_tag(model_field, style: my_style, width: my_width, class: my_class)
+      image_tag(model_field, style: my_style, width: my_width, height: my_height, class: my_class)
     else
       verbose ? "Sorry, #{model_field} not attached." : '-'
     end

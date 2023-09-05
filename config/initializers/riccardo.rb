@@ -90,4 +90,8 @@ puts("⬢ ActiveStorage Service:  '#{ Rails.application.config.active_storage.se
 puts("⬢ ActiveStorage Config:  '#{ Rails.application.config.active_storage.service_configurations[Rails.env] rescue '?!?' }'")
 puts(arzigogolo * 12)
 
-#exit 42
+class Application < Rails::Application
+  config.after_initialize do
+    puts("⬢ [after_initialize] ActiveStorage Service:  '#{ Rails.application.config.active_storage.service rescue '?!?' }'")
+  end
+end

@@ -55,6 +55,14 @@ class ApplicationRecord < ActiveRecord::Base
     end
   end
 
+  # Alias which is more memorable :)
+  def generate
+    fix
+  end
+  def generate!
+    fix!
+  end
+
   def super_attached_stuff_info(field_name)
     ret = {
       header: "AR::attached_stuff_info(#{field_name}) v1.1",

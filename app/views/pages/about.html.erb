@@ -17,6 +17,7 @@ To use credentials, do this <tt>EDITOR="your_editor_name --wait" bin/rails crede
 <h2>config</h2>
 
 * Active_storage: <b><%= Rails.application.config.active_storage.service_configurations[Rails.env] rescue 'Some error with AS!' %></b><br/>
+* Active_storage Config: <b><%= Rails.application.config.active_storage.service rescue 'Some error with AS!' %></b><br/>
 * Database: <b><%= Rails.configuration.database_configuration[Rails.env]['adapter'] %></b><br/><br/><br/>
 
 <h2>Entities</h2>
