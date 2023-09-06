@@ -5,3 +5,7 @@
 APP_DB_NAME=fuffa RAILS_ENV=production CLOUD_RUN_SERVICE=genai-kids-stories-delayedjob-prod \
     bin/deploy-to-cloud-run-poor.sh \
         bash -c 'nc -l -p 8080 -k & bin/delayed_job run'
+
+# Cloud Run config:
+# ENTRYPOINT: - 
+# ARGS: nc -l -p 8080 -k & bin/delayed_job run
