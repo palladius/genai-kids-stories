@@ -1,3 +1,4 @@
+2023-09-06 0.11.45 Added also a miniplayer to translated StoryParagraphs!
 2023-09-06 0.11.45 Adding support for mp3!!
 2023-09-05 0.11.42 Lot of UI tweaks and enhancements for the demo.
 2023-09-05 0.11.41 Small changes to deployment scripts and ENTRYPOINT. Wish me luck.

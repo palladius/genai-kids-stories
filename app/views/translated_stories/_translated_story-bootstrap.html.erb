@@ -54,20 +54,6 @@
               </p>
 <% end %>
 
-  <!--
-              <p>
-                <strong>paragraphs_with_no_images:</strong>
-                <b><%= translated_story.paragraphs_with_no_images.size %></b> (<%= translated_story.paragraphs_with_no_images %>)
-                Call <tt class='debug' >TranslatedStory.find(<%=translated_story.id%>).fix</tt> to fix-bs
-
-              </p>
-              <p>
-
-                <strong>story_paragraphs_images_succint:</strong>
-                <%= translated_story.story_paragraphs_images_succint %>
-
-              </p>
-    -->
 
           <p>
             <strong>User:</strong>
@@ -115,6 +101,12 @@
           </div>
           <div class="col-9 h4"  style="font-family: Bradley Hand, cursive;">
             <%= link_to("🔷 #{sp.story_index}",sp)%>
+            <%= render_mp3_button sp %>
+            <!--
+            <audio src="<%= rails_blob_path(sp.mp3_audio, type: "audio") rescue nil %>" type="audio/mpeg" controls>
+              Your browser does not support the audio element.
+            </audio>
+-->
             <%= sp.cleaned_up_translated_text %>
           </div>
       <% end %>

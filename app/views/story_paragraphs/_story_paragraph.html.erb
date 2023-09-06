@@ -16,7 +16,11 @@
   <p>
     <strong>mp3_audio (NEW!) attached?:</strong>
 <% if story_paragraph.mp3_audio.attached? %>
-    TODO create <%= story_paragraph.mp3_audio %>
+    <%#= story_paragraph.mp3_audio %>
+    <%= link_to rails_blob_path(story_paragraph.mp3_audio, disposition: "attachment") do %>
+          🎶 Download MP3 file
+        <% end %>
+
 <% else %>
   <%= link_to("Generate Audio NOW!", "/story_paragraphs/#{story_paragraph.id}/gen_audio", class: "btn btn-outline-dark") %>
   <%= link_to("Generate Audio LATER", "/story_paragraphs/#{story_paragraph.id}/gen_audio?delay=true", class: "btn btn-light") %>

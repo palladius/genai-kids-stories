@@ -79,6 +79,11 @@ class StoryParagraph < ApplicationRecord
     generate_audio_transcript if translated_text.to_s.length >= 5
   end
 
+  def translated_text_for_speech
+    # remove asterisks and other ugly stuff which is not nice to HEAR.
+    translated_text.gsub(/\*/,'')
+  end
+
   def generate_audio_transcript!()
     generate_audio_transcript( force: true)
   end
@@ -91,7 +96,7 @@ class StoryParagraph < ApplicationRecord
     end
     puts('🎶 TODO GENERATE MP3 for this text:')
     #str = translated_text
-    ret_file = synthesize_speech(translated_text, self.language) # , lang='en-gb')
+    ret_file = synthesize_speech(translated_text_for_speech, self.language) # , lang='en-gb')
     puts 'to start we use the file (which is non reentrant and not thread safe), then we make it better by passing thje decoded base64 directly for ActiveStorage'
     puts "Habemus: ret_file=#{ret_file}"
     # and some other validation
