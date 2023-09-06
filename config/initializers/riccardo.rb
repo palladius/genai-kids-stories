@@ -48,17 +48,18 @@ DEFAULT_PARAGRAPH_STRATEGY = 'smart-v0.1'
 # 	export APP_DB_HOST="$DEV_DB_HOST"
 # fi
 
-if Rails.env == 'production'
-  ENV['APP_DB_NAME'] = ENV['PROD_DB_NAME']
-  ENV['APP_DB_USER'] = ENV["PROD_DB_USER"]
-  ENV['APP_DB_PASS'] = ENV["PROD_DB_PASS"]
-  ENV['APP_DB_HOST'] = ENV["PROD_DB_HOST"]
-else
-  ENV['APP_DB_NAME'] = ENV['DEV_DB_NAME']
-  ENV['APP_DB_USER'] = ENV["DEV_DB_USER"]
-  ENV['APP_DB_PASS'] = ENV["DEV_DB_PASS"]
-  ENV['APP_DB_HOST'] = ENV["DEV_DB_HOST"]
-end
+# NON VA ... pure and simple
+# if Rails.env == 'production'
+#   ENV['APP_DB_NAME'] = ENV['PROD_DB_NAME']
+#   ENV['APP_DB_USER'] = ENV["PROD_DB_USER"]
+#   ENV['APP_DB_PASS'] = ENV["PROD_DB_PASS"]
+#   ENV['APP_DB_HOST'] = ENV["PROD_DB_HOST"]
+# else
+#   ENV['APP_DB_NAME'] = ENV['DEV_DB_NAME']
+#   ENV['APP_DB_USER'] = ENV["DEV_DB_USER"]
+#   ENV['APP_DB_PASS'] = ENV["DEV_DB_PASS"]
+#   ENV['APP_DB_HOST'] = ENV["DEV_DB_HOST"]
+# end
 
 
 STORIES_FIXTURE_IMAGES_DIR ||= "#{Rails.root}/db/fixtures/stories/"
