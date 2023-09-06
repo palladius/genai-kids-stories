@@ -1,0 +1,53 @@
+<h1>🎶 Generating Mp3</h1>
+
+Thanks for your patience.
+
+@story_paragraph: <kbd><%= @story_paragraph %></kbd>
+
+<h2>Audio content </h2>
+
+<i><%= @story_paragraph.translated_text %>
+</i>
+<h2> MP3 attachment </h2>
+
+
+
+<% if  @story_paragraph.mp3_audio.attached? %>
+    🎶 Habemus audium! representable?
+    <%= @story_paragraph.mp3_audio %>
+    <div class="player btn btn-outline-secondary">
+        <%= audio_tag rails_blob_url(@story_paragraph.mp3_audio) %>
+        Play
+    </div>
+
+    <% file =  @story_paragraph.mp3_audio
+       if file.representable? %>
+        <%= image_tag file.representation(resize_to_limit: [100, 100]) %>
+      <% else %>
+        <%= link_to rails_blob_path(file, disposition: "attachment") do %>
+          <%#= image_tag "logo.png", alt: "Download file" %>
+          Download file
+        <% end %>
+      <% end %>
+
+<% else %>
+    Nada :(
+<% end %>
+
+<h2>Nice links</h2>
+
+<p>
+  Back to the Story: <%= link_to @story_paragraph.story  %>
+</p>
+<p>
+  Back to the TranslatedStory <%= link_to @story_paragraph.translated_story %>
+</p>
+
+<!-- https://stackoverflow.com/questions/54048280/how-to-play-audio-files-served-from-rails-active-storage -->
+<script>
+$(document).ready(function() {
+    $(".player").click(function() {
+        $(this).children('audio')[0].play();
+    });
+});
+</script>

@@ -1,5 +1,5 @@
 class StoryParagraphsController < ApplicationController
-  before_action :set_story_paragraph, only: %i[show edit update destroy regenerate_images]
+  before_action :set_story_paragraph, only: %i[show edit update destroy regenerate_images gen_audio]
 
   # GET /story_paragraphs or /story_paragraphs.json
   def index
@@ -64,6 +64,10 @@ class StoryParagraphsController < ApplicationController
   def regenerate_images
     # @story_paragraph = StoryParagraph.find(params[:id])
     @story_paragraph.delete_all_images
+  end
+
+  def gen_audio
+    @story_paragraph.generate_audio_transcript
   end
 
   private

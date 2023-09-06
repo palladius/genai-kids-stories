@@ -50,3 +50,5 @@ output/
 
 /node_modules
 app/views/stories/index.html.erb.originale
+ruby-output.mp3
+tmp-speech.mp3

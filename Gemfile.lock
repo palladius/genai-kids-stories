@@ -173,6 +173,16 @@ GEM
       google-cloud-core (~> 1.6)
       googleauth (>= 0.16.2, < 2.a)
       mini_mime (~> 1.0)
+    google-cloud-text_to_speech (1.5.0)
+      google-cloud-core (~> 1.6)
+      google-cloud-text_to_speech-v1 (>= 0.9, < 2.a)
+      google-cloud-text_to_speech-v1beta1 (>= 0.10, < 2.a)
+    google-cloud-text_to_speech-v1 (0.10.1)
+      gapic-common (>= 0.19.1, < 2.a)
+      google-cloud-errors (~> 1.0)
+    google-cloud-text_to_speech-v1beta1 (0.11.1)
+      gapic-common (>= 0.19.1, < 2.a)
+      google-cloud-errors (~> 1.0)
     google-cloud-translate (3.4.1)
       google-cloud-core (~> 1.6)
       google-cloud-translate-v2 (>= 0.0, < 2.a)
@@ -439,6 +449,7 @@ DEPENDENCIES
   delayed_job_web
   devise (~> 4.9)
   google-cloud-storage (~> 1.11)
+  google-cloud-text_to_speech
   google-cloud-translate
   image_processing (>= 1.2)
   importmap-rails

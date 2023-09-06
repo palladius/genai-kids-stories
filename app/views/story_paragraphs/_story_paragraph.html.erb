@@ -2,19 +2,28 @@
   <!-- some bootstrap magic .. -->
   <%#= render partial: 'attachments/bootstrap_attachment_view', locals: {attachment: story_paragraph.p_image1 } %>
 
-p_image1234:
-  <%= render partial: 'attachments/bootstrap_four_images',
+  <%#= render partial: 'attachments/bootstrap_four_images',
         locals: {four_attachments: [story_paragraph.p_image1, story_paragraph.p_image2, story_paragraph.p_image3, story_paragraph.p_image4] } %>
-p_images:
   <%= render partial: 'attachments/bootstrap_multiple_images', locals: {images: story_paragraph.p_images } %>
 
   <p>
     <strong>Image1234 (4 single):</strong>
-    1<%= render_image_if_attached(story_paragraph.p_image1) %>
-    2<%= render_image_if_attached(story_paragraph.p_image2) %>
-    3<%= render_image_if_attached(story_paragraph.p_image3) %>
-    4<%= render_image_if_attached(story_paragraph.p_image4) %>
+    1<%#= render_image_if_attached(story_paragraph.p_image1) %>
+    2<%#= render_image_if_attached(story_paragraph.p_image2) %>
+    3<%#= render_image_if_attached(story_paragraph.p_image3) %>
+    4<%#= render_image_if_attached(story_paragraph.p_image4) %>
   </p>
+  <p>
+    <strong>mp3_audio (NEW!) attached?:</strong>
+<% if story_paragraph.mp3_audio.attached? %>
+    TODO create <%= story_paragraph.mp3_audio %>
+<% else %>
+  <%= link_to("Generate Audio NOW!", "/story_paragraphs/#{story_paragraph.id}/gen_audio", class: "btn btn-outline-dark") %>
+  <%= link_to("Generate Audio LATER", "/story_paragraphs/#{story_paragraph.id}/gen_audio?delay=true", class: "btn btn-light") %>
+<% end %>
+    </p>
+
+
 
   <p>
     <strong>Story index:</strong>

@@ -26,7 +26,11 @@ Rails.application.routes.draw do
   end
   devise_for :users
   resources :story_templates
-  resources :story_paragraphs
+  resources :story_paragraphs do
+    member do
+      get 'gen_audio'
+    end
+  end
   get 'pages/index'
   get 'pages/about'
   get 'pages/help'

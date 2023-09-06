@@ -41,6 +41,8 @@ class StoryParagraph < ApplicationRecord
   has_one_attached :p_image3 # , service: :google
   has_one_attached :p_image4 # , service: :google
 
+  has_one_attached :mp3_audio # created with text2speech API!
+
   # PROD
   after_create :after_creation_magic
   # DEV: easier to debug
@@ -66,13 +68,40 @@ class StoryParagraph < ApplicationRecord
   end
 
   def after_creation_magic
-    puts '1 [DELAYED] if translation  is nil but we have original text AND language => trigger GTranslate (DELAY)'
+    puts '1 [DELAYED] if translation is nil but we have original text AND language => trigger GTranslate (DELAY)'
     write_translated_content_for_paragraph if translated_text.to_s.length < 5
     puts '2 [NOW] if picture text not available -> generate it determiniistically (now)'
     generate_genai_text_for_paragraph if genai_input_for_image.to_s.length < 10 # genai_input_for_image.nil?
     puts '3 [DELAYED] if video text available -> generate image '
     # generate_one_genai_image_from_image_description! if genai_input_for_image.to_s.length > 20
     generate_ai_images! if genai_input_for_image.to_s.length > 20 # && translated_story.primogenito?
+    puts '4 [NOW] if translation is populated => trigger Text2Speech (NOW)'
+    generate_audio_transcript if translated_text.to_s.length >= 5
+  end
+
+  def generate_audio_transcript!()
+    generate_audio_transcript( force: true)
+  end
+  def generate_audio_transcript(opts={})
+    opts_force = opts.fetch :force, false
+
+    if self.mp3_audio.attached? and (not opts_force)
+      puts "MP3 already attached - skipping"
+      return nil
+    end
+    puts('🎶 TODO GENERATE MP3 for this text:')
+    #str = translated_text
+    ret_file = synthesize_speech(translated_text, self.language) # , lang='en-gb')
+    puts 'to start we use the file (which is non reentrant and not thread safe), then we make it better by passing thje decoded base64 directly for ActiveStorage'
+    puts "Habemus: ret_file=#{ret_file}"
+    # and some other validation
+    is_file_valid = ret_file.is_a? String
+    if is_file_valid
+      # https://stackoverflow.com/questions/12017694/content-type-for-mp3-download-response
+      # To encourage the browser to download the mp3 rather then streaming, do Content-Disposition: filename="music.mp3"'
+      self.mp3_audio.attach(io: File.open(ret_file), filename: ret_file) # , content_type: 'audio/mpeg', identify: false)
+    end
+    return ret_file
   end
 
   def generate_ai_images!(gcp_opts = {})

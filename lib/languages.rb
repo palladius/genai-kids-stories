@@ -18,7 +18,7 @@ def waving_flag(language)
   when 'es'
     '🇪🇸' # Argentina: '🇦🇷'
   when 'ga'
-    '🇮🇪' 
+    '🇮🇪'
   when 'ko'
     '🇰🇷'
   when 'pt'
@@ -30,4 +30,36 @@ def waving_flag(language)
   else
     "Unknown flag4lang='#{language}'"
   end
+end
+
+# https://www.andiamo.co.uk/resources/iso-language-codes/
+
+def iso_language_code(language)
+  case language
+    when 'it'
+      'it'
+    when 'fr'
+      'fr'
+    when 'ja'
+      'ja'
+    when 'de'
+      'de-ch' # :)
+    when 'en'
+      'en-gb'
+    when 'es'
+      'es' # Argentina: 'es-ar'
+    when 'ga'
+      'ga'
+    when 'ko'
+      'ko'
+    when 'pt'
+      'pt-br'
+    when 'ru'
+      'ru'
+    when 'zh' # Simplified chinese: https://cloud.google.com/translate/docs/languages
+      'zh-cn' # chinese flag '🇨🇳'
+    else
+      # https://www.andiamo.co.uk/resources/iso-language-codes/
+      "Unknown ISO 639-1 code for '#{language}'"
+    end
 end
