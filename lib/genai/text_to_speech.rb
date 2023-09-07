@@ -10,14 +10,22 @@ require 'json'
 
 
 
-def synthesize_speech(str, lang='en-gb')
+def synthesize_speech(str, lang='en-gb', opts={})
+  opts_debug= opts.fetch :debug, true # todo false
+
+  # gaelic is not supported!
+#  lang = 'it' if lang == 'ga' and opts_debug
+  return false if lang == 'ga'
+
 
   filename = "tmp-speech.mp3"
   puts("🎶 synthesize_speech(str='#{str}', lang='#{lang}') being called..")
 
+
   request_hash = {
     input: {
-      text: str, # "Riccardo is a mobile operating system developed by Google, based on the Linux kernel and designed primarily for touchscreen mobile devices such as smartphones and tablets."
+      text: str,
+      # "Riccardo is a mobile operating system developed by Google, based on the Linux kernel and designed primarily for touchscreen mobile devices such as smartphones and tablets."
     },
     'voice': {
       language_code: lang, # "en-gb",
@@ -35,7 +43,10 @@ def synthesize_speech(str, lang='en-gb')
   # Create a request. To set request fields, pass in keyword arguments.
   request = Google::Cloud::TextToSpeech::V1::SynthesizeSpeechRequest.new(request_hash)
 
+  puts(request_hash) if opts_debug
+
   # Call the synthesize_speech method.
+  # Can yield this error: 3:Voice '' does not exist. Is it misspelled?. debug_error_string:{UNKNOWN:Error received from peer ipv6:%5B2a00:1450:400a:808::200a%5D:443 {created_time:"2023-09-07T07:48:20.653732+02:00", grpc_status:3, grpc_message:"Voice \'\' does not exist. Is it misspelled?"}}
   result = client.synthesize_speech request
 
   # The returned object is of type Google::Cloud::TextToSpeech::V1::SynthesizeSpeechResponse.
