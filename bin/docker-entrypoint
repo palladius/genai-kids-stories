@@ -32,7 +32,7 @@ echo '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍�
 echo "👍 Entrypoint ARGS:                    '$*'"
 echo "👍 PORT:                               '$PORT'"
 echo "👍 PROJECT_ID:                         '$PROJECT_ID'"
-#echo "👍 AI_PROJECT_ID:                      '$AI_PROJECT_ID'"
+echo "👍 AI_PROJECT_ID:                      '$AI_PROJECT_ID'"
 echo "👍 APP_DB_NAME:                        '$APP_DB_NAME'"
 echo "👍 APP_VERSION:                        '$APP_VERSION'"
 echo "👍 RAILS_ENV:                          '$RAILS_ENV'"
@@ -65,7 +65,8 @@ if [ "${*}" == "" -o "${*}" == "echo activate omega13" -o "true" == "$ACTIVATE_O
   # Great ideas from https://github.com/gilcierweb/rails-docker/blob/master/entrypoint.sh
   # Checking PostgreS is ready:
   echo "02. Checking that postgreS is ready.."
-  while ! pg_isready -q -h "$APP_DB_HOST" -U "$APP_DB_USER" ; do
+  #while ! pg_isready -q -h "$APP_DB_HOST" -U "$APP_DB_USER" ; do # bug: theres a space i believe..
+  while ! pg_isready -q -h $APP_DB_HOST -U $APP_DB_USER ; do
     echo "[$RAILS_ENV]🔋 wait for PG DB (host='$APP_DB_HOST', user='$APP_DB_USER') to start.."
     sleep 2
   done
