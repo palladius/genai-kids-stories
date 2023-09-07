@@ -106,11 +106,11 @@ class TranslatedStory < ApplicationRecord
 
   def copy_images_from_primogenito!
     return nil if primogenito?
-
+    puts 'TODO(): Ricc I have a feeling theres a bug here as I keep see same images being copied to different paragraphs like the index wouldnt update'
     rets = []
     ts1  = primogenito # different from me
-    ts1.story_paragraphs.each do |sp1|
-      ret = sp1.copy_images_from_primogenito_sp
+    ts1.story_paragraphs.each do |sp1_i|
+      ret = sp1_i.copy_images_from_primogenito_sp
       rets << ret
     end
     rets
@@ -130,20 +130,19 @@ class TranslatedStory < ApplicationRecord
   end
 
   def fix
-    # `dimmiora`
-    # TODO
     fix_missing_attributes
     # Check children translated_stories for missing images
     # =>  [[204, false]]
     if primogenito?
-      puts "TS.fix(): PRIMOGENITO: I'm generating missing images"
+      puts "TS(#{self.id}).fix(): PRIMOGENITO: I'm generating missing images"
       paragraphs_with_no_images.each do |id|
         puts "Missing image for #{id}"
         StoryParagraph.find(id).generate_ai_images!
       end
     else
-      puts "TS.fix(): SECONDOGENITO: I'm copying existing images from priomogenito.. and maybe fix him later"
+      puts "TS(#{self.id}).fix(): SECONDOGENITO: I'm copying existing images from priomogenito.. and maybe fix him later"
       # TODO: fix primogenito first..
+      
       copy_images_from_primogenito!
     end
   end
