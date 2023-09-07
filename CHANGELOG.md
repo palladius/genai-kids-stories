@@ -1,3 +1,4 @@
+2023-09-07 0.11.47 Fixed some audio stuff (like adding the lib properly!). Gaelic still broken.
 2023-09-06 0.11.45 Added also a miniplayer to translated StoryParagraphs!
 2023-09-06 0.11.45 Adding support for mp3!!
 2023-09-05 0.11.42 Lot of UI tweaks and enhancements for the demo.
