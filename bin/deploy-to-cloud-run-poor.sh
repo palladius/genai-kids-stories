@@ -15,10 +15,10 @@ UPLOADED_IMAGE_WITH_VER="$UPLOADED_IMAGE:cb-latest"
 export REGION="${REGION:-us-central1}"
 export GCS_BUCKET='genai-kids-stories-assets'
 APP_VERSION="$(bin/version.sh)"
-#export CLOUD_RUN_SERVICE=${CLOUD_RUN_SERVICE:-genai-kids-stories-gcloud-poor}
+export CLOUD_RUN_SERVICE_NAME=${CLOUD_RUN_SERVICE_NAME:-genai-kids-stories-gcloud-poor}
 
 # I usually build/deploy to project1 and then use AI_PROJECT_ID for AI stuff..
-gcloud --project "$PROJECT_ID" beta run deploy "genai-kids-stories-gcloud-poor" \
+gcloud --project "$PROJECT_ID" beta run deploy "$CLOUD_RUN_SERVICE_NAME" \
     --image    "$UPLOADED_IMAGE_WITH_VER" \
     --set-env-vars="PROJECT_ID=$AI_PROJECT_ID" \
     --set-env-vars="AI_PROJECT_ID=$AI_PROJECT_ID" \

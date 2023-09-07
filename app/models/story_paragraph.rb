@@ -133,13 +133,16 @@ class StoryParagraph < ApplicationRecord
     # story_ix1 = sp1.story_index
     # only ONE element. The TAKE transforms the relation in first elemnt:
     # https://stackoverflow.com/questions/12135745/what-is-the-fastest-way-to-find-the-first-record-in-rails-activerecord
-
+    puts("SP(#{id}).copy_images_from_primogenito_sp(story_index=#{story_index})")
     # ATTENTION I'm afraid its copying always the SAME image over and over, as if story_index is not working
     sp1 = StoryParagraph.where(story_index: story_index, story_id: story.id).take
+
     return :sp_not_found unless sp1.is_a?(StoryParagraph)
 
+    raise "Unmatching story_index before copy!" unless sp1.story_index == self.story_index
+    
     # copy paro paro - https://stackoverflow.com/questions/54203886/how-to-copy-one-object-from-one-model-to-another-model-with-rails-activestorage
-    puts("Saving image from primogenito SP.#{sp1.id} --> to this SP.#{id}")
+    puts("Saving image from primogenito SP.#{sp1.id} --> to this SP.#{id} - both with story_index = #{sp1.story_index}//#{self.story_index}")
     p_image1.attach(sp1.p_image1.blob) # attached_image === p_image1
     save
   end

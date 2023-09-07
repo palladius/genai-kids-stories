@@ -1,3 +1,5 @@
+2023-09-07 0.11.49 some bugfix, not important.
+2023-09-07 0.11.48 Fixing the DelayedJob part. Also adding debug to the Primogenito code which is buggy
 2023-09-07 0.11.48 Added Hindi language
 2023-09-07 0.11.47 Fixed some audio stuff (like adding the lib properly!). Gaelic still broken (not supported by TTS API).
 2023-09-06 0.11.45 Added also a miniplayer to translated StoryParagraphs!

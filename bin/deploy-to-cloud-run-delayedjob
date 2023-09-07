@@ -1,8 +1,14 @@
 #!/bin/bash
 
+#############################################################################################################################
+# The goal of this script is to reuse all the magic ENV vars from `bin/deploy-to-cloud-run-poor.sh` but
+# to launch a different command: the magical DelayedJob Run. According to Wietse, this didnt work as the
+# systems wasnt listening on port 8080. With this silly netcat - this will be checked only ONCE and it 
+# will work! Fingers crossed!
+#############################################################################################################################
 
 #nc -l -p 8484 -k
-APP_DB_NAME=fuffa RAILS_ENV=production CLOUD_RUN_SERVICE=genai-kids-stories-delayedjob-prod \
+APP_DB_NAME=fuffa RAILS_ENV=production PROJECT_ID='ror-goldie' CLOUD_RUN_SERVICE_NAME=genai-kids-stories-delayedjob-prod \
     bin/deploy-to-cloud-run-poor.sh \
         bash -c 'nc -l -p 8080 -k & bin/delayed_job run'
 
