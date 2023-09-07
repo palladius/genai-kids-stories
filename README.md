@@ -13,11 +13,31 @@ Things you may want to cover:
 
 # Architecture
 
+This is how it works (thanks Mermaid!):
+
 ```mermaid
 flowchart TD;
-    A[Start] --> B[Process 1];
-    B --> C[Process 2];
-    C --> D[End];
+
+
+    A2["Shakespeare Story Prompt"] -- GenAI: Text gen --> B[Story::Body];
+    B -- GenAI: Text summary --> C[Story::Title];
+    C -- split --> P1["Paragraph1"];
+    C -- split --> P2[Paragraph2];
+    C -- split --> Pdot[..];
+    C -- split --> P3[ParagraphN];
+
+    P1 -- "concat with Kid\nvisual Description" --> PD1[Par1 + Desc];
+    P2 -- concat.. --> PD2[Par2 + Desc];
+    P3 -- concat.. --> PD3[PaN + Desc];
+
+    PD1 -- GenAI Vision --> IMG1["🏞️ Par1 Image"];
+    PD2 -- GenAI Vision --> IMG2["🏞️ Par2 Image"];
+    PD3 -- GenAI Vision --> IMG3["🏞️ Par3 Image"];
+
+    IMG1 --> END["Story with N paragraphs and N images"]
+    IMG2 --> END
+    IMG3 --> END
+    P1 --> END;
 ```
 
 # INSTALL
