@@ -11,6 +11,15 @@ Things you may want to cover:
 * Services: `delayed_job` job queues.
 * ...
 
+# Architecture
+
+```mermaid
+flowchart TD;
+    A[Start] --> B[Process 1];
+    B --> C[Process 2];
+    C --> D[End];
+```
+
 # INSTALL
 
 * make sure you create yur own .enrc.yourname and assign the ENV vars you want
