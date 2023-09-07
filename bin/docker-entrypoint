@@ -38,6 +38,7 @@ echo "👍 APP_VERSION:                        '$APP_VERSION'"
 echo "👍 RAILS_ENV:                          '$RAILS_ENV'"
 echo "👍 GOOGLE_TRANSLATE_KEY (redacted):    '${GOOGLE_TRANSLATE_KEY:1:20}..'"
 echo "👍 DANGEROUS_SA_JSON_VALUE (redacted): '$(echo -en ${DANGEROUS_SA_JSON_VALUE:1:50})..'"
+echo "👍 APPLICATION_DEFAULT_CREDENTIALS:    '$APPLICATION_DEFAULT_CREDENTIALS'"
 echo '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍'
 
 # If running the rails server then create or migrate existing database

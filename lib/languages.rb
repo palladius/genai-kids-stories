@@ -1,5 +1,5 @@
-AVAIL_LANGUAGES =       %w[de es fr ga it ja ko pt ru zh].sort.freeze
-AVAIL_LANGUAGE_REGEX = /\A(de|es|fr|ga|it|ja|ko|pt|ru|zh)\z/i
+AVAIL_LANGUAGES =       %w[de es fr ga it ja hi ko pt ru zh].sort.freeze
+AVAIL_LANGUAGE_REGEX = /\A(de|es|fr|ga|it|ja|hi|ko|pt|ru|zh)\z/i
 
 AVAIL_LANGUAGE_MESSAGE = 'We only support Latin languages (IT ES FR PT), Gaelic, German, English, Korean, Russian and Japanese.'
 
@@ -19,6 +19,8 @@ def waving_flag(language)
     '🇪🇸' # Argentina: '🇦🇷'
   when 'ga'
     '🇮🇪'
+  when 'hi' # hindi
+    '🇮🇳'
   when 'ko'
     '🇰🇷'
   when 'pt'
@@ -50,6 +52,8 @@ def iso_language_code(language)
       'es' # Argentina: 'es-ar'
     when 'ga'
       'ga'
+    when 'hi'
+      'hi'
     when 'ko'
       'ko'
     when 'pt'
