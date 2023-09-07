@@ -3,7 +3,8 @@
 # See CloudBuild samples: https://github.com/GoogleCloudPlatform/cloud-build-samples/blob/main/run-example-builddeploy/cloudbuild.yaml
 ###########################################
 # 20min for RoR :/
-timeout: 1200s
+#timeout: 1200s # 20min
+timeout: 1800s # 30min
 options:
   machineType: 'N1_HIGHCPU_8'
   # This allows for missing ENV variables.
