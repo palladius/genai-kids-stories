@@ -19,14 +19,14 @@ This is how it works (thanks Mermaid!):
 flowchart TD;
 
 
-    A2["Shakespeare Story Prompt"] -- GenAI: Text gen --> B[Story::Body];
+    A2["Shakespeare Story 🥚 Prompt"] -- GenAI: Text gen --> B["📖 Story::Body"];
     B -- GenAI: Text summary --> C[Story::Title];
-    C -- split --> P1["Paragraph1"];
-    C -- split --> P2[Paragraph2];
+    C -- split --> P1["📜 Paragraph1"];
+    C -- split --> P2["📜 Paragraph2"];
     C -- split --> Pdot[..];
-    C -- split --> P3[ParagraphN];
+    C -- split --> P3["📜 ParagraphN"];
 
-    P1 -- "concat with Kid\nvisual Description" --> PD1[Par1 + Desc];
+    P1 -- "concat with Kid\n👶🏾 visual Description" --> PD1["Par1 + Desc"];
     P2 -- concat.. --> PD2[Par2 + Desc];
     P3 -- concat.. --> PD3[PaN + Desc];
 
@@ -34,7 +34,7 @@ flowchart TD;
     PD2 -- GenAI Vision --> IMG2["🏞️ Par2 Image"];
     PD3 -- GenAI Vision --> IMG3["🏞️ Par3 Image"];
 
-    IMG1 --> END["Story with N paragraphs and N images"]
+    IMG1 --> END["Story with \n N 📜📜paragraphs \n and N 🏞️🏞️images"]
     IMG2 --> END
     IMG3 --> END
     P1 --> END;
