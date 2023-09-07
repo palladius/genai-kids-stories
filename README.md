@@ -13,7 +13,7 @@ Things you may want to cover:
 
 # Architecture
 
-This is how it works (thanks Mermaid!):
+This is how it works (thanks [Mermaid](https://mermaid.js.org/) and [stackedit](https://stackedit.io/app#) ):
 
 ```mermaid
 flowchart TD;
