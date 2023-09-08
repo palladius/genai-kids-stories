@@ -100,7 +100,8 @@
       <% else %>
         <!-- Odd: images to the left-->
           <div class="col-3">
-            <%= render_image_if_attached(sp.p_image1,  width: 250, style: 'float:right;', class: 'rounded mx-auto d-block img-fluid img-thumbnail img-float float') %>height:250px;
+            <%= render_image_if_attached(sp.p_image1,  width: 250, style: 'float:right;', class: 'rounded mx-auto d-block img-fluid img-thumbnail img-float float') %>
+            <!-- height:250px; -->
           </div>
           <div class="col-9 h4"  style="font-family: Bradley Hand, cursive;">
             <%= link_to("🔷 #{sp.story_index}",sp)%>

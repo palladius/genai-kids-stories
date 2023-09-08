@@ -1,3 +1,4 @@
+2023-09-08 0.12.02 Minor changes
 2023-09-08 0.12.01 Storing Score and Settings for TS and Story
 2023-09-07 0.11.49 some bugfix, not important.
 2023-09-07 0.11.48 Fixing the DelayedJob part. Also adding debug to the Primogenito code which is buggy
