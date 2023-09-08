@@ -32,29 +32,11 @@
               <%= translated_story.genai_model %>
             </p>
 
-  <!--
-              <p>
-                <strong>first_born?:</strong>
-                <%= translated_story.first_born? %>
-                <% unless translated_story.first_born? %>
-                  (big brother: <%= link_to translated_story.big_brother, translated_story.big_brother %>)
-                <% end %>
-              </p>
-    -->
+<!--
               <p><b>Image generation for this TranslatedStory: <%= translated_story.paragraphs_with_no_images.size %></b>
-                  <%= translated_story.story_paragraphs_images_succint %>
+                  <%#= translated_story.story_paragraphs_images_succint %>
               </p>
-
-<% if (translated_story.paragraphs_with_no_images.size > 0 rescue true) %>
-  <!-- Some pics are missing, let me show you the button to fix -->
-              <p>
-                  <%= link_to("fix now", "/translated_stories/#{translated_story.id}/fix", class: "btn btn-info") %>
-                    <%= link_to("fix later", "/translated_stories/#{translated_story.id}/fix?delay=true", class: "btn btn-primary") %>
-
-              </p>
-<% end %>
-
-
+-->
           <p>
             <strong>User:</strong>
             <%= translated_story.user rescue $! %>
@@ -64,8 +46,29 @@
             <strong>Summary:</strong>
             <%= translated_story.story.genai_summary rescue $! %>
           </p>
+          <p>
+            <strong>Settings : cache_images</strong>
+            <%#= translated_story.cache_images rescue $! %>
+            <%= render_cached_info(translated_story, :cache_images) %>
+          </p>
+          <p>
+            <strong>Settings : cache_audios </strong>
+            <%#= translated_story.cache_audios rescue $! %>
+            <%= render_cached_info(translated_story, :cache_audios) %>
+          </p>
+          <p>
+            <strong>Lang</strong>
+            <%= translated_story.language %> (note Gaelic not supported)
+          </p>
 
+<% if (translated_story.paragraphs_with_no_images.size > 0 rescue true) %>
+  <!-- Some pics are missing, let me show you the button to fix -->
+              <p>
+                  <%= link_to("fix 🏞️🎶 now", "/translated_stories/#{translated_story.id}/fix", class: "btn btn-info") %>
+                    <%= link_to("fix 🏞️🎶 later", "/translated_stories/#{translated_story.id}/fix?delay=true", class: "btn btn-primary") %>
 
+              </p>
+<% end %>
 
         <!-- END header :) -->
         </div>
@@ -97,16 +100,11 @@
       <% else %>
         <!-- Odd: images to the left-->
           <div class="col-3">
-            <%= render_image_if_attached(sp.p_image1,  width: 250, style: 'float:right;height:250px;') %>
+            <%= render_image_if_attached(sp.p_image1,  width: 250, style: 'float:right;', class: 'rounded mx-auto d-block img-fluid img-thumbnail img-float float') %>height:250px;
           </div>
           <div class="col-9 h4"  style="font-family: Bradley Hand, cursive;">
             <%= link_to("🔷 #{sp.story_index}",sp)%>
             <%= render_mp3_button sp %>
-            <!--
-            <audio src="<%= rails_blob_path(sp.mp3_audio, type: "audio") rescue nil %>" type="audio/mpeg" controls>
-              Your browser does not support the audio element.
-            </audio>
--->
             <%= sp.cleaned_up_translated_text %>
           </div>
       <% end %>

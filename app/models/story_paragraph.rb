@@ -60,7 +60,14 @@ class StoryParagraph < ApplicationRecord
   end
 
   def attached?
+    puts 'DEPRECATED. Stop using this now that you also attach audios!'
     p_image1.attached?
+  end
+  def image_attached?
+    p_image1.attached?
+  end
+  def audio_attached?
+    mp3_audio.attached?
   end
 
   def after_creation_delayed_magic
@@ -140,7 +147,7 @@ class StoryParagraph < ApplicationRecord
     return :sp_not_found unless sp1.is_a?(StoryParagraph)
 
     raise "Unmatching story_index before copy!" unless sp1.story_index == self.story_index
-    
+
     # copy paro paro - https://stackoverflow.com/questions/54203886/how-to-copy-one-object-from-one-model-to-another-model-with-rails-activestorage
     puts("Saving image from primogenito SP.#{sp1.id} --> to this SP.#{id} - both with story_index = #{sp1.story_index}//#{self.story_index}")
     p_image1.attach(sp1.p_image1.blob) # attached_image === p_image1

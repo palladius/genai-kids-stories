@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_04_190853) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_08_185432) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -68,6 +68,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_04_190853) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "active", default: true
+    t.integer "score", default: 0
+    t.text "settings"
     t.index ["kid_id"], name: "index_stories_on_kid_id"
   end
 
@@ -109,6 +111,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_04_190853) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "translated_title"
+    t.integer "score", default: 0
+    t.text "settings"
     t.index "\"client_id\"", name: "index_translated_stories_on_client_id"
     t.index ["story_id"], name: "index_translated_stories_on_story_id"
     t.index ["user_id"], name: "index_translated_stories_on_user_id"

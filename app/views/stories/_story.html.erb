@@ -93,6 +93,7 @@ Translate to:
         <%#= image_tag(story.cover_image,  style: "float:right;height:150px;") if story.cover_image.attached? %>
         <%= render partial: 'attachments/image_card', locals: {image: story.cover_image }  %>
         <%= render partial: 'kids/floating_card', locals: {kid: story.kid }  %>
+        <p>Score: <kbd><%= story.score %></kbd></p>
       </div>
 </div>
 </div>

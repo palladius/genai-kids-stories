@@ -35,6 +35,7 @@ class Story < ApplicationRecord
   has_many_attached :paragraphs_images
 
   # validates :title, uniqueness: { scope: :user_id }
+  validates :score, numericality: { in: 0..100 }
 
   # https://stackoverflow.com/questions/33890458/difference-between-after-create-after-save-and-after-commit-in-rails-callbacks
   # after_create :delayed_job_genai_mag

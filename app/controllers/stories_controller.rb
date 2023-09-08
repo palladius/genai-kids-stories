@@ -7,7 +7,7 @@ class StoriesController < ApplicationController
 
   # GET /stories or /stories.json
   def index
-    @stories = Story.all.active.order('created_at DESC').paginate(page: params[:page], per_page: 9)
+    @stories = Story.all.active.order('score DESC, created_at DESC').paginate(page: params[:page], per_page: 9)
   end
 
   # GET /stories/1 or /stories/1.json
@@ -89,6 +89,6 @@ class StoriesController < ApplicationController
   # Only allow a list of trusted parameters through.
   def story_params
     params.require(:story).permit(:title, :genai_input, :genai_output, :genai_summary, :internal_notes, :user_id,
-                                  :kid_id, :cover_image, :additional_images, :active) # : []
+                                  :kid_id, :cover_image, :additional_images, :active, :score) # : []
   end
 end

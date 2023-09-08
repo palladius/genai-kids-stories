@@ -38,6 +38,7 @@
         id=#<%= story.id %>
         <%= link_to("✅ Show", story) %>
         <%= link_to('📝 Edit', edit_story_path(story))%>
+        <kbd><%= story.score %></kbd>
 
         <!-- No 💣 -->
         <!-- No IO either, too confusing

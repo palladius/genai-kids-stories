@@ -21,19 +21,7 @@
     <%= render 'layouts/header' %>
     <p style="color: green"><%= notice %></p>
     <%= yield %>
-    <div class='footer' style='align:center' ><center>
-      <hr/>
-      Welcome to <%= APP_NAME %>  v<b><%= APP_VERSION %></b>
-      env=<b class="debug" ><%= Rails.env %></b>
-      <br/>
-       <a href='/delayed_job/overview'>jobs</a>
-      AI_PROJECT_ID: <%=AI_PROJECT_ID%>
-      <a href="https://github.com/palladius/genai-kids-stories" class='btn' >🐙😼 Code</a>
-      (<kbd>v<%= GithubLatestVersion %></kbd>)
-      <br/>
-      <p class='btn btn-outline-success' >
-      ..strongly inspired by a <a href="https://glaforge.dev/posts/2023/06/08/creating-kids-stories-with-generative-ai/" >Tale</a> from my friend Guillaume
-      </p>
-      </center></div>
+    <%= render 'layouts/footer' %>
+
   </body>
 </html>

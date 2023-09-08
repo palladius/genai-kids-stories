@@ -24,6 +24,7 @@ class TranslatedStory < ApplicationRecord
   has_many :story_paragraphs, dependent: :destroy
 
   # validates :language, presence: true # A TS needs a Story and a Language, STRONGLY.
+  validates :score, numericality: { in: 0..100 }
   validates :language, presence: true,
                        format: { with: AVAIL_LANGUAGE_REGEX,
                                  message: AVAIL_LANGUAGE_MESSAGE }
@@ -33,8 +34,9 @@ class TranslatedStory < ApplicationRecord
                                  format: { with: /\w+-v([\d.]+)/,
                                            message: 'We only support simple-v0.1 and smart-v0.1 at the moment' }
   # , message: 'No spaces, just dash underscores and lower cases'
-  #
-  # DELETE IN CASCADE all of its
+
+  # https://api.rubyonrails.org/classes/ActiveRecord/Store.html
+  store :settings, accessors: [ :cache_images, :cache_audios,  ]
 
   after_create :fix_missing_attributes
   #  after_save :after_each_save_fix_cheap_missing_attributes
@@ -75,6 +77,7 @@ class TranslatedStory < ApplicationRecord
     self.kid_id ||= story.kid.id
     self.language ||= story.kid.favorite_language || DEFAULT_LANGUAGE # Italian :)
     self.paragraph_strategy ||= DEFAULT_PARAGRAPH_STRATEGY # 'smart-v0.1' # TODO export as
+    self.update_cache(save: false) unless settings.keys.include?('cache_audios') # either that or cache_images
     append_notes('TranslatedStory.fix_missing_attributes called')
     # delay(queue: 'translated_story::set_translated_title').set_translated_title if translated_title.to_s == ''
     set_translated_title if translated_title.to_s == ''
@@ -101,7 +104,7 @@ class TranslatedStory < ApplicationRecord
   end
 
   def paragraphs_with_no_images
-    story_paragraphs.map { |x| [x.id, x.attached?] }.select { |a| a[1] == false }.map { |a| a[0] }
+    story_paragraphs.map { |x| [x.id, x.image_attached?] }.select { |a| a[1] == false }.map { |a| a[0] }
   end
 
   def copy_images_from_primogenito!
@@ -133,6 +136,7 @@ class TranslatedStory < ApplicationRecord
   def fix
     fix_missing_attributes
     # Check children translated_stories for missing images
+    fix_missing_audios
     # =>  [[204, false]]
     if primogenito?
       puts "TS(#{self.id}).fix(): PRIMOGENITO: I'm generating missing images"
@@ -143,7 +147,7 @@ class TranslatedStory < ApplicationRecord
     else
       puts "TS(#{self.id}).fix(): SECONDOGENITO: I'm copying existing images from priomogenito.. and maybe fix him later"
       # TODO: fix primogenito first..
-      
+
       copy_images_from_primogenito!
     end
   end
@@ -223,6 +227,7 @@ class TranslatedStory < ApplicationRecord
     first_born
   end
 
+  # TODO move to helper like I did for the cache audio video :)
   def story_paragraphs_images_succint
     ret = 'images['
     story_paragraphs.each do |sp|
@@ -235,4 +240,28 @@ class TranslatedStory < ApplicationRecord
     puts 'This is HUGE! Fixing ALL Translated Stories! This should be a bkgd job, btw!'
     autofix
   end
+
+  # The good question is - when should I invoke this? After creation of object? After creation of paragraphs? We'll find the right oplace Im sure.
+  def update_cache(opts={})
+    opts_save = opts.fetch :save, true
+    puts "DEBUG: Updating the cache of images and videos of this TS. Note that audio belongs to translated story, while the images should be equal for all translations hence be attached to story itself."
+    self.cache_images = self.story_paragraphs.map{|sp| [sp.story_index, sp.id, sp.image_attached?] }
+    self.cache_audios = self.story_paragraphs.map{|sp| [sp.story_index, sp.id, sp.audio_attached?] }
+    self.save if opts_save
+  end
+
+  def fix_missing_audios
+    puts "DEB Lets see if this works.."
+    puts "TODO use cache if needed"
+    self.story_paragraphs.each { |sp|
+      if sp.audio_attached?
+        puts "ts(#{id}).fix_missing_audios(): Skipping as already audio attached: #{sp} sp.audio_attached? = #{sp.audio_attached?}"
+      else
+        sp.generate_audio_transcript()
+      end
+    }
+    update_cache
+    true
+  end
+
 end

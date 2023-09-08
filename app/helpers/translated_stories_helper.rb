@@ -5,6 +5,26 @@ module TranslatedStoriesHelper
 
   # #{ end }
   # </table>
+  #
+  #
+  # INPUT: [[1, 348, true], [2, 349, false], [3, 350, true], [4, 351, false], [5, 352, false], [6, 353, false], [7, 354, true]]
+  # OUTPUT:
+  def render_cached_info(ts, symbolic_method, opts={})
+    opts_verbose = opts.fetch :verbose, false
+    return :TODO if opts_verbose
+
+    ts_generic_array = ts.send(symbolic_method) # Gets array like
+    emoji_nope = '❌'
+    emoji_yup = case symbolic_method
+      when :cache_audios
+        '🎶'
+      when :cache_images
+        '🏞️'
+      else
+        'unrecognize'
+      end
+      content_tag 'tt', (ts_generic_array.map{|x| x[2] ? emoji_yup : emoji_nope}.join '') rescue '🤷🏼‍♀️'
+  end
 
   def render_working_story_paragraph(p)
     if p.nil?
