@@ -40,7 +40,8 @@
           </div>
           <div class="carousel-caption d-md-block small">
             <h5>🌁 Slide <%= ix + 1%> 🌁</h5>
-            <%= render_mp3_button sp, autoplay: true %>
+            <!-- if you put autoplay true, ALL audios play at same time and its HORRIBLE :) -->
+            <%= render_mp3_button sp, autoplay: false %>
             <p class='text-dark h5' ><%= sp.cleaned_up_translated_text %></p>
 
           </div>
