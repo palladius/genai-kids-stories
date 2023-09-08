@@ -41,16 +41,22 @@
             <strong>User:</strong>
             <%= translated_story.user rescue $! %>
           </p>
-          <p>
-            <strong>Paragraphs:</strong>
-            <%= translated_story.story_paragraphs.count rescue $! %>
-          </p>
 
 
           <p>
             <strong>Summary:</strong>
             <%= translated_story.story.genai_summary rescue $! %>
           </p>
+
+          <p>
+            <strong>Paragraphs:</strong>
+            <%= translated_story.story_paragraphs.count rescue $! %>
+          </p>
+          <p>
+            <strong>Image/Audio CompletionRate:</strong>
+            <%= translated_story.completion_rate %> /  <%= 2 * translated_story.story_paragraphs.count rescue $! %>
+          </p>
+
           <p>
             <strong>Settings : cache_images</strong>
             <%#= translated_story.cache_images rescue $! %>
@@ -73,7 +79,8 @@
             <%= translated_story.score %>
           </p>
 
-<% if true # (translated_story.paragraphs_with_no_images.size > 0 rescue true) %>
+<%# if true # (translated_story.paragraphs_with_no_images.size > 0 rescue true) %>
+<% unless ( translated_story.completion_rate ==  2 * translated_story.story_paragraphs.count ) %>
   <!-- Some pics are missing, let me show you the button to fix -->
               <p>
                   <%= link_to("fix 🏞️🎶 now", "/translated_stories/#{translated_story.id}/fix", class: "btn btn-info") %>

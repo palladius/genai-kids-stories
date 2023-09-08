@@ -36,7 +36,7 @@ class TranslatedStory < ApplicationRecord
   # , message: 'No spaces, just dash underscores and lower cases'
 
   # https://api.rubyonrails.org/classes/ActiveRecord/Store.html
-  store :settings, accessors: [ :cache_images, :cache_audios,  ]
+  store :settings, accessors: [ :cache_images, :cache_audios, :completion_rate ]
 
   after_create :fix_missing_attributes
   #  after_save :after_each_save_fix_cheap_missing_attributes
@@ -77,10 +77,10 @@ class TranslatedStory < ApplicationRecord
     self.kid_id ||= story.kid.id
     self.language ||= story.kid.favorite_language || DEFAULT_LANGUAGE # Italian :)
     self.paragraph_strategy ||= DEFAULT_PARAGRAPH_STRATEGY # 'smart-v0.1' # TODO export as
-    self.update_cache(save: false) unless settings.keys.include?('cache_audios') # either that or cache_images
     append_notes('TranslatedStory.fix_missing_attributes called')
     # delay(queue: 'translated_story::set_translated_title').set_translated_title if translated_title.to_s == ''
     set_translated_title if translated_title.to_s == ''
+    self.update_cache(save: true) # unless settings.keys.include?('cache_audios') and settings.keys.include?('cache_images')  # either that or cache_images
     save
   end
 
@@ -247,6 +247,8 @@ class TranslatedStory < ApplicationRecord
     puts "DEBUG: Updating the cache of images and videos of this TS. Note that audio belongs to translated story, while the images should be equal for all translations hence be attached to story itself."
     self.cache_images = self.story_paragraphs.map{|sp| [sp.story_index, sp.id, sp.image_attached?] }
     self.cache_audios = self.story_paragraphs.map{|sp| [sp.story_index, sp.id, sp.audio_attached?] }
+    # 42 # TODO count od the above
+    self.completion_rate =  self.cache_images.count{|x| x[2] == true } +  self.cache_audios.count{|x| x[2] == true }
     self.save if opts_save
   end
 
