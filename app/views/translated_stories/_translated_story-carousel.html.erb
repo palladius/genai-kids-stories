@@ -40,7 +40,9 @@
           </div>
           <div class="carousel-caption d-md-block small">
             <h5>🌁 Slide <%= ix + 1%> 🌁</h5>
+            <%= render_mp3_button sp, autoplay: true %>
             <p class='text-dark h5' ><%= sp.cleaned_up_translated_text %></p>
+
           </div>
 
       </div>
@@ -65,7 +67,8 @@
     </em></p>
     <ul class="list-group small">
       <% @story_paragraphs.each_with_index do |sp, ix| %>
-        <li class="list-group-item "><%= sp.cleaned_up_translated_text %></li>
+        <li class="list-group-item "><%= sp.cleaned_up_translated_text %> <%= render_mp3_button sp %>
+</li>
       <% end %>
     </ul>
   </div>

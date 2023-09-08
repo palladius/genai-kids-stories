@@ -26,10 +26,11 @@
 
     <div>
       <%= form.label :story_id, style: "display: block" %>
-      <%#= form.select :story_id, options_for_select(Story.all.collect{ |story| [story.title, story.id] }), :selected => params['story_id'], {} %>
+      <%#= form.select :story_id, options_for_select(Story.all.collect{ |story| [story.title, story.id] }), selected: params['story_id'], {} %>
       <%= form.select :story_id, options_for_select(
                                                     Story.all.collect{ |story| [story.title, story.id] },
-                                                    params['story_id']), {}, {}
+                                                     @translated_story.story_id),
+                                                     {} , {}
       %>
     </div>
     <div>
@@ -48,6 +49,11 @@
       <%= form.text_field :paragraph_strategy, required: true, class: 'form-control', value:Story.default_paragraph_strategy %>
 
     </div>
+
+   <div>
+    <%= form.label :score, style: "display: block", class: "form-label" %>
+    <%= form.number_field :score %>
+  </div>
 
     <div>
       <%= form.label :internal_notes, style: "display: block" %>

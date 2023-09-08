@@ -41,6 +41,11 @@
             <strong>User:</strong>
             <%= translated_story.user rescue $! %>
           </p>
+          <p>
+            <strong>Paragraphs:</strong>
+            <%= translated_story.story_paragraphs.count rescue $! %>
+          </p>
+
 
           <p>
             <strong>Summary:</strong>
@@ -56,12 +61,19 @@
             <%#= translated_story.cache_audios rescue $! %>
             <%= render_cached_info(translated_story, :cache_audios) %>
           </p>
+
+
           <p>
             <strong>Lang</strong>
             <%= translated_story.language %> (note Gaelic not supported)
           </p>
 
-<% if (translated_story.paragraphs_with_no_images.size > 0 rescue true) %>
+          <p>
+            <strong>Score</strong>
+            <%= translated_story.score %>
+          </p>
+
+<% if true # (translated_story.paragraphs_with_no_images.size > 0 rescue true) %>
   <!-- Some pics are missing, let me show you the button to fix -->
               <p>
                   <%= link_to("fix 🏞️🎶 now", "/translated_stories/#{translated_story.id}/fix", class: "btn btn-info") %>
