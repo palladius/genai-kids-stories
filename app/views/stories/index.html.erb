@@ -2,15 +2,14 @@
 
 <%= link_to "New #{Story.emoji} story", new_story_path %>
 <!-- pagination -->
-<%= render 'stories/pagination_tab' %>
+<%= render 'layouts/pagination_tab', locals: {entity: 'stories' } %>
 
 <div class="container text-center">
   <div class="row">
     <%@stories.each_with_index do |x, ix| %>
-    <div class="col">
-      <%#= render(partial: "kids/bootstrap_show", locals: {kid: kid}) rescue "Erore #{$!}" %>
-      <%= render 'stories/bootstrap_index_card', story: x, index: ix %>
-    </div>
+      <div class="col">
+        <%= render 'stories/bootstrap_index_card', story: x, index: ix %>
+      </div>
     <% end %>
   </div>
 </div>

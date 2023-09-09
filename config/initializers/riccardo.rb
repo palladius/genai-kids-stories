@@ -99,4 +99,5 @@ class Application < Rails::Application
 end
 
 # This is SOOOO brilliant! :)
-GithubLatestVersion = `curl https://raw.githubusercontent.com/palladius/genai-kids-stories/main/VERSION 2>/dev/null`.chomp
+GithubLatestVersion = `curl https://raw.githubusercontent.com/palladius/genai-kids-stories/main/VERSION 2>/dev/null`.chomp rescue nil
+GithubLatestVersion ||= '?!?'

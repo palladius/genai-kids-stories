@@ -2,27 +2,32 @@
 
 <h1>Translated stories</h1>
 
+<%= render partial: 'layouts/pagination_tab', locals: {entity: 'translated_stories' } %>
+
 <div id="translated_stories">
     <table>
       <th>Links
       <th>Kiddo
+      <th>Score
       <th>Translated Story
       <th>Original Story
   <% @translated_stories.each do |translated_story| %>
     <%#= render translated_story %>
     <tr>
       <td>
-      <%= link_to "👁️", translated_story %>
-      <%= link_to "🔏", edit_translated_story_path(translated_story) %>
-      <%= button_to "💣", translated_story, method: :delete %>
-
-    <td>
-      <%= link_to translated_story.kid,translated_story.kid %>
-    <td>
-      <%= link_to translated_story,translated_story %>
-    <td>
-      <%= link_to translated_story.story,translated_story.story %>
-    </p>
+        <%= link_to "👁️", translated_story %>
+        <%= link_to "🔏", edit_translated_story_path(translated_story) %>
+        <%= button_to "💣", translated_story, method: :delete %>
+      <td>
+        <%= link_to translated_story.kid,translated_story.kid %>
+      <td>
+        <kbd class='bg-primary' ><%= translated_story.score %></kbd>
+      <td>
+        <%= link_to translated_story,translated_story %>
+      <td>
+        <kbd class='bg-primary' ><%= translated_story.story.score %></kbd>
+        <%= link_to translated_story.story,translated_story.story %>
+    </tr>
   <% end %>
   </table>
 </div>

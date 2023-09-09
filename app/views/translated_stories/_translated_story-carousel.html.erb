@@ -5,73 +5,70 @@
 <div id="<%= dom_id translated_story %>">
   <h1>🎠 <%= waving_flag translated_story.language %>
     <%= translated_story.translated_title %>
-    </h1>
+  </h1>
 
   <div class='200-px-wide' >
-  <div id="carouselExampleCaptions" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-interval="10000" data-bs-wrap="false" >
-    <div class="carousel-indicators">
-      <% @story_paragraphs.each_with_index do |sp, ix|
-        #addon_if_first = (ix==0) ? ' aria-current=true class=active ' : ''
-      %>
-        <% if ix == 0 %>
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <% else  %>
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="<%= ix %>" aria-label="Slide <%= ix+1 %>"></button>
-        <% end %>
-      <% end %>
+    <div id="carouselExampleCaptions" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-interval="10000" data-bs-wrap="false" >
+      <div class="carousel-indicators">
+          <% @story_paragraphs.each_with_index do |sp, ix| %>
+            <% if ix == 0 %>
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <% else  %>
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="<%= ix %>" aria-label="Slide <%= ix+1 %>"></button>
+            <% end %>
+          <% end %>
 
-    </div>
-    <div class="carousel-inner">
-      <!-- start of carousel https://getbootstrap.com/docs/5.0/components/carousel/ -->
-      <% @story_paragraphs.each_with_index do |sp, ix|
-          addon_if_first = (ix==0) ? ' active ' : ''
-      %>
-        <% if ix == 0 %>
-          <div class="carousel-item active">
-        <% else %>
-          <div class="carousel-item">
-        <% end %>
-          <div class="image-container" >
-          <!-- from Bard -->
-            <%= image_tag(sp.p_image1,
-                  class: "d-block w-100 ricc-transparent",
-                  alt: 'Image Descr',
-                  style: 'opacity: 0.5;' ) if  sp.p_image1.attached?  %>
+        </div>
+        <div class="carousel-inner">
+          <!-- start of carousel https://getbootstrap.com/docs/5.0/components/carousel/ -->
+          <% @story_paragraphs.each_with_index do |sp, ix|
+              addon_if_first = (ix==0) ? ' active ' : ''
+          %>
+            <% if ix == 0 %>
+              <div class="carousel-item active">
+            <% else %>
+              <div class="carousel-item">
+            <% end %>
+              <div class="image-container" >
+              <!-- from Bard -->
+                <%= image_tag(sp.p_image1,
+                      class: "d-block w-100 ricc-transparent",
+                      alt: 'Image Descr',
+                      style: 'opacity: 0.5;' ) if  sp.p_image1.attached?  %>
+              </div>
+              <div class="carousel-caption d-md-block small">
+                <h5>🌁 Slide <%= ix + 1%> 🌁</h5>
+                <!-- if you put autoplay true, ALL audios play at same time and its HORRIBLE :) -->
+                <%= render_mp3_button sp, autoplay: false %>
+                <p class='text-dark h5' ><%= sp.cleaned_up_translated_text %></p>
+
+              </div>
+
           </div>
-          <div class="carousel-caption d-md-block small">
-            <h5>🌁 Slide <%= ix + 1%> 🌁</h5>
-            <!-- if you put autoplay true, ALL audios play at same time and its HORRIBLE :) -->
-            <%= render_mp3_button sp, autoplay: false %>
-            <p class='text-dark h5' ><%= sp.cleaned_up_translated_text %></p>
-
-          </div>
-
+          <% end %>
+          <!-- Note:
+          the 'd-none' makes ot disappear if too small, see https://stackoverflow.com/questions/70484901/bootstrap-5-carousel-caption-text-disappears-when-the-website-is-seen-on-a-small
+          -->
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
-      <% end %>
-      <!-- Note:
-      the 'd-none' makes ot disappear if too small, see https://stackoverflow.com/questions/70484901/bootstrap-5-carousel-caption-text-disappears-when-the-website-is-seen-on-a-small
-      -->
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-  </div>
-  <div>
-    <p class="lead"><em>
-      Dear parent, if you cant read them on the carousel (requires a big screen for now) see translated story here too..
-    </em></p>
-    <ul class="list-group small">
-      <% @story_paragraphs.each_with_index do |sp, ix| %>
-        <li class="list-group-item "><%= sp.cleaned_up_translated_text %> <%= render_mp3_button sp %>
-</li>
-      <% end %>
-    </ul>
-  </div>
-
+    <div>
+      <p class="lead"><em>
+        Dear parent, if you cant read them on the carousel (requires a big screen for now) see translated story here too..
+      </em></p>
+      <ul class="list-group small">
+        <% @story_paragraphs.each_with_index do |sp, ix| %>
+          <li class="list-group-item "><%= sp.cleaned_up_translated_text %> <%= render_mp3_button sp %>
+      </li>
+        <% end %>
+      </ul>
+    </div>
 </div>

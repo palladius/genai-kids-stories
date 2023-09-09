@@ -2,8 +2,16 @@ class TranslatedStoriesController < ApplicationController
   before_action :set_translated_story, only: %i[show edit update destroy]
 
   # GET /translated_stories or /translated_stories.json
+  #     limit_per_page = 6
+  # @stories = Story.all.active.order('score DESC, created_at DESC').paginate(page: params[:page], per_page: limit_per_page)
+  # @total_pages = @stories.count / limit_per_page
+
   def index
-    @translated_stories = TranslatedStory.all
+    limit_per_page = 10
+    @pluralized_entity = 'translated_stories'
+    #@translated_stories = TranslatedStory.all
+    @translated_stories = TranslatedStory.all.order('score DESC, created_at DESC').paginate(page: params[:page], per_page: limit_per_page)
+    @total_pages = @translated_stories.count / limit_per_page
   end
 
   # GET /translated_stories/1 or /translated_stories/1.json

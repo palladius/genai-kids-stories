@@ -1,3 +1,4 @@
+2023-09-09 0.12.03 Refactored pagination to also serve TranslatedStories
 2023-09-09 0.12.03 Added story pagination and found great OLD stories!
 2023-09-08 0.12.02 Fixed default in EDIT TS!! Woohoo!
 2023-09-08 0.12.01 Storing Score and Settings for TS and Story

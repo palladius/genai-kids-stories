@@ -17,9 +17,9 @@ module TranslatedStoriesHelper
     emoji_nope = '❌'
     emoji_yup = case symbolic_method
       when :cache_audios
-        '🎶'
+        '🎶' # missing audio could be: 🔕 (awesome)
       when :cache_images
-        '🏞️'
+        '🏞️' # missing image could be: 🌌 (meh)
       else
         'unrecognize'
       end
