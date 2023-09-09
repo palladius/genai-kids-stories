@@ -7,7 +7,9 @@ class StoriesController < ApplicationController
 
   # GET /stories or /stories.json
   def index
-    @stories = Story.all.active.order('score DESC, created_at DESC').paginate(page: params[:page], per_page: 9)
+    limit_per_page = 6
+    @stories = Story.all.active.order('score DESC, created_at DESC').paginate(page: params[:page], per_page: limit_per_page)
+    @total_pages = @stories.count / limit_per_page
   end
 
   # GET /stories/1 or /stories/1.json
