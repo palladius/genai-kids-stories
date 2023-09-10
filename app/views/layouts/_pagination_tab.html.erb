@@ -6,6 +6,7 @@
   pluralized_entity = @pluralized_entity # todo autodetect from current link: from local: entity
   current_page_number =  (params[:page] || 1).to_i
   total_pages = @total_pages || 100 # TODO in controller
+  #debug = false
 
   def entity_li_by_page_number(pluralized_entity, pn, opts={})
     opts_label = opts.fetch(:label, pn) # label defaults to PageNumber
@@ -21,19 +22,22 @@
 %>
 <div class="text-center text-xs-center" >
   <div aria-label='Page navigation for stories' class="text-center text-xs-center" >
-   < ! --  DEBUG:
+   <!--  DEBUG:
     pluralized_entity: <b><%= pluralized_entity %></b>
     current_page_number: <b><%= current_page_number %></b>
     partial_entity: <b><%= partial_entity %></b>
-    - - >
+
+    , label: '1 (First)'
+    label: "#{total_pages} (Last)")
+    -->
     <ul class='pagination justify-content-center'  >
-      <%= entity_li_by_page_number(pluralized_entity, 1, label: '1 (First)') unless current_page_number <= 1 %>
+      <%= entity_li_by_page_number(pluralized_entity, 1) unless current_page_number <= 1 %>
       <%= entity_li_by_page_number(pluralized_entity, current_page_number-2, label: '&laquo;') unless current_page_number <= 3 %>
       <%= entity_li_by_page_number(pluralized_entity, current_page_number-1) unless current_page_number <= 2 %>
       <%= entity_li_by_page_number(pluralized_entity, current_page_number, grayed_out: true) %>
       <%= entity_li_by_page_number(pluralized_entity, current_page_number+1) unless current_page_number+2 > total_pages %>
       <%= entity_li_by_page_number(pluralized_entity, current_page_number+2, label: '&raquo;') unless current_page_number+2 >= total_pages %>
-      <%= entity_li_by_page_number(pluralized_entity, total_pages, label: "#{total_pages} (Last)")  unless current_page_number ==  total_pages %>
+      <%= entity_li_by_page_number(pluralized_entity, total_pages) unless current_page_number ==  total_pages %>
     </ul>
   </div>
 </div>

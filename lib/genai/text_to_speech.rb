@@ -28,7 +28,8 @@ def synthesize_speech(str, lang='en-gb', opts={})
       # "Riccardo is a mobile operating system developed by Google, based on the Linux kernel and designed primarily for touchscreen mobile devices such as smartphones and tablets."
     },
     'voice': {
-      language_code: lang, # "en-gb",
+      # TOSO iso_language_code
+      language_code: iso_language_code(lang), # "en-gb",
       #name: "en-GB-Standard-A",
       ssml_gender: "FEMALE"
     },
