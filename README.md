@@ -125,6 +125,7 @@ rails g migration addTranslatedTitleToTranslatedStory
     translated_title:string
 
 rails g migration addActiveToStory active:boolean
+rails g migration addInterestsToKid interests:text
 ```
 
 ## Build on Google

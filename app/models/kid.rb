@@ -13,7 +13,7 @@
 # favorite_language: string)
 #
 # , :active
-
+# Added :interests (text)
 # end
 # Storage:
 # * `avatar` (with thumnb)
@@ -22,6 +22,7 @@ FIXTURE_DIR ||= "#{Rails.root}/db/fixtures/images/".freeze
 
 class Kid < ApplicationRecord
   include AiImageable
+  DefaultInterests = 'rainbows, unicorns, the number FortiTwo'
 
   # For Story and Kid, maybe I should raise a Concern?? :)
   scope :active, -> { where('active = TRUE') }
@@ -34,6 +35,7 @@ class Kid < ApplicationRecord
   validates :favorite_language, presence: true, format: { with: AVAIL_LANGUAGE_REGEX,
                                                           message: 'We only support (2) Italian, Spanish, portuguese, german, english, Russian and Japanese now. Ok now also 🇫🇷 :)' }
 
+  before_save :set_interests_if_unset
   # has_one_attached :avatar, service: :local
 
   has_one_attached :avatar do |attachable|
@@ -86,6 +88,11 @@ class Kid < ApplicationRecord
   def about
     #   "#{name} is a #{age}-year-old #{visual_description}"
     "#{name} is a #{visual_description}"
+  end
+  def set_interests_if_unset
+    if self.interests.to_s.length < 3
+      self.interests = DefaultInterests
+    end
   end
 
   def self.emoji
