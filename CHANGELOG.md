@@ -1,4 +1,4 @@
-
+2023-09-13 0.13.04 bugfix, moved story score from 0..100 to -100..100 (so now default=0 has becom from shit to average joe)
 2023-09-13 0.13.03 Fixing bugs after this big change. Now a new story triggers queued creation of English :) so English is a 
                    litmus test for bkg jobs working :)
 2023-09-13 0.13.02 Adding EN as possible translation. And adding a simple function to translate to 'en' :)

@@ -24,7 +24,7 @@ class TranslatedStory < ApplicationRecord
   has_many :story_paragraphs, dependent: :destroy
 
   # validates :language, presence: true # A TS needs a Story and a Language, STRONGLY.
-  validates :score, numericality: { in: 0..100 }
+  validates :score, numericality: { in:  -100..100 }
   validates :language, presence: true,
                        format: { with: AVAIL_LANGUAGE_REGEX,
                                  message: AVAIL_LANGUAGE_MESSAGE }
@@ -121,7 +121,7 @@ class TranslatedStory < ApplicationRecord
   end
 
   def excerpt(max_size = 35)
-    flag + ' ' + translated_title.gsub('Translation of:', '').first(max_size) + '..'
+    flag + ' ' + translated_title.to_s.gsub('Translation of:', '').first(max_size) + '..'
   end
 
   def fix!

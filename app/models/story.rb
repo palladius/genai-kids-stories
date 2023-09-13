@@ -35,7 +35,7 @@ class Story < ApplicationRecord
   has_many_attached :paragraphs_images
 
   # validates :title, uniqueness: { scope: :user_id }
-  validates :score, numericality: { in: 0..100 }
+  validates :score, numericality: { in: -100..100 }
 
   # https://stackoverflow.com/questions/33890458/difference-between-after-create-after-save-and-after-commit-in-rails-callbacks
   # after_create :delayed_job_genai_mag
@@ -393,7 +393,7 @@ class Story < ApplicationRecord
     unless parent_ts.instance_of?(::TranslatedStory)
       # if u dont find it, create it
       parent_ts = TranslatedStory.create(
-        name: "[auto generated from] #{self}",
+        name: "[obsoletely auto-generated from] #{self}",
         user: begin
           current_user
         rescue StandardError
@@ -402,7 +402,7 @@ class Story < ApplicationRecord
         language: lang,
         story_id: id,
         kid_id: kid.id,
-        internal_notes: 'Generated randomly before going to work as part of Story create paragraphs since otherwise createpagraphs is broken since now its a needed field :)'
+        internal_notes: 'Generated randomly before going to work as part of Story create paragraphs since otherwise CreatePagraphs is broken since now its a needed field :)'
       )
     end
     puts "Errors for Parent TS: #{parent_ts.errors}"
