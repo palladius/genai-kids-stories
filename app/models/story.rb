@@ -114,17 +114,17 @@ class Story < ApplicationRecord
       genai_model: TranslatedStory.default_genai_model,
     )
     puts("Created ts: #{ts}")
-    n_errors = ts.errors.count 
-    if n_errors > 0 
+    n_errors = ts.errors.count
+    if n_errors > 0
       puts 'There were some errors:'
-      puts("Story(#{id}).translate_to(#{lang}) Errors creating ts: '''#{ts.errors}'''")
-    else 
+      puts("Story(#{id}).translate_to(#{lang}) Errors creating ts: '#{ts.errors.full_messages}'")
+    else
       # All good
       puts('All good -> generating now also the poly paragraphs :)')
       ts.delay(queue: 'story::translate_to::after').generate_polymorphic_paragraphs()
     end
     return ts
-  end 
+  end
 
   def cleanup_story_dependencies
     story_paragraphs.each do |p|
@@ -297,7 +297,7 @@ class Story < ApplicationRecord
       puts "🤖40🤖 Exciting! [#{Story.emoji}.#{id}] Trying to compute images with Palm API (implemented)"
       ret40 = genai_compute_images!(gcp_opts)
     end
-    
+
     # After local Story creation has terminated I trigger a TranslatedStory in English in queue mode
     self.delay(queue: 'Story::genai_magic::translate_to').translate_to(:en)
 
@@ -312,10 +312,11 @@ class Story < ApplicationRecord
       logger.error('Sorry I couldnt generate anything.')
       return nil
     end
-    _, msg = x
+    response, msg = x
+    puts("genai_compute_output!() returned: #{response} (#{response.class})")
     # TODO: verify that [0] is 200 ok :) #<Net::HTTPOK 200 OK readbody=true>
     self.genai_output = msg
-    append_notes 'genai_compute_output() Invoked'
+    append_notes "genai_compute_output(#{APP_VERSION}) Invoked"
     save!
   end
 
@@ -340,7 +341,11 @@ class Story < ApplicationRecord
 
     puts("genai_autogenerate_input!(): #{kid.about}")
     append_notes "genai_autogenerate_input called on #{kid}"
-    self.genai_input = guillaume_kids_story_in_five_acts(kid_description: kid.about)
+    self.genai_input = guillaume_kids_story_in_five_acts(
+      kid_visual_description: kid.visual_description,
+      kid_name: kid.name,
+      kid_interests: kid.interests,
+    )
     save!
   end
 

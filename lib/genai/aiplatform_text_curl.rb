@@ -136,13 +136,18 @@ module Genai
 
     # https://medium.datadriveninvestor.com/ruby-keyword-arguments-817ed243b4e2
     def guillaume_kids_story_in_five_acts(opts = {})
-      # kid_description:, character:, setting:, plot:)
-      kid_description = opts.fetch :kid_description, 'A blue-eyed afroamerican 6-year-old red-haired girl called Foobar Baz' # if kid_description.nil?
+      kid_visual_description = opts.fetch :kid_visual_description, 'A blue-eyed afroamerican 6-year-old red-haired girl called Foobar Baz' # if kid_visual_description.nil?
+      kid_interests = opts.fetch :kid_interests, nil # if kid_description.nil?
+      kid_name = opts.fetch :kid_name, 'ONihil'
       character = opts.fetch :character, pickARandomElementOf(CHARACTERS) #   if character.nil?
       setting = opts.fetch :setting, pickARandomElementOf(SETTINGS) #  if setting.nil?
       plot = opts.fetch :plot, pickARandomElementOf(PLOTS) #  if plot.nil?
+
+      kid_interests_optional_addon = kid_interests ?
+        ". Those stories should involve at least ONE of these elements: #{kid_interests}" :
+        '' #
       "You are a creative and passionate story teller for young kids.
-          Kids love hearing about the stories you invent.
+          Kids love hearing about the stories you invent#{kid_interests_optional_addon}.
 
           Your stories are split into five acts as it follows (please stick to this plan and enumerate those explicitly):
           - Act 1 : Sets up the story providing any contextual background the reader needs, but most importantly it contains the inciting moment. This incident sets the story in motion. An incident forces the protagonist to react. It requires resolution, producing narrative tension.
@@ -152,13 +157,14 @@ module Genai
           - Act 5 : This is the resolution of the story where conflicts are resolved and loose ends tied up. This is the moment of emotional release for the reader.
 
           Generate a kid story in five acts, where:
-          - The protagonist is: #{character}.
+          - The protagonist is: #{character}, and their name is #{kid_name}
           - The action takes place in: #{setting}.
           - Plot is: #{plot}.
-          - My kid is #{kid_description}.
-      "
+          "
+      #          - My kid is #{kid_description}. Irrelevant..
     end
 
+    # returns [response, predicted_content]
     def ai_curl_by_content(content, _region = 'us-central1', opts = {})
       # options
       opts_debug = opts.fetch 'DEBUG', false
@@ -238,8 +244,7 @@ module Genai
         ],
         "parameters": {
           "sampleCount": 8, # 8 is max :)
-          # "aspectRatio": "9:16",
-          "aspectRatio": '1:1',
+          "aspectRatio": '1:1', # also: "9:16",
           "negativePrompt": 'blurry'
         }
       }

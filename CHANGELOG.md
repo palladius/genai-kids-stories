@@ -1,5 +1,6 @@
+2023-09-13 0.13.05 patching finally the INTERESTS and making the Txt AI call smarter. Various fixes.
 2023-09-13 0.13.04 bugfix, moved story score from 0..100 to -100..100 (so now default=0 has becom from shit to average joe)
-2023-09-13 0.13.03 Fixing bugs after this big change. Now a new story triggers queued creation of English :) so English is a 
+2023-09-13 0.13.03 Fixing bugs after this big change. Now a new story triggers queued creation of English :) so English is a
                    litmus test for bkg jobs working :)
 2023-09-13 0.13.02 Adding EN as possible translation. And adding a simple function to translate to 'en' :)
 2023-09-11 0.13.01 Added interests to Kid (which has broken export to db/schema i found out!) on vacation to EuropaPark :)
@@ -32,3 +33,7 @@ P2 | 20230913 | I observed a lot of images are repeated, I believe there's a bug
 * Add interests to the story template in a smart way.
 * Add TranslatedStory in English as a delayed task upon completion of creation of a story. Sth like *after_save*
 * Add seamless login. Many things depend on user_id and should be made mandatory..
+
+From TODOs on Mac at home:
+
+* both done

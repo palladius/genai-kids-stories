@@ -25,7 +25,6 @@ module AiImageable
       ai_ret = ai_curl_images_by_content_v2(opts_model_version, description, gcp_opts) # .merge(mock: true))
       _, images, ret_hash = ai_ret
 
-
       return false if images.nil?
       return false if images == []
 

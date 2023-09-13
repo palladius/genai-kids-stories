@@ -92,6 +92,7 @@ class StoriesController < ApplicationController
   # Only allow a list of trusted parameters through.
   def story_params
     params.require(:story).permit(:title, :genai_input, :genai_output, :genai_summary, :internal_notes, :user_id,
+      # note on []: https://github.com/rails/rails/issues/35072
                                   :kid_id, :cover_image, :additional_images, :active, :score) # : []
   end
 end
