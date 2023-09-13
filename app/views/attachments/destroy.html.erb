@@ -1,0 +1,9 @@
+
+
+@image = <%= @image %>
+params[:signed_id] <%= params[:signed_id] %>
+
+
+<h2>Image</h2>
+
+<%= render partial: 'attachments/image_card', locals: {image: @image} %>

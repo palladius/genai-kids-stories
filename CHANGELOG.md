@@ -1,3 +1,4 @@
+2023-09-13 0.13.06 Images on Stories are now destroyable..
 2023-09-13 0.13.05 patching finally the INTERESTS and making the Txt AI call smarter. Various fixes.
 2023-09-13 0.13.04 bugfix, moved story score from 0..100 to -100..100 (so now default=0 has becom from shit to average joe)
 2023-09-13 0.13.03 Fixing bugs after this big change. Now a new story triggers queued creation of English :) so English is a

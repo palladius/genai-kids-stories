@@ -146,6 +146,7 @@ module Genai
       kid_interests_optional_addon = kid_interests ?
         ". Those stories should involve at least ONE of these elements: #{kid_interests}" :
         '' #
+
       "You are a creative and passionate story teller for young kids.
           Kids love hearing about the stories you invent#{kid_interests_optional_addon}.
 

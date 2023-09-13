@@ -19,12 +19,20 @@ class AttachmentsController < ApplicationController
     #   # Answer 28 .3 :)
     #   @image = ActiveStorage::Blob.find(params[:id])
     # end
-    puts "DEBUG #AutoSet image: #{ @image }"
-    ret = @image.purge # rescue nil
-    puts "DESTROY: ret = #{ret }"
-    return redirect_to(params[:return_to], notice: 'ReturnTo is valid. Image = @image') if params[:return_to]
+    @image = ActiveStorage::Blob.find_signed(params[:signed_id])
 
-    redirect_to(stories_url, notice: "Nope no return_to, sorry. story: #{@story}" )
+    puts "DEBUG #AutoSet image: #{ @image }"
+    #@ret = @image.purge # doesnt work
+
+    #https://stackoverflow.com/questions/49515529/rails-5-2-active-storage-purging-deleting-attachments
+    @ret = @image.attachments.first.purge rescue nil
+
+    #@ret = @image.purge
+    puts "DESTROY: ret = #{@ret }"
+    #return redirect_to(params[:return_to], notice: 'ReturnTo is valid. Image = @image') if params[:return_to]
+    #redirect_to root_path
+    #redirect_to '/attachments/destroy', notice: "Nope no return_to, sorry. story: #{@story}. Image: #{@image}. PurgeRet = #{@ret}"
+    #redirect_to(stories_url, notice: "Nope no return_to, sorry. story: #{@story}. Image: #{@image}. PurgeRet = #{@ret}" )
     #redirect_to( session.delete(:return_to)) # rescue redirect_to(stories_url)# , notice: 'sobenme'
   end
 

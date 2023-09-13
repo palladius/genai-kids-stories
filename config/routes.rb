@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   # WIP
   resources :attachments do
     member do
+      get :destroy
       delete :destroy
       delete :regenerate
       delete :destroy_all
