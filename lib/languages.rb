@@ -3,8 +3,8 @@
 # https://cloud.google.com/text-to-speech/docs/voices
 #
 # TODO: DRY these two
-AVAIL_LANGUAGES =       %w[de es fr ga id it ja hi ko pl pt ru th tr vi zh].sort.freeze
-AVAIL_LANGUAGE_REGEX = /\A(de|es|fr|ga|id|it|ja|hi|ko|pl|pt|ru|th|tr|vi|zh)\z/i
+AVAIL_LANGUAGES =       %w[de en es fr ga id it ja hi ko pl pt ru th tr vi zh].sort.freeze
+AVAIL_LANGUAGE_REGEX = /\A(de|en|es|fr|ga|id|it|ja|hi|ko|pl|pt|ru|th|tr|vi|zh)\z/i
 
 AVAIL_LANGUAGE_MESSAGE = 'We only support Latin languages (IT ES FR PT), Gaelic, German, English, Turkish, Russian, Japanese and a bunch of Asian languages. Wow.'
 
@@ -13,40 +13,42 @@ AVAIL_LANGUAGE_MESSAGE = 'We only support Latin languages (IT ES FR PT), Gaelic,
 
 def waving_flag(language)
   case language
-  when 'fr'
-    '🇫🇷'
-  when 'ja'
-    '🇯🇵'
-  when 'de'
-    '🇩🇪'
-  when 'es'
-    '🇪🇸' # Argentina: '🇦🇷'
-  when 'ga'
-    '🇮🇪'
-  when 'hi' # hindi
-    '🇮🇳'
-  when 'id' # indonesia
-    '🇮🇩'
-  when 'it'
-    '🇮🇹'
-  when 'ko'
-    '🇰🇷'
-  when 'pl'
-    '🇵🇱'
-  when 'pt'
-    '🇧🇷'
-  when 'ru'
-    '🇷🇺'
-  when 'th'
-    '🇹🇭'
-  when 'tr'
-    '🇹🇷'
-  when 'vi'
-    '🇻🇳'
-  when 'zh' # Simplified chinese: https://cloud.google.com/translate/docs/languages
-    '🇨🇳' # chinese flag '🇨🇳'
-  else
-    "Unknown flag4lang='#{language}'"
+    when 'fr'
+      '🇫🇷'
+    when 'ja'
+      '🇯🇵'
+    when 'de'
+      '🇩🇪'
+    when 'en'
+      '🇬🇧'
+    when 'es'
+      '🇪🇸' # Argentina: '🇦🇷'
+    when 'ga'
+      '🇮🇪'
+    when 'hi' # hindi
+      '🇮🇳'
+    when 'id' # indonesia
+      '🇮🇩'
+    when 'it'
+      '🇮🇹'
+    when 'ko'
+      '🇰🇷'
+    when 'pl'
+      '🇵🇱'
+    when 'pt'
+      '🇧🇷'
+    when 'ru'
+      '🇷🇺'
+    when 'th'
+      '🇹🇭'
+    when 'tr'
+      '🇹🇷'
+    when 'vi'
+      '🇻🇳'
+    when 'zh' # Simplified chinese: https://cloud.google.com/translate/docs/languages
+      '🇨🇳' # chinese flag '🇨🇳'
+    else
+      "Unknown flag4lang='#{language}'"
   end
 end
 

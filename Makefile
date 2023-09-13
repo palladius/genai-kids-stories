@@ -171,3 +171,8 @@ lint:
 	rubocop --autocorrect app/ lib/ # app/models/story.rb
 clean:
 	rm tmp_* ?_tmp_00* .story*json
+
+# Make sure your project, eg ricc-genai, is now used in both your normal and ADC logins.
+reauth-local:
+	gcloud auth login 
+	gcloud auth application-default login

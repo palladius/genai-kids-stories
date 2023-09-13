@@ -1,5 +1,6 @@
 
-2023-09-11 0.13.01 Added interests to Kid (which has broken export to db/schema i found out!)
+2023-09-11 0.13.02 Adding EN as possible translation. And adding a simple function to translate to 'en' :)
+2023-09-11 0.13.01 Added interests to Kid (which has broken export to db/schema i found out!) on vacation to EuropaPark :)
 2023-09-09 0.12.03 Refactored pagination to also serve TranslatedStories
 2023-09-09 0.12.03 Added story pagination and found great OLD stories!
 2023-09-08 0.12.02 Fixed default in EDIT TS!! Woohoo!
@@ -22,3 +23,8 @@
 # BUGS
 
 P1 | 20230901 | Now the system expects to find /sa.json also locally -> wrong!!!
+
+# TODOs
+
+* Add interests to the story template in a smart way.
+* Add TranslatedStory in English as a delayed task upon completion of creation of a story. Sth like *after_save*

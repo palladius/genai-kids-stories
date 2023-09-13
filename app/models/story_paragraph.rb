@@ -103,7 +103,13 @@ class StoryParagraph < ApplicationRecord
     end
     puts('🎶 TODO GENERATE MP3 for this text:')
     #str = translated_text
-    ret_file = synthesize_speech(translated_text_for_speech, self.language) # , lang='en-gb')
+    ret_file = nil
+    begin 
+      # This can yield problems!
+      ret_file = synthesize_speech(translated_text_for_speech, self.language) 
+    rescue
+      puts("synthesize_speech(): Some exception translating to #{self.language}: #{$!}")
+    end
     puts 'to start we use the file (which is non reentrant and not thread safe), then we make it better by passing thje decoded base64 directly for ActiveStorage'
     puts "Habemus: ret_file=#{ret_file}"
     # and some other validation
@@ -179,7 +185,14 @@ class StoryParagraph < ApplicationRecord
   end
 
   def write_translated_content_for_paragraph(_opts = {})
-    self.translated_text = google_translate(original_text, language) # language
+    if language == 'en'
+      # doesnt need translation :)
+      puts("Sp.write_translated_content_for_paragraph(): I dont need this as translating to EN so no GTranslate API being called..")
+      self.translated_text = original_text
+      self.internal_notes = "#{self.internal_notes}\n write_translated_content_for_paragraph(en): skipping translation and just copying paro-paro!"
+    else
+      self.translated_text = google_translate(original_text, language) # language
+    end
     save
   end
 

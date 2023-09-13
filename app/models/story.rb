@@ -94,6 +94,38 @@ class Story < ApplicationRecord
     }
   end
 
+  # Translation to a language (which autotriggers after )
+  def translate_to(language_in_symbol_or_string_format)
+    lang = language_in_symbol_or_string_format.to_s
+    puts 'translate_to(): TODO(Ricc): when this works, refactor the creation button to just leverage this with all meaningful defaults - should just be a language choice and a click :)'
+    if TranslatedStory.where(story_id: self.id, language: lang).size > 0
+      puts "Story##{id} already has a translation in #{lang} -> skipping"
+      return true
+    end
+    puts '🙄 You wish - 👅WIP👅!'
+    ts = TranslatedStory.create(
+      story_id: self.id,
+      paragraph_strategy: Story.default_paragraph_strategy,
+      internal_notes: "Created via Story.translate_to appver=#{APP_VERSION}, possibly wrapped in a delayed job..",
+      language: lang,
+      kid_id: kid.id,
+      user_id: self.user_id,
+      name: self.title,
+      genai_model: TranslatedStory.default_genai_model,
+    )
+    puts("Created ts: #{ts}")
+    n_errors = ts.errors.count 
+    if n_errors > 0 
+      puts 'There were some errors:'
+      puts("Story(#{id}).translate_to(#{lang}) Errors creating ts: '''#{ts.errors}'''")
+    else 
+      # All good
+      puts('All good -> generating now also the poly paragraphs :)')
+      ts.delay(queue: 'story::translate_to::after').generate_polymorphic_paragraphs()
+    end
+    return ts
+  end 
+
   def cleanup_story_dependencies
     story_paragraphs.each do |p|
       p.delete
@@ -486,7 +518,7 @@ class Story < ApplicationRecord
       story_id: id,
       kid_id: kid.id,
       user_id: kid.user_id,
-      name: 'one-off migration clean me afterwards'
+      name: 'one-off migration clean me afterwards',
       # translated_story_id: 42
     )
     puts("Model.generate_migration_translated_story TS.valid=#{ret.valid?}")
