@@ -1,5 +1,7 @@
 
-2023-09-11 0.13.02 Adding EN as possible translation. And adding a simple function to translate to 'en' :)
+2023-09-13 0.13.03 Fixing bugs after this big change. Now a new story triggers queued creation of English :) so English is a 
+                   litmus test for bkg jobs working :)
+2023-09-13 0.13.02 Adding EN as possible translation. And adding a simple function to translate to 'en' :)
 2023-09-11 0.13.01 Added interests to Kid (which has broken export to db/schema i found out!) on vacation to EuropaPark :)
 2023-09-09 0.12.03 Refactored pagination to also serve TranslatedStories
 2023-09-09 0.12.03 Added story pagination and found great OLD stories!
@@ -23,8 +25,10 @@
 # BUGS
 
 P1 | 20230901 | Now the system expects to find /sa.json also locally -> wrong!!!
+P2 | 20230913 | I observed a lot of images are repeated, I believe there's a bug in the "CopyFromPrimogenito". Probably we should just remove it and attach it to the newly created ENGLISH and have primogenito to always be EN, and any susequent creation to just attach EN existing or if not exists trigger its creation  ON THE English cousin.
 
 # TODOs
 
 * Add interests to the story template in a smart way.
 * Add TranslatedStory in English as a delayed task upon completion of creation of a story. Sth like *after_save*
+* Add seamless login. Many things depend on user_id and should be made mandatory..

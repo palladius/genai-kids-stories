@@ -55,6 +55,8 @@ run-local-prod: # runs locally after starting a daemon for delayed jobs..
 run-local-dev-on-gcp:
 	RAILS_ENV='dev-on-gcp' make delayed-jobs-daemon &
 	RAILS_ENV='dev-on-gcp' bundle exec rails s -b 0.0.0.0
+# Otherwise I always fail to find the right target :)
+dev-on-gcp: run-local-dev-on-gcp
 
 delayed-jobs-start-daemon:
 	RAILS_ENV=development bin/delayed_job start -l --logfilename log/riccardo-delayed-jobs.log
@@ -66,6 +68,10 @@ delayed-jobs-daemon-stop:
 
 delayed-jobs-start-foreground-prod:
 	RAILS_ENV=production _DANGEROUS_SA_JSON_VALUE=private/sa.json bin/delayed_job run -l --logfilename log/production-delayed-jobs.log
+delayed-jobs-start-foreground-dev-on-gcp:
+	RAILS_ENV=dev-on-gcp _DANGEROUS_SA_JSON_VALUE=private/sa.json bin/delayed_job run -l --logfilename log/dev-on-gcp-delayed-jobs.log
+delayed-jobs-stop-dev-on-gcp:
+	RAILS_ENV=dev-on-gcp _DANGEROUS_SA_JSON_VALUE=private/sa.json bin/delayed_job stop
 
 cloud-build-local:
 	bin/cloud-build-local.sh
@@ -143,14 +149,15 @@ test-postgres:
 # attach random Story with GCS image
 # s.additional_images.attach(io: File.open(Rails.root.join('app/assets/images/kids/doll.jpg')), filename: 'doll.jpg')
 
-test-generate-mock-image:
-	# echo "extend Genai::AiplatformImageCurl ; \
-	#   ai_curl_images_by_content_v2('001', 'test v1. This string wont be used at all', :mock => true); \
-	#   ai_curl_images_by_content_v2('002', 'test v2. This string wont be used either', :mock => true); \
-	#   " | rails c
-	echo "extend Genai::AiplatformImageCurl ; \
-	  ai_curl_images_by_content_v2('002', 'test v2. This string wont be used either', :mock => true); \
-	  " | rails c
+# test-generate-mock-image:
+# 	# echo "extend Genai::AiplatformImageCurl ; \
+# 	#   ai_curl_images_by_content_v2('001', 'test v1. This string wont be used at all', :mock => true); \
+# 	#   ai_curl_images_by_content_v2('002', 'test v2. This string wont be used either', :mock => true); \
+# 	#   " | rails c
+# 	echo "extend Genai::AiplatformImageCurl ; \
+# 	  ai_curl_images_by_content_v2('002', 'test v2. This string wont be used either', :mock => true); \
+# 	  " | rails c
+
 test-generate-real-image-v1:
 	echo "extend Genai::AiplatformImageCurl ; ai_curl_images_by_content_v2('001', 'a dragon in the moat of an enchanted castle', :mock => false)" | rails c
 test-generate-real-image-v2:
@@ -169,6 +176,7 @@ gsutil-images-list:
 lint:
 	rubocop --lint app/
 	rubocop --autocorrect app/ lib/ # app/models/story.rb
+
 clean:
 	rm tmp_* ?_tmp_00* .story*json
 

@@ -95,7 +95,7 @@ class Story < ApplicationRecord
   end
 
   # Translation to a language (which autotriggers after )
-  def translate_to(language_in_symbol_or_string_format)
+  def translate_to(language_in_symbol_or_string_format = :en)
     lang = language_in_symbol_or_string_format.to_s
     puts 'translate_to(): TODO(Ricc): when this works, refactor the creation button to just leverage this with all meaningful defaults - should just be a language choice and a click :)'
     if TranslatedStory.where(story_id: self.id, language: lang).size > 0
@@ -297,6 +297,10 @@ class Story < ApplicationRecord
       puts "🤖40🤖 Exciting! [#{Story.emoji}.#{id}] Trying to compute images with Palm API (implemented)"
       ret40 = genai_compute_images!(gcp_opts)
     end
+    
+    # After local Story creation has terminated I trigger a TranslatedStory in English in queue mode
+    self.delay(queue: 'Story::genai_magic::translate_to').translate_to(:en)
+
     append_notes("genai_magic(force=#{force},delay=#{delay}) END. Results: #{ret10}/#{ret20}/#{ret30}/#{ret40}")
     # self.save
   end
