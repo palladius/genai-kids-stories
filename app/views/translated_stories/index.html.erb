@@ -2,7 +2,7 @@
 
 <h1>Well-done Translated stories</h1>
 
-Showing only FULLY complete stories :) 
+Showing only FULLY complete stories :)
 But since I cant do the check in the DB (as WHERE) since its JSON this won't work great with pagination :)
 
 <%= render partial: 'layouts/pagination_tab', locals: {entity: 'translated_stories' } %>
@@ -15,9 +15,9 @@ But since I cant do the check in the DB (as WHERE) since its JSON this won't wor
       <th>Score
       <th>Translated Story
       <th>Original Story
-  <% @translated_stories.each do |translated_story| 
-        next unless translated_story.completion_pct >= 99
-  
+  <% @translated_stories.each do |translated_story|
+        next unless (translated_story.completion_pct >= 99 rescue false)
+
   %>
 
     <tr>

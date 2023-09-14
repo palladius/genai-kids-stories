@@ -269,7 +269,7 @@ class TranslatedStory < ApplicationRecord
   end
 
   def self.update_cache_for_all!()
-    puts('This shoudl be a pretty SAFE yet compute intensive job.')
+    puts('This should be a pretty SAFE yet compute intensive job.')
     TranslatedStory.all.each do |ts|
       ts.update_cache(save: true)
     end
