@@ -1,3 +1,4 @@
+2023-09-14 0.13.10 Fixed StoryParagraphs to also default to 200 so now they align to TS :)
 2023-09-14 0.13.09 Added `completion_pct`
 2023-09-14 0.13.08 Index pagination properly.
 2023-09-14 0.13.07 Fix TODO Not primogenito copy instead adding force: true. Also fixing TranslatedTitle to TS.

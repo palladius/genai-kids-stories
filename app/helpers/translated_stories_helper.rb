@@ -49,4 +49,13 @@ module TranslatedStoriesHelper
           #{link_to '✍🏿', edit_story_paragraph_path(p)}
          ".html_safe
   end
+
+  def render_completion_pct(translated_story)
+    pct = translated_story.completion_pct
+    style = (pct == 0) ? 'bg-secondary' : 'bg-success'
+    pct ?
+      "<kbd class='#{style}' >#{pct.to_s.rjust(2,'0')}</kbd>".html_safe :
+      '-'
+  end
+
 end

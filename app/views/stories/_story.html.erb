@@ -69,7 +69,10 @@ Translate to:
         <ul class="list-group">
           <% story.translated_stories.each do |ts| %>
             <li class="list-group-item small">
-              <small class="text-muted"><%= link_to ts.excerpt, ts %></small></li>
+                <!-- Translated Story title-->
+                <%= render_completion_pct ts %>
+              <small class="text-muted"><%= link_to ts.excerpt, ts %></small>
+            </li>
           <% end %>
         </ul>
 

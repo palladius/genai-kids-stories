@@ -77,8 +77,7 @@ class Story < ApplicationRecord
   def attached_stuff_info
     {
       cover_image: super_attached_stuff_info(:cover_image),
-      additional_images: super_attached_stuff_info(:additional_images)
-
+      additional_images: super_attached_stuff_info(:additional_images),
     }
   end
 
@@ -89,8 +88,7 @@ class Story < ApplicationRecord
       io: File.open(Rails.root.join('app/assets/images/kids/doll.jpg')),
       filename: 'doll.jpg',
       # content_type: 'image/jpeg',
-      identify: true
-
+      identify: true,
     }
   end
 
@@ -163,7 +161,8 @@ class Story < ApplicationRecord
 
   def paragraphs
     # puts "TODO consider also using https://apidock.com/rails/v5.2.3/ActionView/Helpers/TextHelper/split_paragraphs"
-    smart_paragraphs(min_chunk_size = 150) or []
+    #smart_paragraphs(min_chunk_size = 150) or []
+    smart_paragraphs() or []
   end
 
   def smart_paragraphs(min_chunk_size = 200)
@@ -496,10 +495,9 @@ class Story < ApplicationRecord
     end
   end
 
+  # taken from ./config/initializers/riccardo.rb
   def self.default_paragraph_strategy
-    DEFAULT_PARAGRAPH_STRATEGY
-    #    'simple-v0.1' # tokenization by slash N
-    # minsize-v0.1
+    DEFAULT_PARAGRAPH_STRATEGY # 'simple-v0.1' # tokenization by slash N
   end
 
   def generate_migration_translated_story

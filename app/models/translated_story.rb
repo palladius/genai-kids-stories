@@ -164,19 +164,16 @@ class TranslatedStory < ApplicationRecord
   end
 
   def polymorphic_paragraphs
-    paragraph_strategy_base, paragraph_strategy_version = begin
-      paragraph_strategy.split('-v')
-    rescue StandardError
-      [nil, nil]
-    end
+    paragraph_strategy_base, paragraph_strategy_version = paragraph_strategy.split('-v') rescue [nil, nil]
+
     case paragraph_strategy_base # paragraph_strategy: simple-v0.1
-    when 'simple'
-      simple_paragraphs(paragraph_strategy_version)
-    when 'smart'
-      smart_paragraphs(paragraph_strategy_version)
-    else
-      puts "Unknown typology '#{paragraph_strategy_base}'.."
-      []
+      when 'simple'
+        simple_paragraphs(paragraph_strategy_version)
+      when 'smart'
+        smart_paragraphs(paragraph_strategy_version)
+      else
+        puts "Unknown typology '#{paragraph_strategy_base}'.."
+        []
     end
   end
 
@@ -273,7 +270,7 @@ class TranslatedStory < ApplicationRecord
 
   def self.update_cache_for_all!()
     puts('This shoudl be a pretty SAFE yet compute intensive job.')
-    TranslatedStory.all.each do |ts| 
+    TranslatedStory.all.each do |ts|
       ts.update_cache(save: true)
     end
   end
