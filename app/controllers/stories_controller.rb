@@ -7,7 +7,8 @@ class StoriesController < ApplicationController
 
   # GET /stories or /stories.json
   def index
-    limit_per_page = 6
+    limit_per_page = 9
+    @stories_per_row = 3
     @pluralized_entity = 'stories'
     @stories = Story.all.active.order('score DESC, created_at DESC').paginate(page: params[:page], per_page: limit_per_page)
     @total_pages = @stories.count / limit_per_page
