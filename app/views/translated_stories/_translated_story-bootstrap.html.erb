@@ -16,6 +16,18 @@
             <%= image_tag translated_story.user.avatar.variant(resize_to_limit: [50, 50]) if translated_story.user.avatar.attached? %>
           </p>
     -->
+
+          <p>
+            <strong>Translated Title:</strong>
+            <%= translated_story.translated_title %>
+          </p>
+
+          <p>
+            <strong>Summary:</strong>
+            <%= translated_story.story.genai_summary rescue $! %>
+          </p>
+          
+
           <p>
             <strong>Story #<%= translated_story.story_id %>:</strong>
             <%= link_to(translated_story.story.title, translated_story.story) %>
@@ -43,10 +55,6 @@
           </p>
 
 
-          <p>
-            <strong>Summary:</strong>
-            <%= translated_story.story.genai_summary rescue $! %>
-          </p>
 
           <p>
             <strong>Paragraphs:</strong>

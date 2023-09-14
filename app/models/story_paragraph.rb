@@ -123,14 +123,16 @@ class StoryParagraph < ApplicationRecord
   end
 
   def generate_ai_images!(gcp_opts = {})
+    opts_force = gcp_opts.fetch :force, false
     # puts 'TODO if multiple images then write MANY images :)'
     # genai_input_for_image
-    if translated_story.primogenito?
+    if opts_force or translated_story.primogenito? # 
+      puts("generate_ai_images(force=#{opts_force}, pg=?): Im primogenito (or you called me with force=true) -> generating images")
       # first born: create them
       multiple_images = genai_compute_multiple_images_by_decription(p_images, genai_input_for_image, gcp_opts)
     else
       # I'm not the first born, I should copy images from it.
-      puts 'TODO Not primogenito copy instead'
+      puts("generate_ai_images(): Im NOT primogenito -> copying from PrimoGenito")
       copy_images_from_primogenito_sp
       # return 1040 # TODO: in carlessian numeric
       # copy_images_from(translated_story.primogenito)
@@ -164,7 +166,6 @@ class StoryParagraph < ApplicationRecord
   def fix
     copy_images_from_primogenito_sp unless translated_story.primogenito?
     after_creation_magic
-    # not generate_ai_images!
   end
 
   def fix!

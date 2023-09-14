@@ -124,16 +124,17 @@ class TranslatedStory < ApplicationRecord
     flag + ' ' + translated_title.to_s.gsub('Translation of:', '').first(max_size) + '..'
   end
 
-  def fix!
+  # if you call with force: true it forces generation of images..
+  def fix!(opts={})
     puts 'Fixing the children paragraphs even if not needed...'
     story_paragraphs.each do |story_paragraph|
       id = story_paragraph.id
       puts "Forcing redo image for #{id}"
-      story_paragraph.generate_ai_images!
+      story_paragraph.generate_ai_images!(opts)
     end
   end
 
-  def fix
+  def fix(opts={})
     fix_missing_attributes
     # Check children translated_stories for missing images
     fix_missing_audios
@@ -142,7 +143,7 @@ class TranslatedStory < ApplicationRecord
       puts "TS(#{self.id}).fix(): PRIMOGENITO: I'm generating missing images"
       paragraphs_with_no_images.each do |id|
         puts "Missing image for #{id}"
-        StoryParagraph.find(id).generate_ai_images!
+        StoryParagraph.find(id).generate_ai_images!(opts)
       end
     else
       puts "TS(#{self.id}).fix(): SECONDOGENITO: I'm copying existing images from priomogenito.. and maybe fix him later"

@@ -18,6 +18,13 @@
     </div>
 
     <div>
+      <%= form.label :translated_title, style: "display: block", class: 'form-control-sm' %>
+      <%= form.text_field :translated_title, class: 'form-control form-control-sm' %>
+    </div>
+
+    
+
+    <div>
       <%= form.label :user_id, style: "display: block", class: 'form-control' %>
       <%#= form.text_field :user_id %>
       <%= form.select :user_id, options_for_select(User.all.collect{ |user| [user.name, user.id] }), {class: 'form-control'}, {} %>
