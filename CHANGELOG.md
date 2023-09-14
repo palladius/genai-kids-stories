@@ -1,4 +1,5 @@
-2023-09-14 0.13.8 Index pagination properly.
+2023-09-14 0.13.09 Added `completion_pct`
+2023-09-14 0.13.08 Index pagination properly.
 2023-09-14 0.13.07 Fix TODO Not primogenito copy instead adding force: true. Also fixing TranslatedTitle to TS.
 2023-09-13 0.13.06 Images on Stories are now destroyable..
 2023-09-13 0.13.05 patching finally the INTERESTS and making the Txt AI call smarter. Various fixes.

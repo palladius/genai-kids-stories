@@ -58,21 +58,20 @@
 
           <p>
             <strong>Paragraphs:</strong>
-            <%= translated_story.story_paragraphs.count rescue $! %>
+            <%= translated_story.story_paragraphs.count rescue $! %> (<%= translated_story.n_paragraphs or '-' %>)
           </p>
           <p>
-            <strong>Image/Audio CompletionRate:</strong>
-            <%= translated_story.completion_rate %> /  <%= 2 * translated_story.story_paragraphs.count rescue $! %>
+            <strong>Settings: Image/Audio Completion Rate:</strong>
+            <b><%= translated_story.completion_sum or '💀' %></b> /  <%= 2 * translated_story.story_paragraphs.count rescue $! %>
+            (<b><%= translated_story.completion_pct %>%</b>)
           </p>
-
+          
           <p>
             <strong>Settings : cache_images</strong>
-            <%#= translated_story.cache_images rescue $! %>
             <%= render_cached_info(translated_story, :cache_images) %>
           </p>
           <p>
             <strong>Settings : cache_audios </strong>
-            <%#= translated_story.cache_audios rescue $! %>
             <%= render_cached_info(translated_story, :cache_audios) %>
           </p>
 
@@ -89,7 +88,7 @@
           </p>
 
 <%# if true # (translated_story.paragraphs_with_no_images.size > 0 rescue true) %>
-<% unless ( translated_story.completion_rate ==  2 * translated_story.story_paragraphs.count ) %>
+<% unless ( translated_story.completion_sum ==  2 * translated_story.story_paragraphs.count ) %>
   <!-- Some pics are missing, let me show you the button to fix -->
               <p>
                   <%= link_to("fix 🏞️🎶 now", "/translated_stories/#{translated_story.id}/fix", class: "btn btn-info") %>

@@ -36,7 +36,9 @@ class TranslatedStory < ApplicationRecord
   # , message: 'No spaces, just dash underscores and lower cases'
 
   # https://api.rubyonrails.org/classes/ActiveRecord/Store.html
-  store :settings, accessors: [ :cache_images, :cache_audios, :completion_rate ]
+  # On 14sep23, I renamed completion_rate to completion_sum so now completion_rate exists in very few dev and prod TS :)
+  # But hey, its a hash :)
+  store :settings, accessors: [ :cache_images, :cache_audios, :completion_sum, :completion_pct, :n_paragraphs ]
 
   after_create :fix_missing_attributes
   #  after_save :after_each_save_fix_cheap_missing_attributes
@@ -249,7 +251,9 @@ class TranslatedStory < ApplicationRecord
     self.cache_images = self.story_paragraphs.map{|sp| [sp.story_index, sp.id, sp.image_attached?] }
     self.cache_audios = self.story_paragraphs.map{|sp| [sp.story_index, sp.id, sp.audio_attached?] }
     # 42 # TODO count od the above
-    self.completion_rate =  self.cache_images.count{|x| x[2] == true } +  self.cache_audios.count{|x| x[2] == true }
+    self.n_paragraphs = self.story_paragraphs.count
+    self.completion_sum =  self.cache_images.count{|x| x[2] == true } +  self.cache_audios.count{|x| x[2] == true }
+    self.completion_pct =  100 * self.completion_sum / (self.cache_images.count + self.cache_audios.count ) rescue -1 # should be 0..1
     self.save if opts_save
   end
 
@@ -265,6 +269,13 @@ class TranslatedStory < ApplicationRecord
     }
     update_cache
     true
+  end
+
+  def self.update_cache_for_all!()
+    puts('This shoudl be a pretty SAFE yet compute intensive job.')
+    TranslatedStory.all.each do |ts| 
+      ts.update_cache(save: true)
+    end
   end
 
 end

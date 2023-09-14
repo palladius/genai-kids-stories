@@ -184,3 +184,7 @@ clean:
 reauth-local:
 	gcloud auth login 
 	gcloud auth application-default login
+
+.PHONY: tmp
+tmp:
+	mv tmp_* tmp/

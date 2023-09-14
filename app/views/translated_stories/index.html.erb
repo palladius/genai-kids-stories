@@ -1,6 +1,9 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Translated stories</h1>
+<h1>Well-done Translated stories</h1>
+
+Showing only FULLY complete stories :) 
+But since I cant do the check in the DB (as WHERE) since its JSON this won't work great with pagination :)
 
 <%= render partial: 'layouts/pagination_tab', locals: {entity: 'translated_stories' } %>
 
@@ -8,11 +11,15 @@
     <table>
       <th>Links
       <th>Kiddo
+      <th>Cmpl
       <th>Score
       <th>Translated Story
       <th>Original Story
-  <% @translated_stories.each do |translated_story| %>
-    <%#= render translated_story %>
+  <% @translated_stories.each do |translated_story| 
+        next unless translated_story.completion_pct >= 99
+  
+  %>
+
     <tr>
       <td>
         <%= link_to "👁️", translated_story %>
@@ -20,6 +27,10 @@
         <%= button_to "💣", translated_story, method: :delete %>
       <td>
         <%= link_to translated_story.kid,translated_story.kid %>
+      <td>
+      <% if translated_story.completion_pct %>
+        <kbd class='bg-success' ><%= translated_story.completion_pct %></kbd>
+        <% end %>
       <td>
         <kbd class='bg-primary' ><%= translated_story.score %></kbd>
       <td>
