@@ -10,7 +10,8 @@ class TranslatedStoriesController < ApplicationController
     limit_per_page = 10
     @pluralized_entity = 'translated_stories'
     #@translated_stories = TranslatedStory.all
-    @translated_stories = TranslatedStory.all.order('score DESC, created_at DESC').paginate(page: params[:page], per_page: limit_per_page)
+    ## cached_completion
+    @translated_stories = TranslatedStory.all.order('cached_completion DESC, score DESC, created_at DESC').paginate(page: params[:page], per_page: limit_per_page)
     @total_pages = @translated_stories.count / limit_per_page
   end
 

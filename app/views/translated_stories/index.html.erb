@@ -31,6 +31,8 @@ But since I cant do the check in the DB (as WHERE) since its JSON this won't wor
       <% if translated_story.completion_pct %>
         <kbd class='bg-success' ><%= translated_story.completion_pct %></kbd>
         <% end %>
+        <!-- for debug to compare..-->
+        <small ><%= translated_story.cached_completion or 'nil' %></small>
       <td>
         <kbd class='bg-primary' ><%= translated_story.score %></kbd>
       <td>

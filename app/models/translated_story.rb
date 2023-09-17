@@ -10,6 +10,7 @@
 # t.string "genai_model"
 # #
 # # ADDED 'translated_title' recently
+# ADDED 'cached_completion:float' recently (0..100) but float. nil = -1
 ##
 # t.index ["kid_id"], name: "index_translated_stories_on_kid_id"
 # t.index ["story_id"], name: "index_translated_stories_on_story_id"
@@ -251,6 +252,7 @@ class TranslatedStory < ApplicationRecord
     self.n_paragraphs = self.story_paragraphs.count
     self.completion_sum =  self.cache_images.count{|x| x[2] == true } +  self.cache_audios.count{|x| x[2] == true }
     self.completion_pct =  100 * self.completion_sum / (self.cache_images.count + self.cache_audios.count ) rescue -1 # should be 0..1
+    self.cached_completion = self.completion_pct
     self.save if opts_save
   end
 
