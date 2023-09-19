@@ -29,13 +29,16 @@ To use credentials, do this <tt>EDITOR="your_editor_name --wait" bin/rails crede
 * #Users: <b><%= User.all.count %></b><br/>
 * #Attachments: <b><%= :TODOs %></b><br/>
 
+<!-- 
 
 <h2>BigMigration</h2>
 
 Bad Stories:
-<%= StoryParagraph.where(translated_story_id: nil).map { |x| x.story.id }.uniq %>
+<%#= StoryParagraph.where(translated_story_id: nil).map { |x| x.story.id }.uniq %>
 <br/>
 
 New Situation after migration lets count the nils:
-<pre><%= StoryParagraph.all.map{|x| [x.id, x.internal_notes, x.story.id, x.translated_story_id]}.inspect.gsub('],', '],<br/>').html_safe %>
+<pre><%#= StoryParagraph.all.map{|x| [x.id, x.internal_notes, x.story.id, x.translated_story_id]}.inspect.gsub('],', '],<br/>').html_safe %>
 </pre>
+
+-->

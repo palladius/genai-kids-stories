@@ -1,3 +1,4 @@
+2023-09-19 0.14.2 UI cleanup pre demo
 2023-09-14 0.14.1  Adding `cached_completion` to TS so i can query via SQL.
 2023-09-14 0.13.10 Fixed StoryParagraphs to also default to 200 so now they align to TS :)
 2023-09-14 0.13.09 Added `completion_pct`

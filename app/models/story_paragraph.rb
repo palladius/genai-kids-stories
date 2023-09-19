@@ -101,7 +101,6 @@ class StoryParagraph < ApplicationRecord
       puts "MP3 already attached - skipping"
       return nil
     end
-    puts('🎶 TODO GENERATE MP3 for this text:')
     #str = translated_text
     ret_file = nil
     begin 
@@ -110,7 +109,7 @@ class StoryParagraph < ApplicationRecord
     rescue
       puts("synthesize_speech(): Some exception translating to #{self.language}: #{$!}")
     end
-    puts 'to start we use the file (which is non reentrant and not thread safe), then we make it better by passing thje decoded base64 directly for ActiveStorage'
+    puts 'To start we use the file (which is non reentrant and not thread safe), then we make it better by passing thje decoded base64 directly for ActiveStorage'
     puts "Habemus: ret_file=#{ret_file}"
     # and some other validation
     is_file_valid = ret_file.is_a? String
