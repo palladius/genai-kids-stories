@@ -1,4 +1,4 @@
-<% if  story.is_a? Story %>
+<% if story.is_a? Story %>
 <%
   title = render_story_title(story)
   image = story.cover_image.attached? ?
@@ -28,7 +28,9 @@
     <% else  %>
       <!-- some translations available! -->
       <% story.translated_stories.each do |ts| %>
-        <%= link_to "🎠 #{ts.flag}",translated_story_path(ts) + "?style=carousel", :class => "btn  btn-outline-primary" %>
+        <% if  ts.cached_completion > 99 %>
+          <%= link_to "🎠💯 #{ts.flag}",translated_story_path(ts) + "?style=carousel", :class => "btn  btn-outline-primary" %>
+        <% end %>
       <% end %>
     <% end %>
 
@@ -50,31 +52,3 @@
     not a story :/
 <% end %>
 
-
-
-<!--
-
-
-        ,
-        begin
-          image_tag(story.cover_image, height: 100)
-        rescue StandardError
-          ''
-        end,
-        "#{input_size} / #{output_size}"
-      ]
-      ret = arr.map { |el| "<td>#{el}</td>" }.join("\n")
-    else
-      arr = [
-        'opts',
-        'Kid',
-        'Title',
-        'cover_image',
-        'I/O size'
-      ]
-      ret = arr.map { |el| "<th>#{el}</th>" }.join("\n")
-    end
-
-    ret.html_safe
-  end
-  -->
