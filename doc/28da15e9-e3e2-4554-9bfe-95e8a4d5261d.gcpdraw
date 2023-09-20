@@ -2,10 +2,10 @@
 # This is created with internal diagramming tool:
 # PermaURL: https://gcpdraw.googleplex.com/diagrams/28da15e9-e3e2-4554-9bfe-95e8a4d5261d
 #
-# Version: 1.1
+# Version: 1.2
 #####################################################################
 meta {
-  title "CI/CD GenAI Kids Stories CI/CD v1.1"
+  title "CI/CD GenAI Kids Stories CI/CD v1.2"
 }
 
 elements {
@@ -33,38 +33,53 @@ elements {
     #card gke as prod_gke {
     #  name "Prod Cluster"
     #}
-    stacked_card artifact_registry as ar {
-    	name "docker repo"
-    }
-    stacked_card sql as db {
-       name "PostgreS"
-    }
-    stacked_card gcs as gcs {
-       name "Media" # images & sounds"
-    }
-    stacked_card gcs as secrets {
-       name "Keys and secret ENVs"
+    group Storage {
+      name "Storage, DB, Secrets"
+      background_color "#ccffaa"
+      #group_color "green"
+
+      stacked_card artifact_registry as ar {
+          name "📦 docker image"
+      }
+      stacked_card sql as db {
+         name "PostgreS"
+         icon_url "https://drive.google.com/file/d/15HjdKOPgP8CW9ADfxecerr-xg2ZD-G2X/view"
+      }
+      stacked_card gcs as gcs {
+         name "Media 🔊 🏞️ " # images & sounds" 🔊 🏞️
+      }
+      card gcs as secrets {
+         name "🔑 Keys and secret ENVs"
+      }
     }
 
     card run {
        name "Kids Stories App"
+       #background_color "#ffcccc"
+
     }
     #card run as bkg_processing {
    # 	name "App Bakground"
    # }
 
+    group APIs {
+      name "Vertex AI + Text2Speech + Translate"
 
-    stacked_card text_to_speech as tts {
-    	name "🔊 TTS"
-    }
-    stacked_card vertex_ai as vai_image {
-       name "🏞️ Image generation"
-    }
-    stacked_card vertex_ai as vai_text {
-       name "📚 📜 Text generation"
-    }
-    stacked_card vertex_ai as vai_sum {
-       name "🏷️ Text Summarization"
+      stacked_card text_to_speech as tts {
+          name "🔊 TTS"
+      }
+      stacked_card vertex_ai as vai_image {
+         name "🏞️ Image generation"
+      }
+      stacked_card vertex_ai as vai_text {
+         name "📚 📜 Text generation"
+      }
+      stacked_card vertex_ai as vai_sum {
+         name "🏷️ Text Summarization"
+      }
+      card translation as translate {
+        name "Translate API"
+      }
     }
 
 
@@ -78,13 +93,11 @@ elements {
   #gcp as gcp2 {
   #}
 
-    card translation as translate {
-      name "Translate API"
-    }
+
 
 
   card users as users {
-    display_name "🍼 Parents"
+    display_name "🍼 Users/Parents"
   }
 
 
@@ -99,23 +112,24 @@ paths {
   #trigger ..> build
   git ..> build
 
-  #build -up-> gcr
-  #build -down-> dev_gke
- # dev_gke <-down- qa
-  build -up-> ar
+  # CI/CD
+  build --> ar
   build --> run
-  #build ..> bkg_processing
-  run <-down-> db
-  #bkg_processing <--> db
-  ar .down.> run
+  ar ..> run
 
-  run <-up-> gcs
+  # App to Storage
+  secrets ..> run
+  run <..> db
+  run <.up.> gcs
   #bkg_processing  <-up-> gcs
 
-  run <--> tts
-  run <--> vai_image
-  run <--> vai_text
-  run <--> vai_sum
+  # API stuff
+  run <..> APIs
+  APIs <.left.> vai_image
+  APIs <.left.> vai_text
+  APIs <.left.> vai_sum
+  APIs <.left.> tts
+  APIs <.left.> translate
 
-  run <.. users
+  run <-down-> users
 }
