@@ -1,6 +1,6 @@
 # [ricc] copied from https://fly.io/ruby-dispatch/rails-on-docker/
 # [ricc] Added from https://github.com/nickjj/docker-rails-example/blob/main/Dockerfile once IO installed bootstrap
-# [ricc] Added netcat to support Witse crazy idea of listening to port 8080 to let Cloud Run work also for bkg jobs where no 
+# [ricc] Added netcat to support Witse crazy idea of listening to port 8080 to let Cloud Run work also for bkg jobs where no
 #        port is spun up so the system appears dead to the CR pinging job :)
 # Make sure it matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.2.0
@@ -19,6 +19,14 @@ RUN ls -la /sa.json
 
 # Install libvips for Active Storage preview support
 # TODO ricc: test `google-cloud-cli` https://cloud.google.com/sdk/docs/install?hl=it#deb
+
+####################################################################################
+# TODO(ricc): just an idea from SCE-TIL to velocize the debian side...
+#RUN export DEB_VERSION=`lsb_release -c | awk  '{print $2}'`
+#RUN echo "deb https://packages.cloud.google.com/mirror/cloud-apt/$DEB_VERSION $DEB_VERSION main" > /etc/apt/sources.list
+#RUN echo "deb https://packages.cloud.google.com/mirror/cloud-apt/$DEB_VERSION-security $DEB_VERSION-security main" >> /etc/apt/sources.list
+#RUN echo "deb https://packages.cloud.google.com/mirror/cloud-apt/$DEB_VERSION-updates $DEB_VERSION-updates main" >> /etc/apt/sources.list
+####################################################################################
 
 # Added node.js and yarn on 8jul23 https://github.com/nickjj/docker-rails-example/blob/main/Dockerfile
 RUN bash -c "set -o pipefail && apt-get update \
