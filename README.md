@@ -26,7 +26,13 @@ Boring details:
 * `DelayedJob` for job queue (using `PGSQL` DB , not Redis like most humans - I've just been lazy).
 * `direnv` to manage 🌱 `.envrc` and friends. You can create a `.envrc.$USER` file and it will be auto-slurped by my awesome scripts.
 
-# Architecture
+# GCP Architecture
+
+This is a simplified architecture of the Google Cloud components used:
+
+<img src='https://github.com/palladius/genai-kids-stories/raw/main/doc/gcp-architecture.png' width='90%' align='center' />
+
+# App Architecture
 
 This is how it works (thanks [Mermaid](https://mermaid.js.org/) and [stackedit](https://stackedit.io/app#) ):
 
