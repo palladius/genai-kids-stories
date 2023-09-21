@@ -39,10 +39,10 @@ P2 | 20230913 | I observed a lot of images are repeated, I believe there's a bug
 
 # TODOs
 
+* P1 Remove the `_DANGEROUS_SA_JSON_VALUE` as useless from Cloud run. Roberto: *if you call gcloud auth print-access-token from inside cloud run it should just return a token, without login in first. because gcloud detects it's on a "managed compute"  and fetches the token from the metadata service.*
+* P2 Add search for "Dr Who"
 * Add interests to the story template in a smart way.
-* Add TranslatedStory in English as a delayed task upon completion of creation of a story. Sth like *after_save*
+* [DONE] Add TranslatedStory in English as a delayed task upon completion of creation of a story. Sth like *after_save*
 * Add seamless login. Many things depend on user_id and should be made mandatory..
-
-From TODOs on Mac at home:
-
-* both done
+    * Also add 5 creation credits per user.
+* Make it easy to KILL a story. Deleting in cascade: all TS (easy), all SP (less easy), all images (even harder). Note this doesnt work: `Story.find(XXX).translated_stories.each {|x| x.delete }`.
