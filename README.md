@@ -65,9 +65,9 @@ flowchart TD;
 
 # INSTALL
 
-* make sure you create yur own .enrc.yourname and assign the ENV vars you want
-* Create A svcAcct for GCS and download it under `private/sa.json`. do NOT check it in :)
-
+* make sure you create yur own `.envrc.yourname` and assign the ENV vars you want.
+* Create A svcAcct for GCS and download it under `private/sa.json`. Do NOT check it in :)
+* Create your own `RAILS_MASTER_KEY` and keep it aside.
 ## Build on Google
 
 * Cloud Build (on ricc project `ror-goldie`).
@@ -76,17 +76,7 @@ flowchart TD;
 1. `_RAILS_MASTER_KEY` set to `cat config/master.key`
 2. `_DANGEROUS_SA_JSON_VALUE` set to `cat private/sa.json`
 
-## Dockerization from M1
 
-According to https://beebom.com/how-fix-exec-user-process-caused-exec-format-error-linux/ :
-
-`docker buildx build --platform=linux/amd64 -t <image_name>:<version>-amd64 .`
-
-Then update your Docker file’s “FROM” statement using this syntax:
-
-`FROM --platform=linux/amd64 <base_image>:<version>`
-
-Not sure its that easy but.. happy to try someday.
 
 ## Ruby docs
 
@@ -102,4 +92,6 @@ Google
 
 This app
 
-* [PROD App](https://genai-kids-stories-gcloud-cdlu26pd4q-uc.a.run.app/)
+* [PROD App](https://genai-kids-stories-gcloud-poor-cdlu26pd4q-ew.a.run.app/) (poor).
+* [Slides](https://docs.google.com/presentation/d/1031Ligtdpz8dyF-186b7LrVToq7N9nxXZ1kMbPzpjIg/edit)
+* Article: WIP.
