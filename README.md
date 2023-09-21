@@ -1,17 +1,17 @@
+<img src='https://github.com/palladius/genai-kids-stories/raw/main/doc/translatedstory-83-it-rara.png' width='50%' align='right' />
+
 # README
 
 This is an OSS demo of how to get GenAI to work with Google Cloud. 
 
-<img src='https://github.com/palladius/genai-kids-stories/raw/main/doc/translatedstory-83-it-rara.png' width='50%' align='right' />
-
 Google Cloud tech stack:
 
 * **Cloud Run** (to run the container - currently [here](https://genai-kids-stories-gcloud-poor-cdlu26pd4q-ew.a.run.app/))
-* **Cluod Build** (to automate a new build at every commit! We're serious and lazy here!)
-* Vertex AI GenAI used for:
+* **Cloud Build** (to automate a new build at every commit! We're serious and lazy here!)
+* **Vertex AI** GenAI used for:
   * Generating long text (story ideation)
-  * Summarization (auto-title!)
-  * Image generation for paragraphs
+  * Summarization (auto-title! So sweet)
+  * Image generation (a different pic per paragraph)
 * **Google Translate API** to generate a story in A number of languages: 🇮🇹🇧🇷🇪🇸🇫🇷🇨🇳🇷🇺 .. This is the only consumer API used, with an API key
 * **Text to Speech API** to generate an Audio ([italian sample](https://genai-kids-stories-gcloud-poor-cdlu26pd4q-ew.a.run.app/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdW9NIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--4e9d219009350ff1d234ac1edd75b6eb1f8fd3af/tmp-speech.mp3?disposition=attachment))
 * **Google Cloud Storage** for ActiveStorage (images and sounds are stored in a GCS bucket)
