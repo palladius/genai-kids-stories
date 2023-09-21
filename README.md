@@ -1,6 +1,8 @@
 # README
 
-This is an OSS demo of how to get GenAI to work with Google Cloud.
+This is an OSS demo of how to get GenAI to work with Google Cloud. 
+
+<img src='https://github.com/palladius/genai-kids-stories/raw/main/doc/translatedstory-83-it-rara.png' width='50%' align='right' />
 
 Google Cloud tech stack:
 
