@@ -1,3 +1,5 @@
+
+2023-09-19 0.14.4d No real change but since its broken in prod, Im trying to fix the ENV vars.
 2023-09-19 0.14.4  Adding images and docs under `doc/`
 2023-09-19 0.14.3  Prioritizing TS with 100% images and audio in UI.
 2023-09-19 0.14.2  UI cleanup pre demo

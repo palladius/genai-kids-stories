@@ -7,7 +7,9 @@ function _fatal() {
 
 set -euo pipefail
 
-DEPLOY_SCRIPT_VERSION="1.0a"
+# The .works works, this one doesn't. Error is:
+# ERROR: (gcloud.beta.run.deploy) Mount path [/sa.json] must be in the form /<mountPath>/<path>
+DEPLOY_SCRIPT_VERSION="1.0broken"
 
 VERSION=$(bin/version.sh)
 UPLOADED_IMAGE="$ARTIFACT_REPO/genai-kids-stories"
