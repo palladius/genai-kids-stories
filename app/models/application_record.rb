@@ -95,11 +95,25 @@ class ApplicationRecord < ActiveRecord::Base
       rescue StandardError
         "Err: #{$!}"
       end
-      ret[:metadata] = begin
+      ret[:blob_metadata] = begin
         send(field_name).attachment.blob.metadata
       rescue StandardError
         "Err: #{$!}"
       end
+
+      ret[:blob_key] = send(field_name).attachment.blob.key rescue nil
+      ret[:blob_url] = send(field_name).attachment.blob.url rescue nil
+      #ret[:blob_filename] = send(field_name).attachment.blob.filename rescue nil
+      ret[:blob_signed_id] = send(field_name).attachment.blob.signed_id rescue nil
+      ret[:blob_custom_metadata] = send(field_name).attachment.blob.custom_metadata rescue nil
+
+      ret[:blob_is_image] = send(field_name).attachment.blob.image? rescue nil
+      ret[:blob_is_audio] = send(field_name).attachment.blob.audio? rescue nil
+      ret[:blob_is_video] = send(field_name).attachment.blob.video? rescue nil
+      ret[:url_for_direct_upload] = send(field_name).attachment.blob.url_for_direct_upload rescue nil
+      ret[:headers_for_direct_upload] = send(field_name).attachment.blob.headers_for_direct_upload rescue nil
+
+      #ret[:download] = send(field_name).attachment.blob.download rescue nil
 
     end
     # ": attacched? = #{ret} ; attachment_name=#{attachment_name}"

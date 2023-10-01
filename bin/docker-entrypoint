@@ -32,6 +32,7 @@ echo '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍�
 echo "👍 Entrypoint ARGS:                    '$*'"
 echo "👍 PORT:                               '$PORT'"
 echo "👍 PROJECT_ID:                         '$PROJECT_ID'"
+echo "👍 GCS_BUCKET:                         '$GCS_BUCKET'"
 echo "👍 AI_PROJECT_ID:                      '$AI_PROJECT_ID'"
 echo "👍 APP_DB_NAME:                        '$APP_DB_NAME'"
 echo "👍 APP_VERSION:                        '$APP_VERSION'"
