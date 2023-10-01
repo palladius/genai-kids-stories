@@ -1,4 +1,4 @@
-<%= form_with(model: story_paragraph) do |form| %>
+<%= form_with(model: story_paragraph, multipart: true) do |form| %>
   <% if story_paragraph.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(story_paragraph.errors.count, "error") %> prohibited this story_paragraph from being saved:</h2>

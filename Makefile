@@ -53,8 +53,9 @@ run-local-prod: # runs locally after starting a daemon for delayed jobs..
 	bundle exec rails s -b 0.0.0.0
 
 run-local-dev-on-gcp:
-	RAILS_ENV='dev-on-gcp' make delayed-jobs-daemon &
-	RAILS_ENV='dev-on-gcp' bundle exec rails s -b 0.0.0.0
+#RAILS_ENV='dev-on-gcp' make delayed-jobs-daemon &
+#	RAILS_ENV='dev-on-gcp' nice bundle exec rails s -b 0.0.0.0
+	RAILS_ENV='dev-on-gcp' nice rails s -b 0.0.0.0 -p 3000
 # Otherwise I always fail to find the right target :)
 dev-on-gcp: run-local-dev-on-gcp
 

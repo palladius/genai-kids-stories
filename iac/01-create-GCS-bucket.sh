@@ -25,10 +25,8 @@ echo "bucket: '$GCS_BUCKET'"
 
 gsutil mb gs://$GCS_BUCKET/
 
+# Everyone is a reader (public)
 gsutil iam ch allUsers:objectViewer gs://$GCS_BUCKET
-
-
-
 
 
 

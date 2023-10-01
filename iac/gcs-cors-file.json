@@ -1,0 +1,18 @@
+[
+    {
+        "origin": [
+            "http://localhost:3000/",
+            "https://genai-kids-stories-gcloud-poor-cdlu26pd4q-ew.a.run.app/",
+            "https://genai-kids-stories-gcloud-cdlu26pd4q-uc.a.run.app/"
+        ],
+        "method": [
+            "PUT"
+        ],
+        "responseHeader": [
+            "Content-Type",
+            "Content-MD5",
+            "Content-Disposition"
+        ],
+        "maxAgeSeconds": 3600
+    }
+]

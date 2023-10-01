@@ -27,6 +27,7 @@ gem 'will_paginate', '~> 4.0' # to paginate too many pages...
 # Added bootstrap 5.3.0
 # Not strictly needed - i can do it by bash :)
 gem 'google-cloud-text_to_speech'
+#gem 'dotenv-rails' to read ENVs.
 # /Riccardo
 ############
 

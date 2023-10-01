@@ -1,4 +1,4 @@
-<%= form_with(model: kid) do |form| %>
+<%= form_with(model: kid, multipart: true) do |form| %>
   <% if kid.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(kid.errors.count, "error") %> prohibited this kid from being saved:</h2>

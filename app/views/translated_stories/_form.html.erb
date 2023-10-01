@@ -1,4 +1,4 @@
-<%= form_with(model: translated_story) do |form| %>
+<%= form_with(model: translated_story, multipart: true) do |form| %>
   <div class='form-group' >
     <% if translated_story.errors.any? %>
       <div style="color: red">
@@ -22,7 +22,7 @@
       <%= form.text_field :translated_title, class: 'form-control form-control-sm' %>
     </div>
 
-    
+
 
     <div>
       <%= form.label :user_id, style: "display: block", class: 'form-control' %>

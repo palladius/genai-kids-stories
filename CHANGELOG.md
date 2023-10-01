@@ -1,4 +1,7 @@
 
+2023-10-01 0.14.5  [Mallorca plane 1st class] Nothing really here. I debugged b/2 and it seem,
+                   it has nothing to do with code.
+                   Also added , multipart: true to ALL _forms. Just because it fixes the upload and shouldnt have drawbacks.
 2023-09-19 0.14.4d No real change but since its broken in prod, Im trying to fix the ENV vars.
 2023-09-19 0.14.4  Adding images and docs under `doc/`
 2023-09-19 0.14.3  Prioritizing TS with 100% images and audio in UI.
@@ -48,3 +51,8 @@ P2 | 20230913 | I observed a lot of images are repeated, I believe there's a bug
 * Add seamless login. Many things depend on user_id and should be made mandatory..
     * Also add 5 creation credits per user.
 * Make it easy to KILL a story. Deleting in cascade: all TS (easy), all SP (less easy), all images (even harder). Note this doesnt work: `Story.find(XXX).translated_stories.each {|x| x.delete }`.
+
+# Bugs
+
+* 2023-09-27 v0.11.44 b/2 [OPEN] Images and audios are unreadable.
+* 2023-09-DD v0.11.41 b/1 [FIXED] Cloud Build failed.
