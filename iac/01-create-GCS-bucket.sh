@@ -21,12 +21,15 @@ set -euo pipefail
 # Add your code here
 ########################
 
-echo "bucket: '$GCS_BUCKET'"
+echo "bucket:     '$GCS_BUCKET'"
+echo "PROJECT_ID: '$PROJECT_ID'"
+gcloud config set project $PROJECT_ID
 
-gsutil mb gs://$GCS_BUCKET/
+echodo gsutil mb gs://$GCS_BUCKET/ ||
+    echo probably bucket already exists
 
 # Everyone is a reader (public)
-gsutil iam ch allUsers:objectViewer gs://$GCS_BUCKET
+echodo gsutil iam ch allUsers:objectViewer "gs://$GCS_BUCKET/"
 
 
 

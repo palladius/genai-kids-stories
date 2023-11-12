@@ -73,6 +73,11 @@ flowchart TD;
   * `make dev-on-gcp`: run in pseudo-dev, but with pgsql DB (and GCS storage)
   * `make prod`: run in prod, with pgsql DB (and GCS storage)
 
+# RUN
+
+* `make reauth-local` ensures the
+* make dev # or whatever ENV you want to run. Check Makefile for some options
+
 ## Build on Google
 
 * Cloud Build (on ricc project `ror-goldie`).
