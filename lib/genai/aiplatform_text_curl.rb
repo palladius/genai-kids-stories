@@ -22,7 +22,7 @@ module Genai
     require 'base64'
 
     # Text must be 001
-    #MODEL_ID = 'text-bison@001'
+    # MODEL_ID = 'text-bison@001'
     MODEL_ID = 'text-bison'
     # Video can be 002 (se below)
 
@@ -143,9 +143,11 @@ module Genai
       setting = opts.fetch :setting, pickARandomElementOf(SETTINGS) #  if setting.nil?
       plot = opts.fetch :plot, pickARandomElementOf(PLOTS) #  if plot.nil?
 
-      kid_interests_optional_addon = kid_interests ?
-        ". Those stories should involve at least ONE of these elements: #{kid_interests}" :
-        '' #
+      kid_interests_optional_addon = if kid_interests
+                                       ". Those stories should involve at least ONE of these elements: #{kid_interests}"
+                                     else
+                                       ''
+                                     end
 
       "You are a creative and passionate story teller for young kids.
           Kids love hearing about the stories you invent#{kid_interests_optional_addon}.
@@ -171,7 +173,6 @@ module Genai
       opts_debug = opts.fetch 'DEBUG', false
 
       return '[🚠OFFLINE] GenAI: end of creativity, connect me to urandom' if Genai::Common.network_offline?
-
 
       # filling empty values
       project_id = opts.fetch :project_id, AI_PROJECT_ID
