@@ -77,6 +77,7 @@ flowchart TD;
 
 * `make reauth-local` ensures the
 * make dev # or whatever ENV you want to run. Check Makefile for some options
+* Also make sure that the secret key points to a non-expired SvcAcct key ;)
 
 ## Build on Google
 
