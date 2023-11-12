@@ -31,7 +31,6 @@ gsutil iam ch allUsers:objectViewer gs://$GCS_BUCKET
 
 
 
-
 ########################
 # /End of your code here
 ########################

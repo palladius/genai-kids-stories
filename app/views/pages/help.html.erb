@@ -1,5 +1,26 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+// $(document).ready(function(){
+//   $("button").click(function(){
+//     $.ajax({url: "demo_test.txt", success: function(result){
+//       $("#div1").html(result);
+//     }});
+//   });
+// });
+
+$.ajax({
+  url: '/pages/help', // '< % = index_path % >',
+  method: 'GET',
+  success: function(response) {
+    // Process the server response
+    updateLiveContent(response.data);
+  }
+});
+
+</script>
+
 <main>
-<h1>Help</h1>
+ <h1>Help</h1>
  <p>Welcome to <b><%= APP_NAME %></b>, an app which is inspired by my colleague and friend Guillaume (the inventor of Groovy)</p>
 
 <h2>About this app</h2>
@@ -15,6 +36,12 @@
 
  markdown.render(genai_markdown).html_safe
 %></div>
+
+<h3>Prova delayed partial</h3>
+<p>1</p>
+<%= content_tag :p, 'ciao',  id: 'live-update-placeholder' %>
+<p>3</p>
+
 
 -- <i>(Yours, Vertex AI Palm API)</i>
 </main>

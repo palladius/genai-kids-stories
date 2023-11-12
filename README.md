@@ -2,7 +2,7 @@
 
 # README
 
-This is an OSS demo of how to get GenAI to work with Google Cloud. 
+This is an OSS demo of how to get GenAI to work with Google Cloud.
 
 Google Cloud tech stack:
 
@@ -68,6 +68,11 @@ flowchart TD;
 * make sure you create yur own `.envrc.yourname` and assign the ENV vars you want.
 * Create A svcAcct for GCS and download it under `private/sa.json`. Do NOT check it in :)
 * Create your own `RAILS_MASTER_KEY` and keep it aside.
+* Environments:
+  * `make dev`: runs in `development`, with sqlite3 db and local storage
+  * `make dev-on-gcp`: run in pseudo-dev, but with pgsql DB (and GCS storage)
+  * `make prod`: run in prod, with pgsql DB (and GCS storage)
+
 ## Build on Google
 
 * Cloud Build (on ricc project `ror-goldie`).
