@@ -184,12 +184,7 @@ clean:
 # Make sure your project, eg ricc-genai, is now used in both your normal and ADC logins.
 auth: reauth-local
 reauth-local:
-	gcloud auth login
-	gcloud auth application-default login
-	#  The texttospeech.googleapis.com API requires a quota project, which is not set by default.
-	#  -> https://cloud.google.com/docs/authentication/troubleshoot-adc#user-creds-client-based
-	# TODO automate on .envrc
-	gcloud auth application-default set-quota-project ricc-genai
+	bin/gcloud-reauth
 
 .PHONY: tmp
 tmp:

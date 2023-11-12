@@ -12,7 +12,8 @@
           <a href="/stories" class="btn btn-primary my-2">All <b><%= @num_stories %></b> Stories</a>
           <a href="https://github.com/palladius/genai-kids-stories" class="btn btn-warning my-2">Code on GitHub</a>
           <a href="https://cloud.google.com/vertex-ai/docs/generative-ai/start/quickstarts/api-quickstart" class="btn btn-danger my-2">GenAI API quickstart</a>
-          <a href="/translated_stories/<%= @ts_id %>?style=carousel" class="btn btn-success my-2">I'm feeling lucky! (<%=@ts_lang%>)</a>
+          <a href="/translated_stories/<%= @sample_ts.id %>?style=carousel" class="btn btn-success my-2"><b>I'm feeling lucky!</b><br/>
+          <small><%=@sample_ts.translated_title %></small></a>
         </p>
 
 <%= image_tag('A_old_wise_and_fun_storyteller_holding_a_big_red_ge_funny.png',  class: "rounded img-fluid") %>

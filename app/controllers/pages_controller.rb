@@ -1,8 +1,10 @@
 class PagesController < ApplicationController
   def index
     @num_stories = Story.all.count rescue "?!?"
-    @ts_id = TranslatedStory.last.id
-    @ts_lang = TranslatedStory.last.language
+    @sample_ts = TranslatedStory.last
+#    @ts_id = .id
+    #@ts_lang = TranslatedStory.last.language
+    #@ts_name = TranslatedStory.last.name
   end
 
   def about
