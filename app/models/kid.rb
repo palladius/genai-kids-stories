@@ -150,8 +150,9 @@ class Kid < ApplicationRecord
   # so cool! Copied from here https://pragmaticstudio.com/tutorials/using-active-storage-in-rails
   def acceptable_image
     return unless avatar.attached?
-    my_UPLOAD_MAX_SIZE = 22.megabyte
-    errors.add(:avatar, "is too big (UPLOAD_MAX_SIZE=#{my_UPLOAD_MAX_SIZE/1000000}MB, current_size=#{avatar.blob.byte_size/1000000})") unless avatar.blob.byte_size <= my_UPLOAD_MAX_SIZE
+    # ImageUploadMaxSize => my_UPLOAD_MAX_SIZE = 22.megabyte
+
+    errors.add(:avatar, "is too big (UPLOAD_MAX_SIZE=#{ImageUploadMaxSize/1000000}MB, current_size=#{avatar.blob.byte_size/1000000})") unless avatar.blob.byte_size <= ImageUploadMaxSize
 
     acceptable_types = ['image/jpeg', 'image/png']
     return if acceptable_types.include?(avatar.content_type)

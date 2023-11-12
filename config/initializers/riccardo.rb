@@ -101,3 +101,6 @@ end
 # This is SOOOO brilliant! :)
 GithubLatestVersion = `curl https://raw.githubusercontent.com/palladius/genai-kids-stories/main/VERSION 2>/dev/null`.chomp rescue nil
 GithubLatestVersion ||= '?!?'
+
+# Lets hope this number makes sense here as it does in Kid model :)
+ImageUploadMaxSize = 22.megabyte

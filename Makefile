@@ -186,6 +186,10 @@ auth: reauth-local
 reauth-local:
 	gcloud auth login
 	gcloud auth application-default login
+	#  The texttospeech.googleapis.com API requires a quota project, which is not set by default.
+	#  -> https://cloud.google.com/docs/authentication/troubleshoot-adc#user-creds-client-based
+	# TODO automate on .envrc
+	gcloud auth application-default set-quota-project ricc-genai
 
 .PHONY: tmp
 tmp:
