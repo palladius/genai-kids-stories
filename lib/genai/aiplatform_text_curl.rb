@@ -191,8 +191,12 @@ module Genai
             "content": content
           }
         ],
+        # https://screenshot.googleplex.com/BYjz3AM2pnySHSB
+        # Creative writing should have
+        # top_p: 0.8
+        # temperature: 0.7
         "parameters": {
-          "temperature": 0.8,
+          "temperature": 0.7,
           "maxOutputTokens": 1000,
           "topP": 0.8,
           "topK": 40
