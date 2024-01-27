@@ -142,7 +142,7 @@ test-google-translate:
 	 echo "google_translate('hello from me', :es)" |  rails c
 
 ai-test:
-	echo TODO implement me in lib/
+#	echo TODO implement me in lib/
 	echo ai_test | rails c
 
 test-gcp:

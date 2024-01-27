@@ -18,6 +18,37 @@ def cleaned_up_content(content)
   content.gsub(/"/, '').gsub(/\n/, ' ').gsub(/\*/, '') # remove quotes.. seems to give error, eg in this sentence:
 end
 
+# StoryParagraph.all.map{|x| [x.id, x.internal_notes, x.story.id, x.translated_my_story_id]}
+def big_migration
+  problematic_story_ids = StoryParagraph.where(translated_story_id: nil).map { |x| x.story.id }.uniq
+
+  problematic_story_ids.each do |my_story_id|
+    puts "Step 1. Generate the Translated Story for Story.id=#{my_story_id}"
+    ts = Story.find(my_story_id).generate_migration_translated_story
+    raise "Not a TS! #{ts.class}" unless ts.is_a?(TranslatedStory)
+
+    puts "Step 2. Patch all SP with translated_my_story_id=nil and Story.id=#{my_story_id}"
+    StoryParagraph.where(story_id: my_story_id, translated_story_id: nil).each do |sp|
+      sp.translated_story_id = ts.id
+      puts("SP valid? #{sp.valid?}")
+      ret = sp.save
+      puts(sp.errors.full_messages) unless ret # oK!
+    end
+  end
+
+end
+
+def ai_test()
+  puts(blue "This is a test to check that GCP is enabled and your service account works. Usually the auth token expires every 1h so its nice to have a quick check before running the app.")
+  @magic_content = 'Can you explain why the sky is blue?'
+  puts("Asking Palm API: #{yellow @magic_content}")
+  #extend Genai::AiplatformTextCurl
+  include Genai::AiplatformTextCurl
+  genai_markdown = ai_curl_by_content(@magic_content)[1] rescue "💔 Some Error in generation: **#{$!}**. Should have made up a story around: \n###MagicContent\n\n *'#{@magic_content}'*"
+  puts(yellow genai_markdown)
+  return :uttobbene
+end
+
 # This is the big migration from SParagraphs attached to stories (which is wrong as i can only translate each story in a single language)
 # to SParagraphs attached to translated_stories. Difference?
 # $ StoryParagraph.all.map{|x| [x.id, x.internal_notes, x.story.id, x.translated_story_id]}
@@ -51,22 +82,3 @@ end
 # [182, "Created via TranslatedStory.generate_polymorphic_paragraphs on 2023-07-03 21:13:29 +0200\n", 2030, 16],
 # [183, "Created via TranslatedStory.generate_polymorphic_paragraphs on 2023-07-03 21:13:50 +0200\n", 2030, 16],
 # [184, "Created via TranslatedStory.generate_polymorphic_paragraphs on 2023-07-03 21:14:10 +0200\n", 2030, 16],
-
-def big_migration
-  problematic_story_ids = StoryParagraph.where(translated_story_id: nil).map { |x| x.story.id }.uniq
-
-  problematic_story_ids.each do |my_story_id|
-    puts "Step 1. Generate the Translated Story for Story.id=#{my_story_id}"
-    ts = Story.find(my_story_id).generate_migration_translated_story
-    raise "Not a TS! #{ts.class}" unless ts.is_a?(TranslatedStory)
-
-    puts "Step 2. Patch all SP with translated_my_story_id=nil and Story.id=#{my_story_id}"
-    # StoryParagraph.all.map{|x| [x.id, x.internal_notes, x.story.id, x.translated_my_story_id]}
-    StoryParagraph.where(story_id: my_story_id, translated_story_id: nil).each do |sp|
-      sp.translated_story_id = ts.id
-      puts("SP valid? #{sp.valid?}")
-      ret = sp.save
-      puts(sp.errors.full_messages) unless ret # oK!
-    end
-  end
-end
