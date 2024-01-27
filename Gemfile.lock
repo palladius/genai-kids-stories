@@ -298,7 +298,7 @@ GEM
     postgresql (1.0.0)
       pg
     public_suffix (5.0.1)
-    puma (5.6.7)
+    puma (6.4.0)
       nio4r (~> 2.0)
     racc (1.7.1)
     rack (2.2.7)
@@ -459,7 +459,7 @@ DEPENDENCIES
   jsbundling-rails (~> 1.1)
   lolcat
   postgresql
-  puma (~> 5.6)
+  puma (>= 5.6.8)
   rails (~> 7.0.5)
   rails_live_reload
   redcarpet

@@ -1,3 +1,4 @@
+2024-01-27 0.14.11 Dependabot -> updates
 2024-01-27 0.14.10 HHTM it works and also nunchucks!
 2024-01-27 0.14.9  Actually INSTALLING HTMX
 2024-01-27 0.14.8  Trying to add HTMX. But first, fixing APIs which dont work. Adding

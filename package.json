@@ -11,7 +11,7 @@
     "esbuild": "^0.18.11",
     "nodemon": "^2.0.22",
     "nunjucks": "^3.2.4",
-    "postcss": "^8.4.25",
+    "postcss": "^8.4.31",
     "postcss-cli": "^10.1.0",
     "sass": "^1.63.6"
   },
