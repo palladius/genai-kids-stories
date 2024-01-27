@@ -21,15 +21,29 @@ HTMX button ...
     Click Me!
 </button>
 
-<pre id="parent-div">🔶 This should be substituted upon click by some GenAI content gotten from /click endpoint..</pre>
+<button hx-post="/clicked" hx-swap="outerHTML">
+  Click Me (from https://github.com/rootstrap/htmx-rails )
+</button>
 
+<pre id="parent-div">🔶 This should be substituted upon click by some GenAI content gotten from /click endpoint..</pre>
 
 <% markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true) %>
 <%#= markdown.render("This is *bongos*, indeed.").html_safe %>
-<h2>AI dynamic Content</h2>
-<div id='genai_content' ><%=
- extend Genai::AiplatformTextCurl ;
- genai_markdown = ai_curl_by_content(@magic_content)[1] rescue "💔 Some Error in generation: **#{$!}**. Should have made up a story around: \n###MagicContent\n\n *'#{@magic_content}'*"
 
- markdown.render(genai_markdown).html_safe
-%></div>
+<table border="5" >
+  <tr>
+    <td>
+      <h2>AI dynamic Content</h2>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div id='genai_content' ><%=
+      extend Genai::AiplatformTextCurl ;
+      genai_markdown = ai_curl_by_content(@magic_content)[1] rescue "💔 Some Error in generation: **#{$!}**. Should have made up a story around: \n###MagicContent\n\n *'#{@magic_content}'*"
+      markdown.render(genai_markdown).html_safe
+      %>
+    </div>
+    </td>
+  </tr>
+</table>

@@ -75,8 +75,9 @@ flowchart TD;
 
 # RUN
 
-* `make reauth-local` ensures the
-* make dev # or whatever ENV you want to run. Check Makefile for some options
+* `make reauth-local` ensures the GCP has been enabled.
+* `make test-gcp` if you want to make sure that AI / GCP are working.
+* `make dev` # or whatever ENV you want to run. Check Makefile for some options
 * Also make sure that the secret key points to a non-expired SvcAcct key ;)
 
 ## Build on Google

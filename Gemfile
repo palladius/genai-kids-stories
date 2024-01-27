@@ -1,60 +1,59 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.0"
-#ruby "3.1.2"
-
+ruby '3.2.0'
+# ruby "3.1.2"
 
 ############
 # Riccardo
+gem 'image_processing', '>= 1.2' # for ActiveStorage https://guides.rubyonrails.org/active_storage_overview.html
 gem 'lolcat' # just for fun.
-gem "image_processing", ">= 1.2" # for ActiveStorage https://guides.rubyonrails.org/active_storage_overview.html
 # From: https://edgeguides.rubyonrails.org/active_storage_overview.html#google-cloud-storage-service
-gem "google-cloud-storage", "~> 1.11", require: false
+gem 'daemons' # depends on the above
 gem 'delayed_job_active_record' # from https://github.com/collectiveidea/delayed_job/
-  gem "daemons" # depends on the above
-  gem "delayed_job_web" # shows on web too: https://github.com/ejschmitt/delayed_job_web
+gem 'delayed_job_web' # shows on web too: https://github.com/ejschmitt/delayed_job_web
+gem 'google-cloud-storage', '~> 1.11', require: false
 gem 'postgresql'
 gem 'rubocop' # vscode complains otherwise
-#gem 'easy_translate'
+# gem 'easy_translate'
 gem 'google-cloud-translate' # ATTENTZION!!!
 # downgrades:
 # * googleauth (1.6.0) -> becomes   googleauth (0.17.1)
 # * faraday (2.7.7) -> becomes  faraday (1.2.0)
-gem 'ruby-vips' # needed to makje ActiveStorage work well
 gem 'redcarpet' # to parse markdown, returned by GenAI
+gem 'ruby-vips' # needed to makje ActiveStorage work well
 gem 'will_paginate', '~> 4.0' # to paginate too many pages...
 # Added bootstrap 5.3.0
 # Not strictly needed - i can do it by bash :)
 gem 'google-cloud-text_to_speech'
-#gem 'dotenv-rails' to read ENVs.
+gem 'htmx-rails' # https://github.com/rootstrap/htmx-rails
+# gem 'dotenv-rails' to read ENVs.
 # /Riccardo
 ############
 
-
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.0.5"
+gem 'rails', '~> 7.0.5'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
-gem "sprockets-rails"
+gem 'sprockets-rails'
 
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 1.4"
+gem 'sqlite3', '~> 1.4'
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "~> 5.6"
+gem 'puma', '~> 5.6'
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
-gem "importmap-rails"
+gem 'importmap-rails'
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem "turbo-rails"
+gem 'turbo-rails'
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
-gem "stimulus-rails"
+gem 'stimulus-rails'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem "jbuilder"
+gem 'jbuilder'
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
@@ -66,10 +65,10 @@ gem "jbuilder"
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # Reduces boot times through caching; required in config/boot.rb
-gem "bootsnap", require: false
+gem 'bootsnap', require: false
 
 # Use Sass to process CSS
 # gem "sassc-rails"
@@ -79,15 +78,14 @@ gem "bootsnap", require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem 'debug', platforms: %i[mri mingw x64_mingw]
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
-  gem "web-console"
+  gem 'web-console'
   # Ricc: reload CSS and everything :)
   gem 'rails_live_reload'
-
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
@@ -98,15 +96,15 @@ end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem "capybara"
-  gem "selenium-webdriver"
-  gem "webdrivers"
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'webdrivers'
 end
 
-gem "devise", "~> 4.9"
+gem 'devise', '~> 4.9'
 
-gem "actionpack", ">= 7.0.5.1"
+gem 'actionpack', '>= 7.0.5.1'
 
-gem "cssbundling-rails", "~> 1.2"
+gem 'cssbundling-rails', '~> 1.2'
 
-gem "jsbundling-rails", "~> 1.1"
+gem 'jsbundling-rails', '~> 1.1'

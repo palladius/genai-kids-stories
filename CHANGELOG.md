@@ -1,3 +1,5 @@
+2024-01-27 0.14.9  Actually INSTALLING HTMX
+2024-01-27 0.14.8  Trying to add HTMX. But first, fixing APIs which dont work. Adding
 2023-10-01 0.14.7  now that APIs are fixed, I went on and fixed a few things. Added upload size, customized
                 index with a couple of numbers.
 2023-10-01 0.14.6  Nothing major, I just found the JSON key has expired and Im loading a new one. Nothing

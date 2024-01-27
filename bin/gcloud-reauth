@@ -18,4 +18,6 @@ source .envrc
 
 # TODO automate on .envrc
 
- gcloud auth application-default set-quota-project "$PROJECT_ID"
+gcloud auth application-default set-quota-project "$PROJECT_ID"
+
+echo Consider testing this funcitoning with: make test-gcp

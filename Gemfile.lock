@@ -221,6 +221,7 @@ GEM
     grpc (1.56.0-x86_64-linux)
       google-protobuf (~> 3.23)
       googleapis-common-protos-types (~> 1.0)
+    htmx-rails (0.2.0)
     httpclient (2.8.3)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
@@ -451,6 +452,7 @@ DEPENDENCIES
   google-cloud-storage (~> 1.11)
   google-cloud-text_to_speech
   google-cloud-translate
+  htmx-rails
   image_processing (>= 1.2)
   importmap-rails
   jbuilder

@@ -35,9 +35,12 @@ install-linux:
 
 # Runs local server by forcing a delayed job too :)
 run-local: # runs locally after starting a daemon for delayed jobs..
-	rake assets:precompile
+	rails assets:precompile
 	make delayed-jobs-daemon &
 	bundle exec rails s -b 0.0.0.0
+
+dev: run-local
+
 run-local-prod: # runs locally after starting a daemon for delayed jobs..
 	RAILS_ENV="production" rails assets:precompile
 
@@ -137,6 +140,16 @@ generate_paragraphs-test:
 # Some times it fails.
 test-google-translate:
 	 echo "google_translate('hello from me', :es)" |  rails c
+
+ai-test:
+	echo TODO implement me in lib/
+	echo ai_test | rails c
+
+test-gcp:
+	echo 1. Test GTranslate:
+	make test-google-translate
+	make 2. Test AI
+	make ai-test
 
 test-generate-spanish-translation-of-story:
 	echo "Story.find(135).generate_paragraphs(lang: 'es')" | rails c
