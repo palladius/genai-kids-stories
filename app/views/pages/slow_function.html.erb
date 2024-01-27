@@ -1,0 +1,8 @@
+<h1> 😴Slow function todo sleep 1 </h1>
+
+🌪
+
+extend Genai::AiplatformTextCurl ;
+genai_markdown = ai_curl_by_content(@magic_content)[1] rescue "💔 Some Error in generation: **#{$!}**. Should have made up a story around: \n###MagicContent\n\n *'#{@magic_content}'*"
+markdown.render(genai_markdown).html_safe
+

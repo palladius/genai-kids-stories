@@ -13,7 +13,6 @@ Rails.application.routes.draw do
     end
   end
 
-
   resources :translated_stories do
     # needs collections or wont have DFLT CRUD
     # collection do
@@ -35,6 +34,13 @@ Rails.application.routes.draw do
   get 'pages/index'
   get 'pages/about'
   get 'pages/help'
+
+  # AI functionality
+  get 'pages/slow_function'
+  post 'pages/slow_function'
+  get 'pages/ai_test'
+  post 'pages/ai_test'
+
   resources :stories
   resources :kids
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

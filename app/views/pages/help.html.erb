@@ -13,16 +13,18 @@
 
 TODO - make this responsive using HTMX.
 HTMX button ...
-<button hx-post="/clicked"
+<button hx-post="/pages/slow_function"
     hx-trigger="click"
     hx-target="#parent-div"
     hx-swap="outerHTML"
 >
-    Click Me!
+    Click Me /pages/slow_function !
 </button>
 
-<button hx-post="/clicked" hx-swap="outerHTML">
-  Click Me (from https://github.com/rootstrap/htmx-rails )
+(from https://github.com/rootstrap/htmx-rails )
+
+<button hx-post="/pages/slow_function" hx-swap="outerHTML">
+  Click Me /pages/slow_function (next: /pages/ai_test)
 </button>
 
 <pre id="parent-div">🔶 This should be substituted upon click by some GenAI content gotten from /click endpoint..</pre>
