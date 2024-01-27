@@ -202,3 +202,7 @@ reauth-local:
 .PHONY: tmp
 tmp:
 	mv tmp_* tmp/
+
+# https://docs.npmjs.com/updating-packages-downloaded-from-the-registry
+npm-update:
+	npm outdated
