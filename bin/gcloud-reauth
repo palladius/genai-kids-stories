@@ -6,6 +6,9 @@ source .envrc
 
 # || exit 42
 
+ echodo gcloud config set account $ACCOUNT
+ echodo gcloud config set account $PROJECT_ID
+
  gcloud auth login
  gcloud auth application-default login
 

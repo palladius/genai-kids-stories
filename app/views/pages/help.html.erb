@@ -1,47 +1,35 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-// $(document).ready(function(){
-//   $("button").click(function(){
-//     $.ajax({url: "demo_test.txt", success: function(result){
-//       $("#div1").html(result);
-//     }});
-//   });
-// });
+<%
+  @magic_content = 'You are a salesman who wants to pitch Ruby for Generative AI.
+  Please describe this GenAI application written on Ruby on Rails, as a majestic breakthrough
+   in GenAI and how Ruby is going to become the most loved language.'
 
-$.ajax({
-  url: '/pages/help', // '< % = index_path % >',
-  method: 'GET',
-  success: function(response) {
-    // Process the server response
-    updateLiveContent(response.data);
-  }
-});
-
-</script>
-
+%>
 <main>
  <h1>Help</h1>
- <p>Welcome to <b><%= APP_NAME %></b>, an app which is inspired by my colleague and friend Guillaume (the inventor of Groovy)</p>
+
+ <p>Welcome to <b><%= APP_NAME %></b>, an app which is inspired by my colleague and friend Guillaume (yes! The inventor of Groovy)</p>
 
 <h2>About this app</h2>
 
+TODO - make this responsive using HTMX.
+HTMX button ...
+<button hx-post="/clicked"
+    hx-trigger="click"
+    hx-target="#parent-div"
+    hx-swap="outerHTML"
+>
+    Click Me!
+</button>
+
+<pre id="parent-div">🔶 This should be substituted upon click by some GenAI content gotten from /click endpoint..</pre>
+
+
 <% markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true) %>
 <%#= markdown.render("This is *bongos*, indeed.").html_safe %>
-
+<h2>AI dynamic Content</h2>
 <div id='genai_content' ><%=
  extend Genai::AiplatformTextCurl ;
- genai_markdown = ai_curl_by_content(
-    'You are a salesman who wants to pitch Ruby for Generative AI. Please describe this GenAI application written on Ruby on Rails, as a majestic breakthrough in GenAI and how Ruby is going to become the most loved language.'
-)[1] rescue 'Some Error in generation'
+ genai_markdown = ai_curl_by_content(@magic_content)[1] rescue "💔 Some Error in generation: **#{$!}**. Should have made up a story around: \n###MagicContent\n\n *'#{@magic_content}'*"
 
  markdown.render(genai_markdown).html_safe
 %></div>
-
-<h3>Prova delayed partial</h3>
-<p>1</p>
-<%= content_tag :p, 'ciao',  id: 'live-update-placeholder' %>
-<p>3</p>
-
-
--- <i>(Yours, Vertex AI Palm API)</i>
-</main>
