@@ -1,7 +1,9 @@
 # https://dev.to/ayushmann/how-to-use-json-jbuilder-in-rails-49ef
+sleep(1) # to simulate API call..
 json.name 'Riccardo'
 json.surname 'Carlesso'
 json.email 'ti.piacerebbe@gmail.com'
+json.photo_url 'ricc-ale.jpeg'
 # json.address do
 #     json.street '1234 1st Ave'
 # #     city 'New York'

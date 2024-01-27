@@ -14,28 +14,18 @@
     like with Nunchucks or Moustache.
   </p>
 
-  <pre id="riccardo_about2">
-    🔶 This should be substituted upon click by some GenAI content gotten from /click endpoint..
-    <b>Name:</b> click to find out
-    <b>Surname:</b> click to find out
-    <b>Favourite wine:</b> click to find out
-    <b>Personal Blog:</b> click to find out
+  <pre id="riccardo_about">🔶 This should be substituted upon click by some GenAI content gotten from /click endpoint..
+<b>Name:</b> click to find out
+<b>Surname:</b> click to find out
+<b>Email:</b> click to find out
+<b>Favourite wine:</b> click to find out
+<b>Personal Blog:</b> click to find out
   </pre>
 </div>
 
-<h2>Prova Nunchucks</h2>
 
 <div hx-ext="client-side-templates">
   <!-- hx-trigger="load, click" makes sure that api gets called on page load AND on click  !-->
-  <button
-     type="button"
-     hx-trigger="load, click"
-     RICCARDONO-hx-get="https://api.github.com/users/marcus-at-localhost/gists"
-     hx-get="/pages/ai_test.json"
-     nunjucks-template="gistlist"
-     hx-target="#list"
-     hx-swap="innerHTML"
-  >Original Broken Reload</button>
 
   <script id="gistlist" type="nunjucks">
     {% for gist in gists %}
@@ -60,15 +50,18 @@
   hx-swap="innerHTML"
 >Riccardo NEW Reload</button>
 
-  <script id="riccardo_app_author" type="nunjucks">
-      ✅ This has been substituted with a JSON templated into HTML via nunchucks.
-      <pre>
-        Name: <b>{{name}}</b>
-        Surname: <b>{{surname}}</b>
-        Favourite wine: <b>{{preferences.fav_wine}}</b>
-        <b>Favourite Blog:</b> <a href="{{preferences.fav_blog}}" >{{preferences.fav_blog}}</a>
-      </pre>
-  </script>
+<script id="riccardo_app_author" type="nunjucks">
+✅ This has been substituted with a JSON templated into HTML via nunchucks.
+<img src="/assets/{{photo_url}}" class="img-fluid img-thumbnail rounded float-end" >
+Name: <b>{{name}}</b>
+Surname: <b>{{surname}}</b>
+Email: <b><a href="mailto:{{email}}" >{{email}}</a></b>
+Favourite wine: <b>{{preferences.fav_wine}}</b>
+<b>Favourite Blog:</b> <a href="{{preferences.fav_blog}}" >{{preferences.fav_blog}}</a>
+Image: see on the right:
+</script>
 
-  <ul id="riccardo_about"> 🔶  riccardo_about Changeme</ul>
+
 </div>
+
+<%#= image_tag('ricc-ale.jpeg', class: "img-fluid img-thumbnail rounded float-end") %>
