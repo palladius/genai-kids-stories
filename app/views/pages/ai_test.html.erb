@@ -1,0 +1,15 @@
+<!-- This page loads a simple API call to Palm API to get a sample content.. -->
+<%
+  @magic_content = 'You are a salesman who wants to pitch Ruby for Generative AI.
+  Please describe this GenAI application written on Ruby on Rails, as a majestic breakthrough
+   in GenAI and how Ruby is going to become the most loved language.'
+
+   markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)
+%>
+<div id='genai_content' >✅
+  <%=
+    extend Genai::AiplatformTextCurl
+    genai_markdown = ai_curl_by_content(@magic_content)[1] rescue "💔 Some Error in generation: **#{$!}**. Should have made up a story around: \n###MagicContent\n\n *'#{@magic_content}'*"
+    markdown.render(genai_markdown).html_safe
+  %>
+</div>

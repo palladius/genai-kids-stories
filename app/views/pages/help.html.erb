@@ -3,49 +3,18 @@
   Please describe this GenAI application written on Ruby on Rails, as a majestic breakthrough
    in GenAI and how Ruby is going to become the most loved language.'
 
+   # (from https://github.com/rootstrap/htmx-rails )
 %>
 <main>
  <h1>Help</h1>
 
  <p>Welcome to <b><%= APP_NAME %></b>, an app which is inspired by my colleague and friend Guillaume (yes! The inventor of Groovy)</p>
 
-<h2>About this app</h2>
+ <p>
+  I'm currently testing HTMX to generate responsive content (top then embroid the whole app for all GenAI content as its slow).
+ </p>
 
-TODO - make this responsive using HTMX.
-HTMX button ...
-<button hx-post="/pages/slow_function"
-    hx-trigger="click"
-    hx-target="#parent-div"
-    hx-swap="outerHTML"
->
-    Click Me /pages/slow_function !
-</button>
 
-(from https://github.com/rootstrap/htmx-rails )
+<%= render "pages/about_the_author_json" %>
 
-<button hx-post="/pages/slow_function" hx-swap="outerHTML">
-  Click Me /pages/slow_function (next: /pages/ai_test)
-</button>
-
-<pre id="parent-div">🔶 This should be substituted upon click by some GenAI content gotten from /click endpoint..</pre>
-
-<% markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true) %>
-<%#= markdown.render("This is *bongos*, indeed.").html_safe %>
-
-<table border="5" >
-  <tr>
-    <td>
-      <h2>AI dynamic Content</h2>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <div id='genai_content' ><%=
-      extend Genai::AiplatformTextCurl ;
-      genai_markdown = ai_curl_by_content(@magic_content)[1] rescue "💔 Some Error in generation: **#{$!}**. Should have made up a story around: \n###MagicContent\n\n *'#{@magic_content}'*"
-      markdown.render(genai_markdown).html_safe
-      %>
-    </div>
-    </td>
-  </tr>
-</table>
+<%= render "pages/about_the_app_genai" %>

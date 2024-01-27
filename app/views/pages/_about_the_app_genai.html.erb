@@ -1,0 +1,29 @@
+<h2>About this app</h2>
+
+<button hx-post="/pages/ai_test"
+    hx-trigger="load, click"
+    hx-target="#genai_content"
+    hx-swap="outerHTML"
+>🪄 Generate App content </button>
+
+
+
+<table border="5" >
+    <tr>
+      <td>
+        <h2>AI dynamic Content</h2>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div id='genai_content' >🔶 PLACEHOLDER id='genai_content'
+          After you click the button above,
+          this content will be populated by some GenAI
+          content
+          <%#=
+
+        %>
+      </div>
+      </td>
+    </tr>
+  </table>

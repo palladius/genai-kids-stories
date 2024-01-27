@@ -1,0 +1,74 @@
+
+<h2>About the author</h2>
+
+<div>
+  <button hx-post="/pages/ai_test.json" hx-swap="outerHTML">
+    🤷‍♂️ About The Author (populate JSON -> ugly)
+    <!-- todo https://htmx.org/extensions/client-side-templates/
+
+      Anche questo sembra una figata: https://marcus-obst.de/blog/htmx-json-handling
+    -->
+  </button>
+  <p>
+    Let's try to populate this with a JSON format -
+    like with Nunchucks or Moustache.
+  </p>
+
+  <pre id="riccardo_about2">
+    🔶 This should be substituted upon click by some GenAI content gotten from /click endpoint..
+    <b>Name:</b> click to find out
+    <b>Surname:</b> click to find out
+    <b>Favourite wine:</b> click to find out
+    <b>Personal Blog:</b> click to find out
+  </pre>
+</div>
+
+<h2>Prova Nunchucks</h2>
+
+<div hx-ext="client-side-templates">
+  <!-- hx-trigger="load, click" makes sure that api gets called on page load AND on click  !-->
+  <button
+     type="button"
+     hx-trigger="load, click"
+     RICCARDONO-hx-get="https://api.github.com/users/marcus-at-localhost/gists"
+     hx-get="/pages/ai_test.json"
+     nunjucks-template="gistlist"
+     hx-target="#list"
+     hx-swap="innerHTML"
+  >Original Broken Reload</button>
+
+  <script id="gistlist" type="nunjucks">
+    {% for gist in gists %}
+      <li>
+        <a href="{{gist.html_url}}">{{gist.parsed.title}}</a><br>
+        <small>{{gist.parsed.description}}</small>
+      </li>
+    {% endfor %}
+  </script>
+
+  <!--
+  <div hx-ext="client-side-templates">
+  </div>
+-->
+
+  <button
+  type="button"
+  hx-trigger="load, click"
+  hx-get="/pages/ai_test.json"
+  nunjucks-template="riccardo_app_author"
+  hx-target="#riccardo_about"
+  hx-swap="innerHTML"
+>Riccardo NEW Reload</button>
+
+  <script id="riccardo_app_author" type="nunjucks">
+      ✅ This has been substituted with a JSON templated into HTML via nunchucks.
+      <pre>
+        Name: <b>{{name}}</b>
+        Surname: <b>{{surname}}</b>
+        Favourite wine: <b>{{preferences.fav_wine}}</b>
+        <b>Favourite Blog:</b> <a href="{{preferences.fav_blog}}" >{{preferences.fav_blog}}</a>
+      </pre>
+  </script>
+
+  <ul id="riccardo_about"> 🔶  riccardo_about Changeme</ul>
+</div>

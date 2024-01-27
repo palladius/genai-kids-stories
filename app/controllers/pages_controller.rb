@@ -18,17 +18,31 @@ class PagesController < ApplicationController
 
   def about; end
 
+  def ai_test
+    respond_to do |format|
+      format.html { render layout: false } # redirect_to stories_url, notice: 'Story was successfully destroyed.' }
+      # format.text { render layout: false } # redirect_to stories_url, notice: 'Story was successfully destroyed.' }
+      format.json {} #  head :no_content }
+    end
+  end
+
   def help
-    response = slow_function
+    # response = slow_function
     #    render partial: 'index', locals: { data: response }
     # render partial: 'index', locals: { data: response }
-    render 'help', locals: { data: response }
+    # render 'help', locals: { data: response }
   end
 
   private
 
   def slow_function
     # sleep(1)
-    '[FAKE] slow_function(): API returned: 42'
+    # '[FAKE] slow_function(): API returned: 42'
+    # render 'help', locals: { data: response }
+    respond_to do |format|
+      format.html { render layout: false } # redirect_to stories_url, notice: 'Story was successfully destroyed.' }
+      format.text { render layout: false } # redirect_to stories_url, notice: 'Story was successfully destroyed.' }
+      format.json { head :no_content }
+    end
   end
 end

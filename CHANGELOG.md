@@ -1,3 +1,4 @@
+2024-01-27 0.14.10 HHTM it works and also nunchucks!
 2024-01-27 0.14.9  Actually INSTALLING HTMX
 2024-01-27 0.14.8  Trying to add HTMX. But first, fixing APIs which dont work. Adding
 2023-10-01 0.14.7  now that APIs are fixed, I went on and fixed a few things. Added upload size, customized
