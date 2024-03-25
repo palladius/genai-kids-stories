@@ -3,7 +3,7 @@
   "type": "module",
   "dependencies": {
     "@hotwired/stimulus": "^3.2.1",
-    "@hotwired/turbo-rails": "^7.3.0",
+    "@hotwired/turbo-rails": "^8.0.4",
     "@popperjs/core": "^2.11.8",
     "autoprefixer": "^10.4.19",
     "bootstrap": "^5.3.2",
