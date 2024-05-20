@@ -13,7 +13,7 @@
     "nunjucks": "^3.2.4",
     "postcss": "^8.4.31",
     "postcss-cli": "^11.0.0",
-    "sass": "^1.70.0",
+    "sass": "^1.77.2",
     "semver": "^7.5.4"
   },
   "scripts": {
