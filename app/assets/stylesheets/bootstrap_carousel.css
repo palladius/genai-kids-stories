@@ -1,55 +1,23 @@
-/* Carousel  smaller https://stackoverflow.com/questions/28589911/bootstrap-change-carousel-height  */
+/* 2026 Interactive Storybook Carousel Styles */
 
-
-
-.my-carousel .carousel-inner {
-  width: 80%; /* Adjust the width as per your requirement */
-  height: 100px; /* Adjust the height as per your requirement */
-  margin: 0 auto; /* Centers the carousel horizontally */
+.storybook-paragraph-text b.story_act {
+  display: inline-block;
+  background-color: #fff3cd;
+  color: #664d03;
+  padding: 0.15rem 0.6rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.95rem;
+  text-decoration: none !important;
 }
 
-.my-carousel .carousel-item {
-  height: 50%; /* Adjust the item height as per your requirement */
+.storybook-paragraph-text b.story_act u {
+  text-decoration: none !important;
 }
 
-.my-carousel .carousel-item img {
-  max-height: 50%; /* Ensures the images fit within the item */
-  object-fit: contain; /* Adjusts the image display within the item */
+.storybook-audio-wrapper audio {
+  height: 40px;
+  border-radius: 20px;
 }
 
-.my-carousel .carousel-caption {
-  background-color: rgba(0, 0, 0, 0.7); /* Adds a semi-transparent background to the caption */
-  color: #fff; /* Sets the text color to white */
-  padding: 10px; /* Adjust the padding as per your preference */
-}
-
-.my-carousel .carousel-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Adjust the item height as per your requirement */
-}
-
-.my-carousel .carousel-item .image-container {
-  background-color: #fff; /* Sets the background color to white */
-  width: 70%; /* Adjust the width of the image container as per your requirement */
-  height: 70%; /* Ensures the container fills the entire carousel item */
-  margin: 0 auto; /* Centers the container horizontally */
-  padding: 20px; /* Adjust the padding as per your preference */
-  display: flex; /* Allows centering of the image */
-  justify-content: center;
-  align-items: center;
-}
-
-.my-carousel .carousel-item img {
-  max-width: 50%; /* Ensures the image fits within the container */
-  max-height: 50%; /* Ensures the image fits within the container */
-  object-fit: contain; /* Adjusts the image display within the container */
-  opacity: 0.5;
-}
-img .ricc-transparent {
-  color: red;
-  opacity: 0.2;
-
-}
-  /* h1, h2, h3, h4, h5, h6{    color: blue; } */

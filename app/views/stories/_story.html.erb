@@ -66,12 +66,17 @@ Translate to:
 
  <div class="row justify-content-end">
       <div class="col-9">
-        <ul class="list-group">
+        <ul class="list-group mb-3">
           <% story.translated_stories.each do |ts| %>
-            <li class="list-group-item small">
+            <li class="list-group-item small d-flex justify-content-between align-items-center">
+              <div>
                 <!-- Translated Story title-->
                 <%= render_completion_pct ts %>
-              <small class="text-muted"><%= link_to ts.excerpt, ts %></small>
+                <small class="text-muted"><%= link_to ts.excerpt(60), ts %></small>
+              </div>
+              <div>
+                <%= link_to "🎠 Storybook Carousel", translated_story_path(ts, style: 'carousel'), class: "btn btn-sm btn-outline-primary" %>
+              </div>
             </li>
           <% end %>
         </ul>
@@ -94,7 +99,7 @@ Translate to:
      <!-- Amazing right-side-->
       <div class="col-3 justify-content-end clearfix">
         <%#= image_tag(story.cover_image,  style: "float:right;height:150px;") if story.cover_image.attached? %>
-        <%= render partial: 'attachments/image_card', locals: {image: story.cover_image }  %>
+        <%= render partial: 'attachments/image_card', locals: {image: story.cover_or_first_image || story.cover_image }  %>
         <%= render partial: 'kids/floating_card', locals: {kid: story.kid }  %>
         <p>Score: <kbd><%= story.score %></kbd></p>
       </div>

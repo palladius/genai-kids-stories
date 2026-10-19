@@ -6,14 +6,16 @@ class PagesController < ApplicationController
 
   def index
     @num_stories = begin
-      Story.all.count
+      Story.active.count
     rescue StandardError
       '?!?'
     end
-    @sample_ts = TranslatedStory.last
-    #    @ts_id = .id
-    # @ts_lang = TranslatedStory.last.language
-    # @ts_name = TranslatedStory.last.name
+    @featured_stories = begin
+      Story.active.order('score DESC, created_at DESC').limit(6)
+    rescue StandardError
+      []
+    end
+    @sample_ts = TranslatedStory.where('cached_completion >= 99').order('created_at DESC').first || TranslatedStory.last
   end
 
   def about; end

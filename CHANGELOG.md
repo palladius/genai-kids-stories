@@ -1,3 +1,7 @@
+2026-10-19 0.15.2  ⌨️ Enabled Left/Right (`⬅️`/`➡️`) keyboard arrow navigation to flip pages in the Interactive Storybook Carousel (works across initial loads and Hotwire Turbo navigations) and improved Act badge formatting.
+2026-10-19 0.15.1  🧠 Upgraded text model to `gemini-flash-latest` (resolving to `gemini-3.8-flash`) and image model to `gemini-3.1-flash-image` (Nano Banana 2) via `GEMINI_API_KEY` (`genai-kids-stories26` in Secret Manager `GENAI_GEMINI_API_KEY`), with automatic Vertex AI fallback.
+2026-10-19 0.15.0  ✨ 2026 Gemini Edition: Upgraded text model from retired `text-bison` to `gemini-2.5-flash` and image model from `imagegeneration@002` to `gemini-2.5-flash-image` (Nano Banana); redesigned Storybook Carousel UI (full-opacity illustrations, auto-narration, language switcher), fixed card cover image fallback, and fixed primogenito paragraph image copying.
+2026-10-19 0.14.12 Fixed broken GCS images & MP3 links in prod: rotated SA key in Secret Manager (`087ddb..`), pointed `GCS_BUCKET` to `genai-kids-stories-public-assets`, and created `genai-kids-stories26` Gemini API key.
 2024-01-27 0.14.11 Dependabot -> updates
 2024-01-27 0.14.10 HHTM it works and also nunchucks!
 2024-01-27 0.14.9  Actually INSTALLING HTMX

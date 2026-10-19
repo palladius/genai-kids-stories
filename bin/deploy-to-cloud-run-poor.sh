@@ -13,7 +13,7 @@ export ARTIFACT_REPO='europe-north1-docker.pkg.dev/ror-goldie/genai'
 UPLOADED_IMAGE="$ARTIFACT_REPO/genai-kids-stories"
 UPLOADED_IMAGE_WITH_VER="$UPLOADED_IMAGE:cb-latest"
 export REGION="${REGION:-us-central1}"
-export GCS_BUCKET='genai-kids-stories-assets'
+export GCS_BUCKET='genai-kids-stories-public-assets'
 APP_VERSION="$(bin/version.sh)"
 export CLOUD_RUN_SERVICE_NAME=${CLOUD_RUN_SERVICE_NAME:-genai-kids-stories-gcloud-poor}
 
@@ -32,6 +32,7 @@ gcloud --project "$PROJECT_ID" beta run deploy "$CLOUD_RUN_SERVICE_NAME" \
       --update-secrets=DANGEROUS_SA_JSON_VALUE=genai-service-account:latest \
       --update-secrets=RAILS_MASTER_KEY=GENAI_RAILS_MASTER_KEY:latest \
       --update-secrets=GOOGLE_TRANSLATE_KEY=GENAI_GOOGLE_TRANSLATE_KEY:latest \
+      --update-secrets=GEMINI_API_KEY=GENAI_GEMINI_API_KEY:latest \
       --update-secrets=APP_DB_NAME=GENAI_PROD_DB_NAME:latest \
       --update-secrets=APP_DB_USER=GENAI_PROD_DB_USER:latest \
       --update-secrets=APP_DB_PASS=GENAI_PROD_DB_PASS:latest \

@@ -55,7 +55,14 @@ class Story < ApplicationRecord
   end
 
   def cleaned_up_title
-    title.gsub('**', '')
+    title.to_s.gsub('**', '').strip
+  end
+
+  def cover_or_first_image
+    return cover_image if cover_image.attached?
+
+    first_sp = story_paragraphs.detect { |sp| sp.p_image1.attached? }
+    first_sp&.p_image1
   end
 
   # Implemented on father
@@ -117,9 +124,9 @@ class Story < ApplicationRecord
       puts 'There were some errors:'
       puts("Story(#{id}).translate_to(#{lang}) Errors creating ts: '#{ts.errors.full_messages}'")
     else
-      # All good
+      # All good - run directly so Cloud Run (which has no separate delayed_job worker) completes paragraphs + images + TTS audio
       puts('All good -> generating now also the poly paragraphs :)')
-      ts.delay(queue: 'story::translate_to::after').generate_polymorphic_paragraphs()
+      ts.generate_polymorphic_paragraphs
     end
     return ts
   end

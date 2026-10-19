@@ -13,7 +13,7 @@
 module Genai
   # Only allow authenticated admins access to precious resources.
   module AiplatformTextCurl
-    VERSION = '0.5_14jul23'
+    VERSION = '0.6_19oct26'
 
     require 'net/http'
     require 'uri'
@@ -21,10 +21,10 @@ module Genai
     require 'yaml'
     require 'base64'
 
-    # Text must be 001
-    # MODEL_ID = 'text-bison@001'
-    MODEL_ID = 'text-bison'
-    # Video can be 002 (se below)
+    # 2026 Upgrade: gemini-flash-latest (resolves to gemini-3.8-flash on generativelanguage API) replaces retired PaLM text-bison
+    MODEL_ID = 'gemini-flash-latest'
+    VERTEX_FALLBACK_MODEL_ID = 'gemini-2.5-flash'
+    IMAGE_MODEL_ID = 'gemini-2.5-flash-image'
 
     # taken by my buddy Guillaume: https://github.com/glaforge/bedtimestories/blob/main/src/main/resources/public/index.html
     CHARACTERS = [
@@ -41,7 +41,10 @@ module Genai
       'a magical creature who grants wishes',
       'a time traveler who takes children on adventures to different eras',
       'a spy who solves mysteries and saves the day',
-      'a superhero who fights crime and protects the innocent'
+      'a superhero who fights crime and protects the innocent',
+      'a friendly AI robot puppy with glowing rainbow ears',
+      'a young quantum inventor who builds flying bicycles',
+      'a cosmic botanist who grows singing starlight flowers on Mars'
     ]
     SETTINGS = [
       'in a big gray castle, centuries ago',
@@ -53,7 +56,10 @@ module Genai
       'in a busy train station of a futuristic city full of high skyscrapers',
       'in a deserted beach, on a far away island in the middle of the ocean',
       'in a futuristic Rome with a flying Colosseum',
-      'in a mysterious cave at the bottom of a mountain'
+      'in a mysterious cave at the bottom of a mountain',
+      'in a solar-powered floating treehouse village above the clouds in 2026',
+      'inside a crystal underwater library guarded by friendly dolphins',
+      'at the Grand Gelato Observatory on the Moon'
     ]
     PLOTS = [
       'her little sister was kidnapped by a nasty old witch',
@@ -67,7 +73,9 @@ module Genai
       'a mission to investigate a mysterious object that has appeared in orbit around the Earth',
       'rescue of a cat from a burning building',
       'a mission to break the spell that has been cast on her kingdom',
-      'solving the mystery of a haunted house'
+      'solving the mystery of a haunted house',
+      'a friendly constellation fell from the night sky and needs help getting back home',
+      'teaching a grumpy cloud how to rain rainbow confetti for the village festival'
     ]
 
     def yellow(s) = "\033[1;33m#{s}\033[0m"
@@ -169,56 +177,72 @@ module Genai
 
     # returns [response, predicted_content]
     def ai_curl_by_content(content, _region = 'us-central1', opts = {})
-      # options
+      if _region.is_a?(Hash)
+        opts = _region
+        _region = opts.fetch(:region, 'us-central1')
+      end
       opts_debug = opts.fetch 'DEBUG', false
 
       return '[🚠OFFLINE] GenAI: end of creativity, connect me to urandom' if Genai::Common.network_offline?
 
-      # filling empty values
       project_id = opts.fetch :project_id, AI_PROJECT_ID
-      gcloud_access_token = opts.fetch(:gcloud_access_token, GCauth.instance.token) #  GCLOUD_ACCESS_TOKEN)
       model_id = opts.fetch :model_id, MODEL_ID
-
-      ai_url = "https://us-central1-aiplatform.googleapis.com/v1/projects/#{project_id}/locations/us-central1/publishers/google/models/#{model_id}:predict"
-      # puts("ai_url: #{ai_url}") if opts_debug
-
-      uri = URI(ai_url)
-      # puts("uri:    #{uri}") if opts_debug
+      model_id = MODEL_ID if model_id.to_s.start_with?('text-bison')
+      gemini_api_key = opts.fetch(:gemini_api_key, ENV['GEMINI_API_KEY'])
 
       body = {
-        "instances": [
+        "contents": [
           {
-            "content": content
+            "role": 'user',
+            "parts": [
+              { "text": content }
+            ]
           }
         ],
-        # https://screenshot.googleplex.com/BYjz3AM2pnySHSB
-        # Creative writing should have
-        # top_p: 0.8
-        # temperature: 0.7
-        "parameters": {
+        "generationConfig": {
           "temperature": 0.7,
-          "maxOutputTokens": 1000,
+          "maxOutputTokens": 2048,
           "topP": 0.8,
           "topK": 40
         }
       }
-      headers = {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer #{gcloud_access_token}"
-      }
-      puts "BODY: '''#{body}'''" if opts_debug
 
-      response = Net::HTTP.post(uri, body.to_json, headers)
+      response = nil
+      json_body = {}
 
-      puts("ai_curl_by_content(): response.inspect = '#{response.inspect}'")
+      # 1. Primary: Use Gemini API (generativelanguage.googleapis.com) when GEMINI_API_KEY is available (supports gemini-flash-latest -> gemini-3.8-flash!)
+      if gemini_api_key.to_s.strip.size > 10
+        gl_url = "https://generativelanguage.googleapis.com/v1beta/models/#{model_id}:generateContent?key=#{gemini_api_key.to_s.strip}"
+        gl_headers = { 'Content-Type': 'application/json' }
+        response = Net::HTTP.post(URI(gl_url), body.to_json, gl_headers)
+        json_body = JSON.parse(response.read_body) rescue {}
+        puts("ai_curl_by_content[GL](#{model_id} -> #{json_body['modelVersion']}): response = '#{response.inspect}'")
+      end
 
-      json_body = JSON.parse(response.read_body)
+      # 2. Fallback: Vertex AI if GEMINI_API_KEY was not set or returned no candidates
+      if json_body.dig('candidates', 0, 'content', 'parts', 0, 'text').nil?
+        gcloud_access_token = opts.fetch(:gcloud_access_token, GCauth.instance.token)
+        vertex_model = (model_id == 'gemini-flash-latest') ? VERTEX_FALLBACK_MODEL_ID : model_id
+        ai_url = "https://#{_region}-aiplatform.googleapis.com/v1/projects/#{project_id}/locations/#{_region}/publishers/google/models/#{vertex_model}:generateContent"
+        headers = {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer #{gcloud_access_token}"
+        }
+        response = Net::HTTP.post(URI(ai_url), body.to_json, headers)
+        json_body = JSON.parse(response.read_body) rescue {}
+        puts("ai_curl_by_content[Vertex](#{vertex_model}): response = '#{response.inspect}'")
+      end
+
       predicted_content = begin
-        json_body['predictions'][0]['content']
+        json_body.dig('candidates', 0, 'content', 'parts', 0, 'text') ||
+          json_body.dig('predictions', 0, 'content')
       rescue StandardError
         nil
       end
-      return nil if predicted_content.nil?
+      if predicted_content.nil?
+        warn "⚠️ ai_curl_by_content failed to extract text. Raw response: #{json_body.to_s[0, 500]}"
+        return nil
+      end
 
       [response, predicted_content]
     end

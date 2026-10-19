@@ -1,0 +1,9 @@
+.git/
+storage/
+tmp/
+log/
+node_modules/
+private/
+.bundle/
+db/*.sqlite3*
+public/assets/

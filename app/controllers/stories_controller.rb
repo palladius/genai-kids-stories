@@ -15,7 +15,15 @@ class StoriesController < ApplicationController
   end
 
   # GET /stories/1 or /stories/1.json
-  def show; end
+  def show
+    if params[:translate_to].present?
+      ts = @story.translate_to(params[:translate_to])
+      redirect_to translated_story_path(ts, style: 'carousel'), notice: "✨ Translated story to #{params[:translate_to]} with Gemini 2.5!" and return if ts.is_a?(TranslatedStory) && ts.persisted?
+    elsif params[:fix] == 'true'
+      @story.fix!
+      redirect_to story_path(@story), notice: '✨ Story regenerated with Gemini 2.5 & Nano Banana!' and return
+    end
+  end
 
   def show_rebuilt
     @story = Story.find(params[:id])

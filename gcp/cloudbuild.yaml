@@ -62,7 +62,7 @@ steps:
   # secretEnv:
   # - 'DANGEROUS_SA_JSON_VALUE'
 
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+- name: 'gcr.io/cloud-builders/docker'
   id: Tag to vVERSION via BASH v5
   entrypoint: 'bash'
   args:

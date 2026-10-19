@@ -1,18 +1,26 @@
-<% @stories_per_row ||= 4 %>
-<h1><%= Story.emoji %> Stories </h1>
+<div class="container py-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+    <div>
+      <h1 class="fw-bold mb-1"><%= Story.emoji %> Bedtime Stories</h1>
+      <p class="text-muted mb-0">Pick a story and click a flag (🎠) to open the illustrated audio storybook!</p>
+    </div>
+    <div>
+      <%= link_to "✨ New #{Story.emoji} Story", new_story_path, class: "btn btn-primary shadow-sm" %>
+    </div>
+  </div>
 
-<%= link_to "New #{Story.emoji} story", new_story_path %>
-<!-- pagination -->
-<%= render 'layouts/pagination_tab', locals: {entity: 'stories' } %>
-<div class="container text-center">
-  <div class="row">
-    <%@stories.each_with_index do |x, ix| %>
+  <!-- pagination -->
+  <%= render 'layouts/pagination_tab', locals: { entity: 'stories' } %>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-1">
+    <% @stories.each_with_index do |story, ix| %>
       <div class="col">
-        <%= render 'stories/bootstrap_index_card', story: x, index: ix %>
+        <%= render 'stories/bootstrap_index_card', story: story, index: ix %>
       </div>
-      <% if ix % @stories_per_row == @stories_per_row-1 %>
-      <div class="row">
-      <% end %>
     <% end %>
+  </div>
+
+  <div class="mt-4">
+    <%= render 'layouts/pagination_tab', locals: { entity: 'stories' } %>
   </div>
 </div>

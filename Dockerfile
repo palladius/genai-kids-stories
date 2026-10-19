@@ -4,75 +4,28 @@
 #        port is spun up so the system appears dead to the CR pinging job :)
 # Make sure it matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.2.0
-FROM --platform=linux/amd64 ruby:$RUBY_VERSION
+# Fast & deterministic 2026 build using the pre-built v0.14.11 base image (with Ruby 3.2.0, libvips, Node/Yarn, gcloud, and all gems/node_modules pre-installed)
+FROM --platform=linux/amd64 europe-north1-docker.pkg.dev/ror-goldie/genai/genai-kids-stories:v0.14.11
 
 WORKDIR /rails
 
-# if it fails it fails FIRST :)
-# Note this is USELESS since the var is not passed. It would be better NOT to pass and have entrypoint create it :)
-# Needs to be EMPTY for entrypoint to catch up
-#RUN echo "$DANGEROUS_SA_JSON_VALUE" > /sa.json
+# Needs to be EMPTY at build time for entrypoint to populate from Secret Manager at runtime
 RUN bash -c 'echo -en "$DANGEROUS_SA_JSON_VALUE" > /sa.json'
-#RUN echo -en "$DANGEROUS_SA_JSON_VALUE" > /sa.json
-# for debug
 RUN ls -la /sa.json
-
-# Install libvips for Active Storage preview support
-# TODO ricc: test `google-cloud-cli` https://cloud.google.com/sdk/docs/install?hl=it#deb
-
-####################################################################################
-# TODO(ricc): just an idea from SCE-TIL to velocize the debian side...
-#RUN export DEB_VERSION=`lsb_release -c | awk  '{print $2}'`
-#RUN echo "deb https://packages.cloud.google.com/mirror/cloud-apt/$DEB_VERSION $DEB_VERSION main" > /etc/apt/sources.list
-#RUN echo "deb https://packages.cloud.google.com/mirror/cloud-apt/$DEB_VERSION-security $DEB_VERSION-security main" >> /etc/apt/sources.list
-#RUN echo "deb https://packages.cloud.google.com/mirror/cloud-apt/$DEB_VERSION-updates $DEB_VERSION-updates main" >> /etc/apt/sources.list
-####################################################################################
-
-# Added node.js and yarn on 8jul23 https://github.com/nickjj/docker-rails-example/blob/main/Dockerfile
-RUN bash -c "set -o pipefail && apt-get update \
-  && apt-get update -qq  \
-  && apt-get install -y build-essential libvips direnv postgresql-client libvips-tools curl libpq-dev && \
-  curl -sSL https://deb.nodesource.com/setup_18.x | bash - \
-  && curl -sSL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-  && echo 'deb https://dl.yarnpkg.com/debian/ stable main' | tee /etc/apt/sources.list.d/yarn.list \
-  && apt-get update && apt-get install -y --no-install-recommends nodejs yarn netcat \
-    && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man"
-
-# Rails app lives here
-#WORKDIR /app
-
-# Set production environment
-#RAILS_ENV="production"
 
 ENV RAILS_LOG_TO_STDOUT="1" \
     RAILS_SERVE_STATIC_FILES="true" \
     RAILS_ENV="production" \
     BUNDLE_WITHOUT="development"
 
-# Install application gems
-COPY Gemfile Gemfile.lock ./
-RUN bundle install
-
-COPY package.json *yarn* ./
-RUN yarn install
-
-# Copy application code
+# Copy updated application code
 COPY . .
 
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile --gemfile app/ lib/
 
 #######################################################
-# Installing gcloud (added by ric) from
-# https://stackoverflow.com/questions/28372328/how-to-install-the-google-cloud-sdk-in-a-docker-image
-RUN curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > /tmp/google-cloud-sdk.tar.gz
-# Installing the package
-RUN mkdir -p /usr/local/gcloud \
-  && tar -C /usr/local/gcloud -xvf /tmp/google-cloud-sdk.tar.gz \
-  && /usr/local/gcloud/google-cloud-sdk/install.sh
-# Adding the package path to local
+# gcloud is already installed in base image v0.14.11 at /usr/local/gcloud/google-cloud-sdk/bin
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
 #######################################################
 

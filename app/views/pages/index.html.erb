@@ -1,25 +1,55 @@
-
-<!-- inside app/views/welcome/index.html.erb -->
+<!-- inside app/views/pages/index.html.erb -->
 <main>
   <section class="py-5 text-center container">
-    <div class="row py-lg-5">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light"><%= APP_NAME %> v<kbd><%= APP_VERSION %></kbd> </h1>
+    <div class="row py-lg-4 align-items-center">
+      <div class="col-lg-7 col-md-8 mx-auto text-lg-start">
+        <div class="mb-2">
+          <span class="badge rounded-pill text-bg-primary me-1">✨ 2026 Edition</span>
+          <span class="badge rounded-pill text-bg-info me-1">🧠 gemini-flash-latest (3.8)</span>
+          <span class="badge rounded-pill text-bg-warning me-1">🎨 Nano Banana 2 (3.1)</span>
+          <span class="badge rounded-pill text-bg-success">🗣️ Cloud TTS Audio</span>
+        </div>
+        <h1 class="display-5 fw-bold mb-3"><%= APP_NAME %> <small class="fs-5 text-muted">v<kbd><%= APP_VERSION %></kbd></small></h1>
         <p class="lead text-muted">
-          Welcome to a Kids Story generator using <b>GenAI</b> from
-          <a href='https://cloud.google.com/vertex-ai/docs/generative-ai/start/quickstarts/api-quickstart' >Google Vertex AI Palm API</a>
-        <p>
-          <a href="/stories" class="btn btn-primary my-2">All <b><%= @num_stories %></b> Stories</a>
-          <a href="https://github.com/palladius/genai-kids-stories" class="btn btn-warning my-2">Code on GitHub</a>
-          <a href="/pages/help" class="btn btn-danger my-2">Help + Test AI APIs</a>
-          <a href="/translated_stories/<%= @sample_ts.id %>?style=carousel" class="btn btn-success my-2"><b>I'm feeling lucky!</b><br/>
-          <small><%=@sample_ts.translated_title %></small></a>
+          Magical, multilingual 5-act bedtime stories for kids — dynamically written, illustrated, translated, and narrated by
+          <a href="https://cloud.google.com/vertex-ai" target="_blank" class="fw-semibold text-decoration-none">Google Cloud Vertex AI &amp; Gemini</a>.
         </p>
-
-        <%= image_tag('A_old_wise_and_fun_storyteller_holding_a_big_red_ge_funny.png',  class: "rounded img-fluid") %>
-
+        <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start my-4">
+          <a href="/stories" class="btn btn-primary btn-lg px-4 shadow-sm">📚 Browse All <b><%= @num_stories %></b> Stories</a>
+          <% if @sample_ts %>
+            <a href="/translated_stories/<%= @sample_ts.id %>?style=carousel" class="btn btn-success btn-lg px-4 shadow-sm">
+              🎠 <b>I'm Feeling Lucky!</b>
+              <span class="d-block small fw-normal"><%= @sample_ts.flag %> <%= @sample_ts.translated_title.to_s.truncate(36) %></span>
+            </a>
+          <% end %>
+          <a href="/stories/new" class="btn btn-outline-primary btn-lg px-3">✨ Create Story</a>
+        </div>
+        <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start">
+          <a href="https://github.com/palladius/genai-kids-stories" target="_blank" class="btn btn-sm btn-outline-secondary">💻 GitHub Code</a>
+          <a href="/pages/help" class="btn btn-sm btn-outline-danger">🧪 Help &amp; Test AI APIs</a>
+        </div>
+      </div>
+      <div class="col-lg-5 col-md-6 mx-auto mt-4 mt-lg-0 text-center">
+        <%= image_tag('A_old_wise_and_fun_storyteller_holding_a_big_red_ge_funny.png', class: "rounded-4 shadow-lg img-fluid", style: "max-height: 360px; object-fit: cover;") %>
       </div>
     </div>
   </section>
 
+  <% if @featured_stories.present? %>
+    <section class="py-4 bg-body-tertiary border-top">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="h3 fw-bold mb-0">🌟 Featured Bedtime Stories</h2>
+          <a href="/stories" class="btn btn-sm btn-outline-primary">View all <%= @num_stories %> stories &rarr;</a>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          <% @featured_stories.each_with_index do |story, ix| %>
+            <div class="col">
+              <%= render 'stories/bootstrap_index_card', story: story, index: ix %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  <% end %>
 </main>

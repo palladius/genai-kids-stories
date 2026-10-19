@@ -1,74 +1,255 @@
 <%
   kid = translated_story.story.kid
-
+  sibling_translations = translated_story.story.translated_stories
+  total_slides = @story_paragraphs.size
 %>
-<div id="<%= dom_id translated_story %>">
-  <h1>🎠 <%= waving_flag translated_story.language %>
-    <%= translated_story.translated_title %>
-  </h1>
+<div id="<%= dom_id translated_story %>" class="container py-3">
+  <!-- Storybook Header & Language Switcher -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+    <div>
+      <span class="badge rounded-pill text-bg-primary mb-1">🎠 Interactive Storybook</span>
+      <h1 class="h2 fw-bold mb-0">
+        <%= waving_flag translated_story.language %>
+        <%= translated_story.translated_title.to_s.gsub('**', '') %>
+      </h1>
+      <p class="text-muted small mb-0">
+        For 👶 <%= link_to(kid.nick, kid, class: "text-decoration-none") %> &bull;
+        Story <%= link_to("##{translated_story.story_id}", translated_story.story, class: "text-decoration-none") %>
+      </p>
+    </div>
 
-  <div class='200-px-wide' >
-    <div id="carouselExampleCaptions" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-interval="10000" data-bs-wrap="false" >
-      <div class="carousel-indicators">
-          <% @story_paragraphs.each_with_index do |sp, ix| %>
-            <% if ix == 0 %>
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <% else  %>
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="<%= ix %>" aria-label="Slide <%= ix+1 %>"></button>
-            <% end %>
+    <div class="d-flex flex-wrap align-items-center gap-2">
+      <% if sibling_translations.size > 1 %>
+        <div class="btn-group btn-group-sm" role="group" aria-label="Language switcher">
+          <% sibling_translations.each do |sib| %>
+            <% active_cls = (sib.id == translated_story.id) ? 'btn-primary' : 'btn-outline-secondary' %>
+            <%= link_to "#{sib.flag} #{sib.language.upcase}", translated_story_path(sib, style: 'carousel'), class: "btn #{active_cls}" %>
           <% end %>
-
         </div>
-        <div class="carousel-inner">
-          <!-- start of carousel https://getbootstrap.com/docs/5.0/components/carousel/ -->
-          <% @story_paragraphs.each_with_index do |sp, ix|
-              addon_if_first = (ix==0) ? ' active ' : ''
-          %>
-            <% if ix == 0 %>
-              <div class="carousel-item active">
-            <% else %>
-              <div class="carousel-item">
-            <% end %>
-              <div class="image-container" >
-              <!-- from Bard -->
-                <%= image_tag(sp.p_image1,
-                      class: "d-block w-100 ricc-transparent",
-                      alt: 'Image Descr',
-                      style: 'opacity: 0.5;' ) if  sp.p_image1.attached?  %>
-              </div>
-              <div class="carousel-caption d-md-block small">
-                <h5>🌁 Slide <%= ix + 1%> 🌁</h5>
-                <!-- if you put autoplay true, ALL audios play at same time and its HORRIBLE :) -->
-                <%= render_mp3_button sp, autoplay: false %>
-                <p class='text-dark h5' ><%= sp.cleaned_up_translated_text %></p>
+      <% end %>
+      <button id="storybookAutoplayBtn" type="button" class="btn btn-sm btn-success shadow-sm" onclick="toggleStorybookAutoplay()">
+        ▶️ Auto-Narrate Story
+      </button>
+    </div>
+  </div>
 
+  <!-- Main Storybook Carousel Card -->
+  <div class="card shadow-lg border-0 rounded-4 overflow-hidden mb-4" style="background: linear-gradient(135deg, #fffdf9 0%, #f8f4ec 100%);">
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false" data-bs-interval="false" data-bs-wrap="false">
+      <div class="carousel-indicators mb-2">
+        <% @story_paragraphs.each_with_index do |_sp, ix| %>
+          <button type="button"
+                  data-bs-target="#carouselExampleCaptions"
+                  data-bs-slide-to="<%= ix %>"
+                  class="<%= 'active' if ix == 0 %> bg-dark"
+                  aria-current="<%= ix == 0 ? 'true' : 'false' %>"
+                  aria-label="Slide <%= ix + 1 %>"></button>
+        <% end %>
+      </div>
+
+      <div class="carousel-inner">
+        <% @story_paragraphs.each_with_index do |sp, ix| %>
+          <div class="carousel-item <%= 'active' if ix == 0 %>" data-slide-index="<%= ix %>">
+            <div class="row g-0 align-items-center" style="min-height: 500px;">
+              <!-- Left Column: Full-Opacity Vivid Illustration -->
+              <div class="col-lg-6 p-3 p-md-4 text-center d-flex justify-content-center align-items-center bg-dark bg-opacity-10" style="min-height: 420px;">
+                <% if sp.p_image1.attached? %>
+                  <%= image_tag(sp.p_image1,
+                        class: "img-fluid rounded-4 shadow",
+                        alt: "Illustration for page #{ix + 1}",
+                        style: "max-height: 460px; width: auto; object-fit: contain; opacity: 1 !important;") %>
+                <% elsif translated_story.story.cover_or_first_image.present? %>
+                  <%= image_tag(translated_story.story.cover_or_first_image,
+                        class: "img-fluid rounded-4 shadow",
+                        alt: "Story illustration",
+                        style: "max-height: 460px; width: auto; object-fit: contain; opacity: 1 !important;") %>
+                <% else %>
+                  <div class="p-5 text-muted">
+                    <span class="display-1">🎨</span>
+                    <p class="mt-2">Illustration not generated yet</p>
+                  </div>
+                <% end %>
               </div>
 
+              <!-- Right Column: Clean Readable Story Page & Audio Player -->
+              <div class="col-lg-6 p-4 p-md-5 d-flex flex-column justify-content-between">
+                <div>
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="badge rounded-pill text-bg-warning px-3 py-2">
+                      📖 Page <%= ix + 1 %> of <%= total_slides %>
+                    </span>
+                    <span class="text-muted small"><%= waving_flag sp.language %></span>
+                  </div>
+
+                  <div class="storybook-paragraph-text fs-4 lh-base text-dark my-3" style="font-family: Georgia, 'Times New Roman', serif;">
+                    <%= sp.cleaned_up_translated_text %>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-top d-flex flex-wrap justify-content-between align-items-center gap-2">
+                  <div class="storybook-audio-wrapper">
+                    <%= render_mp3_button sp, autoplay: false %>
+                  </div>
+                  <div class="d-flex align-items-center gap-2">
+                    <small class="text-muted d-none d-md-inline" title="Use Left and Right arrow keys on your keyboard">⌨️ ⬅️ ➡️</small>
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-outline-dark storybook-prev-btn" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev" <%= 'disabled' if ix == 0 %>>
+                        &larr; Prev
+                      </button>
+                      <button class="btn btn-dark storybook-next-btn" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next" <%= 'disabled' if ix == total_slides - 1 %>>
+                        Next &rarr;
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <% end %>
-          <!-- Note:
-          the 'd-none' makes ot disappear if too small, see https://stackoverflow.com/questions/70484901/bootstrap-5-carousel-caption-text-disappears-when-the-website-is-seen-on-a-small
-          -->
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
+        <% end %>
       </div>
     </div>
-    <div>
-      <p class="lead"><em>
-        Dear parent, if you cant read them on the carousel (requires a big screen for now) see translated story here too..
-      </em></p>
-      <ul class="list-group small">
-        <% @story_paragraphs.each_with_index do |sp, ix| %>
-          <li class="list-group-item "><%= sp.cleaned_up_translated_text %> <%= render_mp3_button sp %>
-      </li>
-        <% end %>
-      </ul>
-    </div>
+  </div>
+
+  <!-- Full Story Text & Audio Transcript Below -->
+  <div class="card border-0 shadow-sm rounded-4 p-4">
+    <h3 class="h5 fw-bold mb-3">📜 Full Story &amp; Audio Chapters</h3>
+    <ul class="list-group list-group-flush">
+      <% @story_paragraphs.each_with_index do |sp, ix| %>
+        <li class="list-group-item py-3 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          <div>
+            <span class="badge text-bg-secondary me-2">#<%= ix + 1 %></span>
+            <span class="fs-6"><%= sp.cleaned_up_translated_text %></span>
+          </div>
+          <div class="flex-shrink-0">
+            <%= render_mp3_button sp %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 </div>
+
+<script>
+  var storybookAutoplayActive = false;
+
+  function getActiveSlideAudio() {
+    var activeItem = document.querySelector('#carouselExampleCaptions .carousel-item.active');
+    if (!activeItem) return null;
+    return activeItem.querySelector('audio');
+  }
+
+  function stopAllCarouselAudios() {
+    document.querySelectorAll('#carouselExampleCaptions audio').forEach(function(a) {
+      a.pause();
+    });
+  }
+
+  function flipStorybookPage(direction) {
+    var carouselEl = document.getElementById('carouselExampleCaptions');
+    if (!carouselEl) return;
+
+    var activeItem = carouselEl.querySelector('.carousel-item.active');
+    if (!activeItem) return;
+
+    var targetItem = (direction === 'next')
+      ? activeItem.nextElementSibling
+      : activeItem.previousElementSibling;
+
+    if (!targetItem || !targetItem.classList.contains('carousel-item')) return;
+
+    // Click the active slide's Bootstrap data-bs-slide button (triggers Bootstrap's delegated carousel handler)
+    var selector = (direction === 'next') ? '[data-bs-slide="next"]' : '[data-bs-slide="prev"]';
+    var btn = activeItem.querySelector(selector);
+    if (btn && !btn.disabled) {
+      btn.click();
+    }
+
+    // Fallback: if activeItem didn't change within 50ms (e.g. if Bootstrap JS transition wasn't bound), toggle classes directly
+    setTimeout(function() {
+      if (activeItem.classList.contains('active') && !carouselEl.querySelector('.carousel-item-next, .carousel-item-prev')) {
+        activeItem.classList.remove('active');
+        targetItem.classList.add('active');
+        var newIdx = targetItem.getAttribute('data-slide-index');
+        carouselEl.querySelectorAll('.carousel-indicators button').forEach(function(ind, i) {
+          ind.classList.toggle('active', String(i) === String(newIdx));
+        });
+        carouselEl.dispatchEvent(new Event('slid.bs.carousel'));
+      }
+    }, 60);
+  }
+
+  function toggleStorybookAutoplay() {
+    storybookAutoplayActive = !storybookAutoplayActive;
+    var btn = document.getElementById('storybookAutoplayBtn');
+    if (storybookAutoplayActive) {
+      btn.textContent = '⏸️ Pause Narration';
+      btn.classList.replace('btn-success', 'btn-warning');
+      var audio = getActiveSlideAudio();
+      if (audio) {
+        audio.currentTime = 0;
+        audio.play().catch(function(e) { console.log('Autoplay prevented:', e); });
+      }
+    } else {
+      btn.textContent = '▶️ Auto-Narrate Story';
+      btn.classList.replace('btn-warning', 'btn-success');
+      stopAllCarouselAudios();
+    }
+  }
+
+  function initStorybookCarouselListeners() {
+    var carouselEl = document.getElementById('carouselExampleCaptions');
+    if (!carouselEl || carouselEl.dataset.storybookBound === 'true') return;
+    carouselEl.dataset.storybookBound = 'true';
+
+    // Advance to next slide when audio finishes if Auto-Narrate is active
+    carouselEl.querySelectorAll('.carousel-item audio').forEach(function(audioEl) {
+      audioEl.addEventListener('ended', function() {
+        if (!storybookAutoplayActive) return;
+        var activeItem = carouselEl.querySelector('.carousel-item.active');
+        var nextItem = activeItem ? activeItem.nextElementSibling : null;
+        if (nextItem && nextItem.classList.contains('carousel-item')) {
+          flipStorybookPage('next');
+        } else {
+          toggleStorybookAutoplay();
+        }
+      });
+    });
+
+    // When slide changes, stop old audio and play new slide's audio if Auto-Narrate is active
+    carouselEl.addEventListener('slid.bs.carousel', function() {
+      stopAllCarouselAudios();
+      if (storybookAutoplayActive) {
+        var audio = getActiveSlideAudio();
+        if (audio) {
+          audio.currentTime = 0;
+          audio.play().catch(function(e) { console.log('Play error:', e); });
+        }
+      }
+    });
+  }
+
+  // Bind immediately as well as on DOMContentLoaded and turbo:load
+  initStorybookCarouselListeners();
+  document.addEventListener('DOMContentLoaded', initStorybookCarouselListeners);
+  document.addEventListener('turbo:load', initStorybookCarouselListeners);
+
+  // Global keyboard handler (guarded so it only registers once on window)
+  if (!window.storybookKeydownBound) {
+    window.storybookKeydownBound = true;
+    window.addEventListener('keydown', function(e) {
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) {
+        return;
+      }
+      var carouselEl = document.getElementById('carouselExampleCaptions');
+      if (!carouselEl) return;
+
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        flipStorybookPage('next');
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        flipStorybookPage('prev');
+      }
+    });
+  }
+</script>

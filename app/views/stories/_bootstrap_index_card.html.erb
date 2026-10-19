@@ -1,54 +1,67 @@
 <% if story.is_a? Story %>
 <%
   title = render_story_title(story)
-  image = story.cover_image.attached? ?
-    image_tag(story.cover_image, class: "card-img-top" ) :
-    '(no img)'
-  input_size = story.genai_input.size rescue 0
-  output_size =  story.genai_output.size rescue 0
-  my_translated_stories= story.translated_stories
+  display_img = story.cover_or_first_image
+  my_translated_stories = story.translated_stories
   num_translated_stories = my_translated_stories.size
-
+  is_2026 = story.created_at && story.created_at.year >= 2026
 %>
-<div class="card" style="width: 18rem;">
-    <div class="card-footer small">
-        <h5 class="card-title"><%= link_to(title, story) %></h5>
-    </div>
-    <%= image %>
-    <div class="card-body">
-        <p class="card-text">
-            <%= link_to(story.kid.nick, story.kid) %>,
-            <i><%= distance_of_time_in_words(story.updated_at, Time.now) %> ago</i>
-        </p>
-        <p class='small' ><%= story.genai_output_excerpt %></p>
-    <div class="btn-group" role="group" aria-label="Basic outlined example">
-    <% if num_translated_stories == 0 %>
-      <!-- no translation! -->
-      <%= link_to "❌ Translate to #{story.kid.flag}" , "/stories/#{story.id}?translate_to=#{story.kid.language}", class: "btn btn-primary" %>
-    <% else  %>
-      <!-- some translations available! -->
-      <% story.translated_stories.each do |ts| %>
-        <% if  ts.cached_completion > 99 %>
-          <%= link_to "🎠💯 #{ts.flag}",translated_story_path(ts) + "?style=carousel", :class => "btn  btn-outline-primary" %>
-        <% end %>
+<div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+  <div class="position-relative bg-dark-subtle" style="height: 240px; overflow: hidden;">
+    <% if display_img.present? && display_img.attached? %>
+      <%= link_to story do %>
+        <%= image_tag(display_img, class: "w-100 h-100", style: "object-fit: cover;", loading: "lazy") %>
       <% end %>
+    <% else %>
+      <div class="d-flex flex-column justify-content-center align-items-center h-100 text-muted bg-body-secondary">
+        <span class="display-4">📚</span>
+        <small>Generating illustration...</small>
+      </div>
     <% end %>
+    <div class="position-absolute top-0 end-0 m-2 d-flex gap-1">
+      <% if is_2026 %>
+        <span class="badge rounded-pill text-bg-warning shadow-sm">✨ 2026 Gemini</span>
+      <% end %>
+      <span class="badge rounded-pill text-bg-dark bg-opacity-75">⭐ <%= story.score %></span>
+    </div>
+  </div>
 
-    </div>
-    </div>
-    <div class="card-footer small">
-        id=#<%= story.id %>
-        <%= link_to("✅ Show", story) %>
-        <%= link_to('📝 Edit', edit_story_path(story))%>
-        <kbd><%= story.score %></kbd>
+  <div class="card-body d-flex flex-column text-start">
+    <h5 class="card-title fw-bold mb-1">
+      <%= link_to(story.cleaned_up_title.presence || title, story, class: "text-decoration-none text-body") %>
+    </h5>
+    <p class="card-subtitle text-muted small mb-2">
+      👶 <%= link_to(story.kid.nick, story.kid, class: "text-decoration-none") %> &bull;
+      <i><%= distance_of_time_in_words(story.updated_at, Time.now) %> ago</i>
+    </p>
+    <p class="card-text small text-secondary flex-grow-1"><%= story.genai_output_excerpt(180) %></p>
 
-        <!-- No 💣 -->
-        <!-- No IO either, too confusing
-        I/O: <%#=   "#{input_size} / #{output_size}" %>
-        -->
+    <div class="mt-2 pt-2 border-top">
+      <% if num_translated_stories == 0 %>
+        <%= link_to "🌐 Translate to #{story.kid.flag}", "/stories/#{story.id}?translate_to=#{story.kid.language}", class: "btn btn-sm btn-primary w-100" %>
+      <% else %>
+        <div class="d-flex flex-wrap gap-1 align-items-center">
+          <small class="text-muted me-1">Read &amp; Listen:</small>
+          <% my_translated_stories.each do |ts| %>
+            <% pct = ts.cached_completion.to_f %>
+            <% badge_icon = pct > 99 ? '🎠💯' : '🎠' %>
+            <% btn_cls = pct > 99 ? 'btn-outline-primary' : 'btn-outline-secondary' %>
+            <%= link_to "#{badge_icon} #{ts.flag}", translated_story_path(ts) + "?style=carousel", class: "btn btn-sm #{btn_cls}", title: "#{ts.translated_title} (#{pct.round}% complete)" %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
+  </div>
+
+  <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center small text-muted pt-0 pb-3 px-3">
+    <span>#<%= story.id %></span>
+    <div>
+      <%= link_to("📖 Details", story, class: "text-decoration-none me-2") %>
+      <%= link_to("📝 Edit", edit_story_path(story), class: "text-decoration-none") %>
+    </div>
+  </div>
 </div>
 <% else %>
-    not a story :/
+  not a story :/
 <% end %>
 

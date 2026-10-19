@@ -143,21 +143,18 @@ class StoryParagraph < ApplicationRecord
     ts1 = translated_story.primogenito
     return :already if p_image1.attached?
 
-    # bigbro has image, lets copy by story_index
-    # story_ix1 = sp1.story_index
-    # only ONE element. The TAKE transforms the relation in first elemnt:
-    # https://stackoverflow.com/questions/12135745/what-is-the-fastest-way-to-find-the-first-record-in-rails-activerecord
     puts("SP(#{id}).copy_images_from_primogenito_sp(story_index=#{story_index})")
-    # ATTENTION I'm afraid its copying always the SAME image over and over, as if story_index is not working
-    sp1 = StoryParagraph.where(story_index: story_index, story_id: story.id).take
+    sp1 = ts1&.story_paragraphs&.find_by(story_index: story_index)
+    unless sp1&.p_image1&.attached?
+      sp1 = StoryParagraph.where(story_index: story_index, story_id: story.id).detect { |sp| sp.p_image1.attached? }
+    end
 
-    return :sp_not_found unless sp1.is_a?(StoryParagraph)
+    return :sp_not_found unless sp1.is_a?(StoryParagraph) && sp1.p_image1.attached?
 
-    raise "Unmatching story_index before copy!" unless sp1.story_index == self.story_index
+    raise 'Unmatching story_index before copy!' unless sp1.story_index == self.story_index
 
-    # copy paro paro - https://stackoverflow.com/questions/54203886/how-to-copy-one-object-from-one-model-to-another-model-with-rails-activestorage
     puts("Saving image from primogenito SP.#{sp1.id} --> to this SP.#{id} - both with story_index = #{sp1.story_index}//#{self.story_index}")
-    p_image1.attach(sp1.p_image1.blob) # attached_image === p_image1
+    p_image1.attach(sp1.p_image1.blob)
     save
   end
 
@@ -212,8 +209,12 @@ class StoryParagraph < ApplicationRecord
   end
 
   def cleaned_up_translated_text
-    translated_text.gsub(/\*\*(A[a-z]+ [12345])\*\*/, '<b class="story_act opacity-75" ><u>\1</b></u>').gsub('**',
-                                                                                                             '').html_safe
+    translated_text.to_s
+      .gsub(/\*\*(A[a-z]+ [12345])\*\*/, '<b class="story_act opacity-75"><u>\1</u></b>')
+      .gsub(/(?:---|###)\s*((?:Act|Atto|Acto|Acte|Akt|第[1-5]幕)[^:\n]*:?)/i, '<b class="story_act opacity-75"><u>\1</u></b> ')
+      .gsub('**', '')
+      .gsub('###', '')
+      .html_safe
   end
 
   def to_s

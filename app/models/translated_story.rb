@@ -46,8 +46,7 @@ class TranslatedStory < ApplicationRecord
   #
 
   def self.default_genai_model
-    #'text-bison@001'
-    'text-bison'
+    'gemini-flash-latest'
   end
 
   # after save, many times
@@ -112,14 +111,13 @@ class TranslatedStory < ApplicationRecord
 
   def copy_images_from_primogenito!
     return nil if primogenito?
-    puts 'TODO(): Ricc I have a feeling theres a bug here as I keep see same images being copied to different paragraphs like the index wouldnt update'
-    # BUG Example: https://genai-kids-stories-gcloud-poor-cdlu26pd4q-ew.a.run.app/translated_stories/54
+
     rets = []
-    ts1  = primogenito # different from me
-    ts1.story_paragraphs.each do |sp1_i|
-      ret = sp1_i.copy_images_from_primogenito_sp
+    story_paragraphs.each do |my_sp|
+      ret = my_sp.copy_images_from_primogenito_sp
       rets << ret
     end
+    update_cache(save: true)
     rets
   end
 
@@ -204,6 +202,7 @@ class TranslatedStory < ApplicationRecord
       puts(sp)
       puts "SP ERROR: #{sp.errors.full_messages}" unless sp.save
     end
+    update_cache(save: true)
   end
 
   # calculate if its first born
